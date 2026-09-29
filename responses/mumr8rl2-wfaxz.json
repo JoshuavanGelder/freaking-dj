@@ -1,0 +1,258 @@
+{
+ "id": "mumr8rl2-wfaxz",
+ "finishedAt": "2026-09-29T14:11:50.727Z",
+ "durationMs": 13457,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding met Eurovisie-tussendoortjes",
+  "note": "Vooral coding-energie, met slechts een paar Eurovisie-nummers erdoorheen, inclusief Viva, Moldova!.",
+  "items": [
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Cha Cha Cha",
+    "artist": "Käärijä",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Radioactive",
+    "artist": "Imagine Dragons",
+    "style": "Coding-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "Coding-pop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Sugar, We're Goin Down",
+    "artist": "Fall Out Boy",
+    "style": "Coding-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t28",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0540312,
+ "model": "sonnet"
+}
