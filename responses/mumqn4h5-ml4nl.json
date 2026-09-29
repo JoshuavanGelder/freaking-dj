@@ -1,0 +1,178 @@
+{
+ "id": "mumqn4h5-ml4nl",
+ "finishedAt": "2026-09-29T13:54:55.691Z",
+ "durationMs": 9518,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding met Dai Dai",
+  "note": "Je opent met Dai Dai en ik heb meer Green Day, Morgan Wallen en Imagine Dragons erin gezet, met minder Fall Out Boy.",
+  "items": [
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Latijnse pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Boulevard of Broken Dreams",
+    "artist": "Green Day",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t54",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Basket Case",
+    "artist": "Green Day",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Whatever It Takes",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t181",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t126",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0473852,
+ "model": "sonnet"
+}
