@@ -1,0 +1,282 @@
+{
+ "id": "mumnv3kv-q4h7t",
+ "finishedAt": "2026-09-29T12:38:09.687Z",
+ "durationMs": 21191,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding: energie en flow",
+  "note": "Je huidige favorieten zoals Morgan Wallen, NF en Alex Warren, met een paar oudere nummers en zes nieuwe die erbij passen.",
+  "items": [
+   {
+    "ref": "t34",
+    "title": "Been By Now",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t9",
+    "title": "You Can't Stop This",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "Centuries",
+    "artist": "Fall Out Boy",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t27",
+    "title": "LOST",
+    "artist": "NF",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Wake Me Up",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "Thunder",
+    "artist": "Gabry Ponte",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t24",
+    "title": "Sharks",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t41",
+    "title": "Last Night",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "A Bar Song (Tipsy)",
+    "artist": "Shaboozey",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t29",
+    "title": "CLOUDS",
+    "artist": "NF",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t15",
+    "title": "I Was Made For Lovin’ You - from The Fall Guy",
+    "artist": "YUNGBLUD",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t8",
+    "title": "Royalty",
+    "artist": "Egzod",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t39",
+    "title": "Holiday",
+    "artist": "Green Day",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t71",
+    "title": "T.N.T.",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "I Ain't Worried",
+    "artist": "OneRepublic",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t30",
+    "title": "House of Memories",
+    "artist": "Panic! At The Disco",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "Bloodline",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sweet but Psycho",
+    "artist": "Ava Max",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "Self Aware",
+    "artist": "LUM!X",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t98",
+    "title": "HOPE",
+    "artist": "NF",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t69",
+    "title": "Good Feeling",
+    "artist": "Flo Rida",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t47",
+    "title": "Immortals",
+    "artist": "Fall Out Boy",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "Waiting For Love",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t52",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t26",
+    "title": "Temperature",
+    "artist": "Sean Paul",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t21",
+    "title": "Let's Get It Started - Spike Mix",
+    "artist": "Black Eyed Peas",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t44",
+    "title": "My Songs Know What You Did In The Dark (Light Em Up)",
+    "artist": "Fall Out Boy",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t153",
+    "title": "It's Time",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t81",
+    "title": "Grindin'",
+    "artist": "NF",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.06056159999999999,
+ "model": "sonnet"
+}
