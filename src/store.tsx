@@ -81,7 +81,12 @@ function merge(saved: Partial<AppState> | null): AppState {
     ...saved,
     rules: { ...DEFAULT_RULES, ...(saved.rules ?? {}) },
     learned: { ...EMPTY_LEARNED, ...(saved.learned ?? {}) },
-    settings: { ...DEFAULT_SETTINGS, ...(saved.settings ?? {}) },
+    settings: {
+      ...DEFAULT_SETTINGS,
+      ...(saved.settings ?? {}),
+      // Haiku bleek in de praktijk juist trager: terug naar Sonnet.
+      model: saved.settings?.model === 'opus' ? 'opus' : 'sonnet',
+    },
   };
 }
 

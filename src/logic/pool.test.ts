@@ -102,3 +102,9 @@ test('base64 met accenten', async () => {
   assert.equal(utf8ToBase64('ab'), 'YWI=');
   assert.equal(utf8ToBase64(''), '');
 });
+
+test('parseAnswer: haalt losse tags uit titels', () => {
+  const a = parseAnswer({ title: '<parameter name="title">Coding Focus Mix', note: ' ok ', items: [{ ref: 't1', style: '<b>Pop</b>' }] });
+  assert.equal(a?.title, 'Coding Focus Mix');
+  assert.equal(a?.items[0].style, 'Pop');
+});

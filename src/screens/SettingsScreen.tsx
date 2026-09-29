@@ -12,8 +12,7 @@ import type { Device } from '../logic/queue';
 import { isWatching, lastEventAt, openBatterySettings, openSpotify, startWatcher, stopWatcher, watcherAvailable } from '../services/watcher';
 
 const MODELS: { value: Model; label: string; hint: string }[] = [
-  { value: 'sonnet', label: 'Sonnet', hint: 'goede keuzes, ~15 s' },
-  { value: 'haiku', label: 'Haiku', hint: 'snelst (~5–10 s), iets minder verfijnd' },
+  { value: 'sonnet', label: 'Sonnet', hint: 'aanbevolen: goede keuzes in ~15–20 s' },
   { value: 'opus', label: 'Opus', hint: 'beste keuzes, trager en meer verbruik' },
 ];
 

@@ -187,19 +187,25 @@ export type DjResponse = {
   durationMs?: number | null;
 };
 
+/** Haalt losse opmaak-tags weg die soms in tekst belanden (bv. "<parameter name=...>"). */
+export function cleanText(v: unknown): string {
+  if (typeof v !== 'string') return '';
+  return v.replace(/<\/?[a-z][^>]*>/gi, '').replace(/\s+/g, ' ').trim();
+}
+
 function asItem(x: unknown): ClaudeItem | null {
   if (!x || typeof x !== 'object') return null;
   const o = x as Record<string, unknown>;
-  const title = typeof o.title === 'string' ? o.title.trim() : '';
-  const artist = typeof o.artist === 'string' ? o.artist.trim() : '';
-  const ref = typeof o.ref === 'string' ? o.ref.trim() : '';
+  const title = cleanText(o.title);
+  const artist = cleanText(o.artist);
+  const ref = cleanText(o.ref);
   if (!ref && (!title || !artist)) return null;
   const energy = Number(o.energy);
   return {
     ref,
     title,
     artist,
-    style: typeof o.style === 'string' && o.style.trim() ? o.style.trim() : 'Overig',
+    style: cleanText(o.style) || 'Overig',
     new: o.new === true,
     energy: Number.isFinite(energy) ? Math.min(5, Math.max(1, Math.round(energy))) : 3,
   };
@@ -213,8 +219,8 @@ export function parseAnswer(raw: unknown): ClaudeAnswer | null {
   if (!items.length) return null;
   const spares = Array.isArray(o.spares) ? o.spares.map(asItem).filter((x): x is ClaudeItem => !!x) : [];
   return {
-    title: typeof o.title === 'string' ? o.title : '',
-    note: typeof o.note === 'string' ? o.note : '',
+    title: cleanText(o.title),
+    note: cleanText(o.note),
     items,
     spares,
   };
