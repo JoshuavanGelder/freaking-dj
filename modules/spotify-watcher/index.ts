@@ -6,7 +6,7 @@ type Native = {
   start(): Promise<boolean>;
   stop(): Promise<boolean>;
   readAndClear(): Promise<string>;
-  listen(prompt: string): Promise<string | null>;
+  listen(prompt: string, hints: string[]): Promise<string[] | null>;
   openBatterySettings(): Promise<boolean>;
   openSpotify(): Promise<boolean>;
   authSet(clientId: string, refresh: string, access: string, expiresAt: number): Promise<boolean>;
@@ -47,10 +47,11 @@ export async function readAndClear(): Promise<string> {
   return N ? N.readAndClear() : '';
 }
 
-/** Spraakherkenning van Android in het Nederlands. null = afgebroken. */
-export async function listen(prompt: string): Promise<string | null> {
-  if (!N) return null;
-  return N.listen(prompt);
+/** Spraakherkenning van Android in het Nederlands, met hints (Android 13+). Alternatieven, beste eerst; [] = afgebroken. */
+export async function listen(prompt: string, hints: string[] = []): Promise<string[]> {
+  if (!N) return [];
+  const r = await N.listen(prompt, hints);
+  return Array.isArray(r) ? r.filter((x) => typeof x === 'string') : [];
 }
 
 export async function openBatterySettings(): Promise<boolean> {

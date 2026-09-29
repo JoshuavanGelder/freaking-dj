@@ -43,7 +43,7 @@ export async function stopWatcher(): Promise<void> {
 
 export const isWatching = () => W.isRunning();
 export const lastEventAt = () => W.lastEventAt();
-export const listen = (prompt: string) => W.listen(prompt);
+export const listen = (prompt: string, hints: string[] = []) => W.listen(prompt, hints);
 export const openBatterySettings = () => W.openBatterySettings();
 export const openSpotify = () => W.openSpotify();
 export const speechAvailable = W.available;

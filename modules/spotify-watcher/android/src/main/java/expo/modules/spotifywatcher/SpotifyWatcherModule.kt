@@ -85,7 +85,9 @@ class SpotifyWatcherModule : Module() {
 
     AsyncFunction("liveState") { LiveQueuer.state(ctx) }
 
-    AsyncFunction("listen") { prompt: String, promise: Promise ->
+    // hints: jouw vibes en artiesten; op Android 13+ stuurt de herkenner daarop bij.
+    // Geeft tot 5 alternatieven terug (beste eerst); JS kiest en verbetert.
+    AsyncFunction("listen") { prompt: String, hints: List<String>, promise: Promise ->
       val activity = appContext.currentActivity
       if (activity == null) {
         promise.reject("E_NO_ACTIVITY", "De app staat niet op de voorgrond", null)
@@ -95,9 +97,12 @@ class SpotifyWatcherModule : Module() {
         putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         putExtra(RecognizerIntent.EXTRA_LANGUAGE, "nl-NL")
         putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
-        putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5)
+        if (Build.VERSION.SDK_INT >= 33 && hints.isNotEmpty()) {
+          putStringArrayListExtra(RecognizerIntent.EXTRA_BIASING_STRINGS, ArrayList(hints))
+        }
       }
-      speechPromise?.resolve(null)
+      speechPromise?.resolve(emptyList<String>())
       speechPromise = promise
       try {
         activity.startActivityForResult(intent, SPEECH_REQUEST)
@@ -111,12 +116,12 @@ class SpotifyWatcherModule : Module() {
       if (payload.requestCode != SPEECH_REQUEST) return@OnActivityResult
       val p = speechPromise ?: return@OnActivityResult
       speechPromise = null
-      val text = if (payload.resultCode == Activity.RESULT_OK) {
-        payload.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+      val results: List<String> = if (payload.resultCode == Activity.RESULT_OK) {
+        payload.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.toList() ?: emptyList()
       } else {
-        null
+        emptyList()
       }
-      p.resolve(text)
+      p.resolve(results)
     }
 
     /** Opent de accu-instellingen, zodat je de app "Onbeperkt" kunt geven (Samsung stopt anders de dienst). */

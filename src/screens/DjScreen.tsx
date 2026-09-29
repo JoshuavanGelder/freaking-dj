@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Pressable, TextInput, View } from 'react-native';
 import { useApp } from '../store';
 import { useJob } from '../job';
@@ -12,6 +12,7 @@ import * as gh from '../services/github';
 import { listen, speechAvailable } from '../services/watcher';
 import { openQuestions } from '../logic/learning';
 import { totalMinutes } from '../logic/rules';
+import { fixTranscript, speechHints } from '../logic/speech';
 
 function greeting(d = new Date()): string {
   const h = d.getHours();
@@ -58,13 +59,25 @@ export function DjScreen() {
     if (plan) nav.push({ name: 'plan', planId: plan.id });
   };
 
+  // Jouw eigen woorden als hint voor de spraakherkenning (vibes, artiesten uit je geschiedenis).
+  const hints = useMemo(
+    () =>
+      speechHints({
+        quickVibes: state.rules.quickVibes,
+        vibes: state.vibes,
+        planVibes: state.plans.slice(0, 20).map((p) => p.vibe),
+        artists: (state.history?.pool ?? []).flatMap((t) => t.artists),
+      }),
+    [state.rules.quickVibes, state.vibes, state.plans, state.history],
+  );
+
   const speak = async () => {
     try {
-      const said = await listen('Welke vibe wil je?');
+      const said = fixTranscript(await listen('Welke vibe wil je?', hints), hints);
       if (said) {
         // Niet meteen versturen: spraak is niet altijd goed ("legday" → "lekdij").
         // Zet de tekst in het veld en open het toetsenbord, zodat je eerst kunt controleren.
-        setText(said.trim());
+        setText(said);
         setTimeout(() => inputRef.current?.focus(), 150);
       }
     } catch {

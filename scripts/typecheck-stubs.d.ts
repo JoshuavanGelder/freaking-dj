@@ -57,7 +57,7 @@ declare module 'expo-constants' { const C: { expoConfig?: { version?: string } |
 declare module 'spotify-watcher' {
   export const available: boolean;
   export function isRunning(): boolean; export function lastEventAt(): number; export function start(): Promise<boolean>; export function stop(): Promise<boolean>;
-  export function readAndClear(): Promise<string>; export function listen(p: string): Promise<string | null>; export function openBatterySettings(): Promise<boolean>; export function openSpotify(): Promise<boolean>;
+  export function readAndClear(): Promise<string>; export function listen(p: string, h?: string[]): Promise<string[]>; export function openBatterySettings(): Promise<boolean>; export function openSpotify(): Promise<boolean>;
   export function authSet(c: string, r: string, a: string, e: number): Promise<void>; export function authClear(): Promise<void>; export function hasAuth(): boolean; export function accessToken(force?: boolean): Promise<string>;
   export type LiveCandidate = { id: string; artists: string[]; isNew: boolean; style: string; durationMs: number };
   export type NativeLiveState = { active: boolean; queuedId: string; history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[]; error: string };
