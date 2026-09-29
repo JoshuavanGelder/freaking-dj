@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Linking, Pressable, TextInput, View } from 'react-native';
 import { useApp } from '../store';
 import { useJob } from '../job';
@@ -36,6 +36,7 @@ export function DjScreen() {
   const nav = useNav();
   const { live } = useLive();
   const [text, setText] = useState('');
+  const inputRef = useRef<{ focus(): void } | null>(null);
   const [setup, setSetup] = useState<{ spotify: boolean; github: boolean } | null>(null);
   const [elapsed, setElapsed] = useState(0);
 
@@ -61,8 +62,10 @@ export function DjScreen() {
     try {
       const said = await listen('Welke vibe wil je?');
       if (said) {
-        setText(said);
-        go(said);
+        // Niet meteen versturen: spraak is niet altijd goed ("legday" → "lekdij").
+        // Zet de tekst in het veld en open het toetsenbord, zodat je eerst kunt controleren.
+        setText(said.trim());
+        setTimeout(() => inputRef.current?.focus(), 150);
       }
     } catch {
       /* geen spraak beschikbaar */
@@ -139,6 +142,9 @@ export function DjScreen() {
       <Row style={{ backgroundColor: C.white, borderRadius: 6, height: 50, paddingLeft: 12, gap: 8 }}>
         <Icon name="spark" size={22} color="#121212" />
         <TextInput
+          ref={(r: { focus(): void } | null) => {
+            inputRef.current = r;
+          }}
           value={text}
           onChangeText={setText}
           placeholder="Welke vibe wil je?"
