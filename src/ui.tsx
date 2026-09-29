@@ -285,6 +285,7 @@ export function TrackRow({
   isNew,
   right,
   dimmed,
+  highlight,
 }: {
   title: string;
   artist: string;
@@ -293,9 +294,20 @@ export function TrackRow({
   isNew?: boolean;
   right?: React.ReactNode;
   dimmed?: boolean;
+  highlight?: boolean; // net toegevoegd bij bijsturen
 }) {
   return (
-    <Row style={{ gap: 12, minHeight: 56, opacity: dimmed ? 0.5 : 1 }}>
+    <Row
+      style={{
+        gap: 12,
+        minHeight: 56,
+        opacity: dimmed ? 0.5 : 1,
+        backgroundColor: highlight ? C.accentTint : 'transparent',
+        borderRadius: highlight ? 6 : 0,
+        marginHorizontal: highlight ? -6 : 0,
+        paddingHorizontal: highlight ? 6 : 0,
+      }}
+    >
       {index != null ? (
         <T size={14} color={C.muted} style={{ width: 22, textAlign: 'right' }}>
           {index}

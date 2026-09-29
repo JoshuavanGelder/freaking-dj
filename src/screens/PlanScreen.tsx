@@ -38,6 +38,8 @@ export function PlanScreen({ planId }: { planId: string }) {
     );
   }
   const newCount = plan.items.filter((i) => i.isNew).length;
+  const parent = plan.parentId ? state.plans.find((p) => p.id === plan.parentId) : undefined;
+  const added = new Set(plan.addedIds ?? []);
   const busy = !!job || !!live.starting;
 
   const swap = (index: number) => {
@@ -105,6 +107,16 @@ export function PlanScreen({ planId }: { planId: string }) {
           ) : null}
         </View>
 
+        {parent ? (
+          <Row style={{ gap: 10, backgroundColor: C.card, borderRadius: 8, padding: 12 }}>
+            <Icon name="swap" size={18} color={C.accent} />
+            <T size={14} style={{ flex: 1 }}>
+              Bijgestuurd{plan.change ? `: ${plan.change}` : ''}.
+            </T>
+            <Button label="Vorige versie" small variant="dark" onPress={() => nav.replace({ name: 'plan', planId: parent.id })} />
+          </Row>
+        ) : null}
+
         {error ? <Banner level="storing" text={`${error.title}. ${error.message}`} action={{ label: 'Oké', onPress: clearError }} /> : null}
 
         {/* Bijsturen */}
@@ -115,7 +127,7 @@ export function PlanScreen({ planId }: { planId: string }) {
             ))}
           </ScrollView>
           <Row style={{ gap: 8 }}>
-            <Field value={adjust} onChangeText={setAdjust} placeholder='Bijsturen, bv. "meer NF"' onSubmit={() => tweak(adjust)} style={{ flex: 1 }} />
+            <Field value={adjust} onChangeText={setAdjust} placeholder='Bv. "doe er Ordinary bij" of "rustiger"' onSubmit={() => tweak(adjust)} style={{ flex: 1 }} />
             <IconButton icon="send" label="Bijsturen" onPress={() => tweak(adjust)} bg={C.cardHi} color={C.ink} size={46} />
           </Row>
           {job?.kind === 'dj' ? (
@@ -141,6 +153,7 @@ export function PlanScreen({ planId }: { planId: string }) {
                 artist={item.track.artists.join(', ')}
                 image={item.track.image}
                 isNew={item.isNew}
+                highlight={added.has(item.track.id)}
                 right={<IconButton icon="swap" label={`${item.track.name} wisselen`} onPress={() => swap(index)} iconSize={20} />}
               />
             ))}

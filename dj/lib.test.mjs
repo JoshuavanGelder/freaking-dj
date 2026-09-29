@@ -80,3 +80,9 @@ test('pendingIds: alleen recente verzoeken zonder antwoord, oudste eerst', async
   ];
   assert.deepEqual(pendingIds(reqs, new Set(['done-1']), now), ['aaa-1', 'bbb-2']);
 });
+
+test('renderRequest noemt de soort bijsturing', () => {
+  const t = renderRequest({ mode: 'bijsturen', vibe: 'coding', adjust: 'doe er Ordinary bij', adjustMode: 'toevoegen', count: 26, spares: 5, newEvery: 4, learned: {}, pool: '', previous: [] });
+  assert.match(t, /adjustMode: toevoegen/);
+  assert.match(t, /count: 26/);
+});

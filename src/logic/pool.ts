@@ -58,6 +58,7 @@ export type DjRequest = {
   mode: 'nieuw' | 'bijsturen';
   vibe: string;
   adjust: string | null; // bij bijsturen: "rustiger", "meer NF" ...
+  adjustMode: 'toevoegen' | 'weghalen' | 'breed' | null; // toevoegen/weghalen: de rest blijft staan
   now: string; // "dinsdag 14:05"
   count: number;
   spares: number;
@@ -97,6 +98,7 @@ export function buildRequest(args: {
   id: string;
   vibe: VibeInfo;
   adjust?: string | null;
+  adjustMode?: 'toevoegen' | 'weghalen' | 'breed' | null;
   previous?: Plan | null;
   refs: ClaudeRef[];
   rules: Rules;
@@ -139,6 +141,7 @@ export function buildRequest(args: {
     mode: args.adjust ? 'bijsturen' : 'nieuw',
     vibe: vibe.text,
     adjust: args.adjust ?? null,
+    adjustMode: args.adjust ? args.adjustMode ?? 'breed' : null,
     now: nowLabel(args.now),
     count: rules.count,
     spares: 5,

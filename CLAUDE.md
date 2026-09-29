@@ -32,6 +32,13 @@ wachtrij niet leegmaken → oude nummers overslaan met volume kort op 0, daarna 
 · Eurovisie-favoriet "Viva, Moldova!" (Satoshi) altijd in een Eurovisie-wachtrij · worship alleen op verzoek ·
 actief apparaat gebruiken, nooit zelf overzetten; niets actief → pc `joshua-mooore`, nooit de Denon.
 
+## Bijsturen (`src/logic/adjust.ts`)
+`adjustKind` herkent toevoegen ("doe er X bij", "voeg … toe", "nog 2 nummers …"), weghalen ("haal X weg",
+"geen X") en breed ("rustiger", "meer NF"). Bij toevoegen/weghalen voegt de app Claudes antwoord zelf samen
+(`mergeAdjusted`): de rest blijft gegarandeerd staan in dezelfde volgorde; bij toevoegen gaat `count` omhoog.
+Plan krijgt `parentId`/`change`/`addedIds` → knop "Vorige versie" en toegevoegde nummers gemarkeerd.
+In Live DJ komen toegevoegde nummers vooraan in `upcoming`.
+
 ## Live DJ (`src/logic/live.ts`, `src/live.tsx`)
 Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgende pas als ons nummer begint.
 Lus in JS: `GET /me/player` elke 4 s (8 s op de achtergrond; de meeluister-dienst houdt de app wakker).
@@ -64,7 +71,7 @@ geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sess
 - `src/services/`: `spotify.ts` (PKCE, redirect `freakingdj://callback`), `github.ts`, `player.ts`
   (toevoegen/vervangen), `dj.ts` (verzoek → antwoord → opzoeken → regels), `watcher.ts`, `status.ts`.
 - `src/live.tsx`: Live DJ-lus (zie boven).
-- `src/logic/`: pure logica met tests (`rules`, `learning`, `pool`, `queue`, `live`, `status`, `text`, `base64`).
+- `src/logic/`: pure logica met tests (`rules`, `learning`, `pool`, `queue`, `live`, `adjust`, `status`, `text`, `base64`).
 
 ## Spotify Web API (development mode, 2026)
 Beschikbaar: top items, recently played, saved tracks, search (max 10), player (queue get/add, play, next,

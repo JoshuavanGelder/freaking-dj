@@ -5,6 +5,7 @@ import * as gh from './github';
 import { buildPool, buildRequest, bestMatch, parseAnswer, poolForClaude, type ClaudeItem, type ClaudeRef, type DjResponse } from '../logic/pool';
 import { computeSignals, dislikedKeys } from '../logic/learning';
 import { enforce, isFavorite, parseVibe, type EnforceContext } from '../logic/rules';
+import { adjustKind, describeChange, mergeAdjusted, type AdjustKind } from '../logic/adjust';
 import { songKey } from '../logic/text';
 import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track } from '../logic/types';
 
@@ -62,6 +63,8 @@ export type DjInput = {
   cancel: { cancelled: boolean };
   /** Live DJ: aantal nummers voor aanvullen (anders rules.count). */
   count?: number;
+  /** Soort bijsturing; anders afgeleid uit `adjust`. */
+  adjustKind?: AdjustKind;
   /** Live DJ: al gespeeld in deze sessie; komt niet terug. */
   extraAvoid?: Track[];
 };
@@ -118,7 +121,13 @@ async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unr
 /** Vraagt Claude (via GitHub Actions) om een voorstel en maakt er een gecontroleerde wachtrij van. */
 export async function makePlan(input: DjInput): Promise<DjOutput> {
   const { learned, history, repo, onStatus, cancel } = input;
-  const rules = input.count ? { ...input.rules, count: input.count } : input.rules;
+  // Toevoegen/weghalen: de rest van de lijst blijft staan. Bij toevoegen is er ruimte voor de extra nummers.
+  const prevItems = input.previous?.items ?? [];
+  const adj = input.adjust ? (input.adjustKind ? { kind: input.adjustKind, count: adjustKind(input.adjust).count } : adjustKind(input.adjust)) : null;
+  const count =
+    input.count ??
+    (adj && prevItems.length && adj.kind === 'toevoegen' ? prevItems.length + adj.count : adj && prevItems.length && adj.kind === 'weghalen' ? prevItems.length : undefined);
+  const rules = count ? { ...input.rules, count } : input.rules;
   const now = Date.now();
   // Bij bijsturen kan de aanpassing zelf iets vragen ("begin met NF", "toch worship").
   const base = parseVibe(input.vibeText, rules);
@@ -149,6 +158,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     id,
     vibe,
     adjust: input.adjust ?? null,
+    adjustMode: adj?.kind ?? null,
     previous: input.previous ?? null,
     refs,
     rules,
@@ -231,17 +241,31 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   const favInItems = items.some((it) => isFavorite(it.track, rules));
   if (vibe.eurovision && !favorite && !favInItems) unresolved.push(`${rules.eurovisionFavorite.title} – ${rules.eurovisionFavorite.artist} (favoriet)`);
 
-  const checked = enforce(items, spares, { ...ctx, favorite });
+  // Bij toevoegen/weghalen voegen we zelf samen, zodat de rest gegarandeerd blijft staan.
+  let merged = items;
+  let change: string | undefined;
+  let addedIds: string[] | undefined;
+  if (adj && prevItems.length) {
+    const m = mergeAdjusted(prevItems, items, adj.kind);
+    merged = m.items;
+    change = describeChange(m.added.length, m.removed.length);
+    addedIds = m.added.map((x) => x.track.id);
+  }
+
+  const checked = enforce(merged, spares, { ...ctx, favorite });
   const plan: Plan = {
     id,
     vibe: vibe.text,
-    title: answer.title || vibe.text,
-    note: answer.note,
+    title: adj && adj.kind !== 'breed' && input.previous ? input.previous.title : answer.title || vibe.text,
+    note: adj && adj.kind !== 'breed' && input.previous ? input.previous.note : answer.note,
     createdAt: Date.now(),
     items: checked.items,
     spares: checked.spares,
     removed: checked.removed,
     unresolved,
+    parentId: input.previous?.id,
+    change,
+    addedIds,
   };
   return { plan, response, favorite };
 }

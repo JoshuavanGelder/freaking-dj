@@ -33,6 +33,9 @@ export type Plan = {
   spares: PlanItem[]; // reserves om te wisselen
   removed: Removed[]; // wat de app eruit haalde (blocklist enz.)
   unresolved: string[]; // nieuwe nummers die niet op Spotify gevonden zijn
+  parentId?: string; // bij bijsturen: de vorige versie
+  change?: string; // bij bijsturen: "1 nummer toegevoegd"
+  addedIds?: string[]; // bij bijsturen: welke nummers er nieuw bij kwamen
 };
 
 /** Wat de app over de vibe begrijpt. */

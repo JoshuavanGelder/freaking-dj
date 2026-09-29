@@ -9,6 +9,7 @@ import { DjError, fetchHistory, makePlan } from './services/dj';
 import { applyReplan, feedbackForClaude, observe, pickNext, startLive, takeNext, type LiveState } from './logic/live';
 import { dislikedKeys } from './logic/learning';
 import { parseVibe, rejectReason } from './logic/rules';
+import { adjustKind, type AdjustKind } from './logic/adjust';
 import type { Plan, PlanItem, Track } from './logic/types';
 
 type LiveCtx = {
@@ -98,7 +99,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
 
   /** Claude laten bijsturen of aanvullen, op de achtergrond. */
   const replan = useCallback(
-    async (adjust: string, manual: boolean) => {
+    async (adjust: string, manual: boolean, kind: AdjustKind = 'breed') => {
       const L = liveRef.current;
       if (!L || replanBusy.current) return;
       if (!manual && Date.now() - lastReplanTry.current < 60_000) return;
@@ -138,7 +139,9 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           favorite: s.favorite,
           onStatus: () => undefined,
           cancel: { cancelled: false },
-          count: 15,
+          // Toevoegen/weghalen: de rest blijft staan; anders een frisse lijst van 15.
+          count: kind === 'breed' ? 15 : undefined,
+          adjustKind: kind,
           extraAvoid: L.played.map((p) => p.track),
         });
         savePlan({ ...out.plan, title: `Live: ${out.plan.title}` });
@@ -146,7 +149,16 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         const cur = liveRef.current;
         if (cur && cur.status === 'actief') {
           const note = manual ? `Bijgestuurd: ${adjust.split('.')[0]}` : 'Claude heeft de rest aangepast aan wat je skipte en luisterde';
-          commit(applyReplan(cur, [...out.plan.items, ...out.plan.spares], out.plan.id, cur.played.length, note));
+          const added = new Set(out.plan.addedIds ?? []);
+          // Toegevoegde nummers vooraan, zodat ze snel langskomen; de rest in dezelfde volgorde.
+          const items =
+            kind === 'toevoegen'
+              ? [...out.plan.items.filter((x) => added.has(x.track.id)), ...out.plan.items.filter((x) => !added.has(x.track.id))]
+              : kind === 'weghalen'
+                ? out.plan.items
+                : [...out.plan.items, ...out.plan.spares];
+          const text = manual && out.plan.change ? `${note} (${out.plan.change})` : note;
+          commit(applyReplan(cur, items, out.plan.id, cur.played.length, text));
         }
       } catch (e: any) {
         const resp = e instanceof DjError ? (e as any).response : null;
@@ -260,7 +272,9 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     (text: string) => {
       const L = liveRef.current;
       if (!L || !text.trim()) return;
-      replan(`${text.trim()}. ${feedbackForClaude(L)}`, true);
+      const kind = adjustKind(text).kind;
+      // Bij toevoegen/weghalen geen sessie-feedback meesturen: dan blijft het bij precies wat je vroeg.
+      replan(kind === 'breed' ? `${text.trim()}. ${feedbackForClaude(L)}` : text.trim(), true, kind);
     },
     [replan],
   );

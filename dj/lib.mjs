@@ -14,6 +14,7 @@ export function renderRequest(r) {
   lines.push(`# Request (${r.mode === 'bijsturen' ? 'bijsturen' : 'new queue'})`);
   lines.push(`- vibe: ${r.vibe}`);
   if (r.adjust) lines.push(`- adjustment: ${r.adjust}`);
+  if (r.adjust && r.adjustMode) lines.push(`- adjustMode: ${r.adjustMode}`);
   lines.push(`- now: ${r.now}`);
   lines.push(`- count: ${r.count}`);
   lines.push(`- spares: ${r.spares}`);
