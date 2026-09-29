@@ -1,0 +1,32 @@
+# Freaking DJ
+
+Persoonlijke AI-DJ voor Spotify. Geef een vibe op ("coding", "gym", "Eurovisie", "begin met Morgan Wallen")
+en de app stelt ~25 nummers (~90 min) samen uit je eigen luistergeschiedenis, met je eigen regels, en zet ze in
+je Spotify-wachtrij. Claude draait via **je eigen Claude-abonnement** in GitHub Actions — geen API-key.
+
+## Installeren
+Open op je telefoon de nieuwste [release](../../releases/latest) en tik op het `.apk`-bestand.
+
+## Eenmalig instellen
+
+1. **Spotify-app** — op [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard): *Create app*,
+   kies **Web API**, redirect-URI `freakingdj://callback`. Kopieer de **Client ID** naar Freaking DJ →
+   Instellingen → Spotify → *Koppel Spotify*.
+2. **GitHub-token** — [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new):
+   fine-grained, alleen repo `freaking-dj`, rechten **Contents** en **Actions**: *Read and write*.
+   Plak het in Instellingen → Claude via GitHub.
+3. **Claude-token** — één keer, op een computer met Claude Code: `claude setup-token`. Zet het token in deze repo
+   bij *Settings → Secrets and variables → Actions* als secret **`CLAUDE_CODE_OAUTH_TOKEN`** (1 jaar geldig).
+4. **Meeluisteren** — in Spotify: Instellingen → Afspelen → **Apparaatuitzending** aan. Zet de batterij van
+   Freaking DJ op *Onbeperkt* (Samsung stopt anders de dienst).
+
+## Hoe het werkt
+- De app zet je verzoek (vibe, regels, wat hij geleerd heeft, je geschiedenis) in branch `dj-data` en start de
+  workflow **DJ**. Die draait de officiële Claude Code met je abonnement en zet het antwoord terug. Dat duurt
+  meestal 1 à 2 minuten. Is je limiet op of het token verlopen, dan zie je dat in de app.
+- De app controleert zelf de harde regels (blocklist, worship alleen op verzoek, geen dubbelen, niet twee keer
+  dezelfde artiest achter elkaar, Eurovisie-favoriet) en zoekt nieuwe nummers op in Spotify.
+- **Toevoegen** zet nummers alleen achteraan. **Vervangen** wacht tot het huidige nummer klaar is. Spotify kan
+  de wachtrij niet leegmaken, dus oude nummers worden overgeslagen met het volume heel even op 0.
+- Van je skips leert de app: doorspringen, te vaak gedraaid (2 weken rust), geen zin in (per vibe) en
+  niet leuk (pas definitief als jij het bevestigt). Alles staat in de tab **Geleerd**.

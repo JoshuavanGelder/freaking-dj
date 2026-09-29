@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "title": { "type": "string", "description": "Short Dutch title for the queue, max 5 words." },
+    "note": { "type": "string", "description": "One short Dutch sentence about the choices." },
+    "items": {
+      "type": "array",
+      "description": "The queue in play order.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ref": { "type": "string", "description": "Pool ref like t12 for known tracks, empty string for new tracks." },
+          "title": { "type": "string" },
+          "artist": { "type": "string", "description": "Primary artist." },
+          "style": { "type": "string", "description": "Short Dutch style label; same label for the same style." },
+          "new": { "type": "boolean" },
+          "energy": { "type": "integer", "description": "1 = calm ... 5 = full power." }
+        },
+        "required": ["ref", "title", "artist", "style", "new", "energy"]
+      }
+    },
+    "spares": {
+      "type": "array",
+      "description": "Extra tracks that fit, for swapping.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ref": { "type": "string" },
+          "title": { "type": "string" },
+          "artist": { "type": "string" },
+          "style": { "type": "string" },
+          "new": { "type": "boolean" },
+          "energy": { "type": "integer" }
+        },
+        "required": ["ref", "title", "artist", "style", "new", "energy"]
+      }
+    }
+  },
+  "required": ["title", "note", "items", "spares"]
+}

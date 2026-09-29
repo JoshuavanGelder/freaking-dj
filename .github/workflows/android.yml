@@ -1,0 +1,115 @@
+name: Android APK
+
+# Bij elke push naar main bouwt GitHub een installeerbare APK
+# en zet die bij Releases. Handmatig starten kan via "Run workflow".
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'dj/**'
+      - '.github/workflows/dj.yml'
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Snelle controles: binnen een paar minuten te lezen als meldingen (annotations).
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tests (logica en workflow)
+        run: |
+          set +e
+          npm test > test.log 2>&1
+          code=$?
+          grep -E "^not ok|^# (pass|fail)" test.log | head -10 | while IFS= read -r line; do echo "::warning title=test::$line"; done
+          exit $code
+
+      - name: Pakketten installeren
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+
+      - name: Versies afstemmen op de Expo SDK
+        run: npx expo install --fix -- --legacy-peer-deps
+
+      - name: Typecheck
+        run: |
+          set +e
+          npx tsc --noEmit > tsc.log 2>&1
+          code=$?
+          grep "error TS" tsc.log | head -10 | while IFS= read -r line; do echo "::warning title=tsc::$line"; done
+          exit $code
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Pakketten installeren
+        run: npm install --no-audit --no-fund --legacy-peer-deps
+
+      - name: Versies afstemmen op de Expo SDK
+        run: npx expo install --fix -- --legacy-peer-deps
+
+      - name: Android-project genereren
+        run: npx expo prebuild --platform android --no-install
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: APK bouwen
+        working-directory: android
+        run: |
+          set +e
+          ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a > ../gradle.log 2>&1
+          code=$?
+          tail -n 80 ../gradle.log
+          if [ $code -ne 0 ]; then
+            grep -E "^e: " ../gradle.log | head -6 | while IFS= read -r line; do echo "::warning title=gradle::$line"; done
+            wrong=$(sed -n '/What went wrong/,/\* Try/p' ../gradle.log | grep -v '^\s*$' | head -25 | tr '\n' ' ' | cut -c1-1500)
+            echo "::warning title=gradle::$wrong"
+            grep -iE "uses-sdk|minSdk|Manifest merger" ../gradle.log | head -2 | while IFS= read -r line; do echo "::warning title=gradle::$line"; done
+          fi
+          exit $code
+
+      - name: APK hernoemen
+        run: cp android/app/build/outputs/apk/release/app-release.apk freaking-dj-${{ github.run_number }}.apk
+
+      - name: Controle native module
+        run: |
+          unzip -p freaking-dj-${{ github.run_number }}.apk classes*.dex | grep -c "SpotifyWatcherService" > hits.txt || true
+          if [ "$(cat hits.txt)" -gt 0 ]; then echo "::notice title=native::meeluister-service zit in de APK"; else echo "::warning title=native::meeluister-service ontbreekt in de APK"; fi
+
+      - name: Release maken
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Freaking DJ ${{ github.run_number }}
+          body: |
+            Nieuwe versie van Freaking DJ.
+            Open dit op je Android-telefoon, tik op het .apk-bestand hieronder en installeer het.
+            Commit: ${{ github.sha }}
+          files: freaking-dj-${{ github.run_number }}.apk
+          make_latest: true

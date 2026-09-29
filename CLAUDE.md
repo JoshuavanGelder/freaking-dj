@@ -1,0 +1,56 @@
+# Freaking DJ — werkafspraken voor Claude
+
+Android-app (Expo SDK 57, React Native 0.86, React 19.2, TypeScript): persoonlijke "AI DJ" voor Spotify.
+Eigenaar: Joshua van Gelder (Nederlands; antwoord in het Nederlands). Stijl: bijna Spotify (donker, groen
+`#1ED760`, pill-knoppen, Figtree), eigen naam en icoon, geen Spotify-logo.
+
+## Werkwijze met Joshua
+- Joshua werkt vanaf zijn telefoon (Galaxy S25) + GitHub. Geen afhankelijkheid van een desktop.
+- Hij installeert de APK uit GitHub Releases. Elke push naar `main` = nieuwe build + release `build-N`.
+- Kort en concreet rapporteren; na een push eerst de snelle `checks`-job bekijken, de APK-build duurt ~10 min.
+
+## Claude via zijn abonnement (géén API-key)
+- De app zet een verzoek in branch `dj-data` (`requests/<id>.json`) en start `.github/workflows/dj.yml`
+  (workflow_dispatch, run-name `DJ <id>`).
+- Die workflow draait de **officiële, ongewijzigde Claude Code** (`npm i -g @anthropic-ai/claude-code`,
+  `claude -p`) met secret `CLAUDE_CODE_OAUTH_TOKEN` (gemaakt met `claude setup-token`, 1 jaar geldig).
+  Dat is de door Anthropic ondersteunde manier voor Pro/Max in GitHub Actions. Geen `--bare` (die leest geen OAuth).
+- `dj/run.mjs` schrijft `responses/<id>.json` met `status` ok | limiet | token | fout (+ `resetAt`). De app
+  toont limiet/token/storing; daarnaast `status.claude.com/api/v2/summary.json`.
+- Claude krijgt `dj/prompt.md` als systeemprompt en `dj/schema.json` als `--json-schema`; alleen WebSearch.
+  Werkmap is een lege tmp-map, zodat Claude dit bestand niet ziet.
+
+## Harde regels (de app controleert ze zelf in `src/logic/rules.ts`)
+Nooit een playlist/album starten (alleen losse nummers + wachtrij) · toevoegen = alleen achteraan, niets
+dubbel · vervangen pas na het huidige nummer (tenzij skippen mag), oude wachtrij echt weg (Spotify kan de
+wachtrij niet leegmaken → oude nummers overslaan met volume kort op 0, daarna terugzetten) · blocklist (Loreen)
+· Eurovisie-favoriet "Viva, Moldova!" (Satoshi) altijd in een Eurovisie-wachtrij · worship alleen op verzoek ·
+actief apparaat gebruiken, nooit zelf overzetten; niets actief → pc `joshua-mooore`, nooit de Denon.
+
+## Leren van skips (`src/logic/learning.ts`)
+Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) die de Spotify-broadcasts
+`com.spotify.music.metadatachanged` / `playbackstatechanged` opvangt ("Apparaatuitzending" in Spotify aan)
+en als JSON-regels wegschrijft; ook spraakherkenning via `RecognizerIntent` (nl-NL).
+Signalen, sterk → zwak: doorspringen (2+ skips → doel), te vaak gedraaid (≥5× in 4 d → 14 d rust),
+geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sessies geskipt → vermoeden,
+één keer vragen; later helemaal afgespeeld → vervalt; jouw antwoord gaat voor).
+
+## Bouwen en controleren (sandbox zonder npm)
+- `npm install` werkt lokaal niet; Google Maven/SDK ook niet. Wel: node 22, `tsc`, python3.
+- Tests: `npm test` (node --experimental-strip-types). Logica-bestanden importeren elkaar met `.ts`-extensie.
+- Typecheck lokaal: `./scripts/typecheck-local.sh` (stubs in `scripts/typecheck-stubs.d.ts`).
+- CI `android.yml`: job `checks` (tests, expo install --fix, tsc) en job `build` (prebuild, Gradle, release).
+  Fouten staan als annotations (`title=gradle|tsc|test`); lees ze via de API (check-runs → annotations).
+
+## Architectuur
+- `App.tsx`: fonts, providers, eigen route-stack (tabs DJ/Regels/Geleerd/Instellingen, `plan`, `now`), minispeler.
+- `src/store.tsx`: state in AsyncStorage (`fdj-state-v1`): rules, learned, plans, history (pool), settings.
+  Tokens (GitHub, Spotify) in SecureStore.
+- `src/job.tsx`: lopende klussen (Claude-verzoek, wachtrij zetten) + Claude-status.
+- `src/services/`: `spotify.ts` (PKCE, redirect `freakingdj://callback`), `github.ts`, `player.ts`
+  (toevoegen/vervangen), `dj.ts` (verzoek → antwoord → opzoeken → regels), `watcher.ts`, `status.ts`.
+- `src/logic/`: pure logica met tests (`rules`, `learning`, `pool`, `queue`, `status`, `text`, `base64`).
+
+## Spotify Web API (development mode, 2026)
+Beschikbaar: top items, recently played, saved tracks, search (max 10), player (queue get/add, play, next,
+devices, volume). Weg: artist top tracks, new releases, popularity, batch-endpoints. Refresh-token ~6 maanden.

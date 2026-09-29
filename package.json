@@ -1,0 +1,36 @@
+{
+  "name": "freaking-dj",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "test": "node --experimental-strip-types --no-warnings --test src/logic/rules.test.ts src/logic/learning.test.ts src/logic/pool.test.ts dj/lib.test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expo-google-fonts/figtree": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "expo": "~57.0.0",
+    "expo-auth-session": "*",
+    "expo-clipboard": "*",
+    "expo-constants": "*",
+    "expo-crypto": "*",
+    "expo-font": "*",
+    "expo-image": "*",
+    "expo-linking": "*",
+    "expo-secure-store": "*",
+    "expo-status-bar": "*",
+    "expo-web-browser": "*",
+    "react": "19.2.3",
+    "react-native": "~0.86.0",
+    "react-native-safe-area-context": "*",
+    "react-native-svg": "*",
+    "spotify-watcher": "file:./modules/spotify-watcher"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "typescript": "*"
+  }
+}
