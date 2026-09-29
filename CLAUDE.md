@@ -32,6 +32,15 @@ wachtrij niet leegmaken → oude nummers overslaan met volume kort op 0, daarna 
 · Eurovisie-favoriet "Viva, Moldova!" (Satoshi) altijd in een Eurovisie-wachtrij · worship alleen op verzoek ·
 actief apparaat gebruiken, nooit zelf overzetten; niets actief → pc `joshua-mooore`, nooit de Denon.
 
+## Live DJ (`src/logic/live.ts`, `src/live.tsx`)
+Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgende pas als ons nummer begint.
+Lus in JS: `GET /me/player` elke 4 s (8 s op de achtergrond; de meeluister-dienst houdt de app wakker).
+`pickNext`: volgorde van het voorstel, maar na skips geen zelfde artiest, geen nieuw na geskipt nieuw, na 2 skips
+in één stijl even een andere stijl, na doorspringen meer van die stijl. Claude stuurt op de achtergrond bij
+(`makePlan` met `count: 15`, `extraAvoid` = gespeeld, feedback als `adjust`) bij 2 snelle skips of < 5 over;
+handmatig bijsturen vanuit het Nu-scherm. Live-staat in de store (`live`), alleen opgeslagen bij echte wijzigingen.
+Stopt vanzelf na 30 min niets spelen.
+
 ## Leren van skips (`src/logic/learning.ts`)
 Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) die de Spotify-broadcasts
 `com.spotify.music.metadatachanged` / `playbackstatechanged` opvangt ("Apparaatuitzending" in Spotify aan)
@@ -54,7 +63,8 @@ geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sess
 - `src/job.tsx`: lopende klussen (Claude-verzoek, wachtrij zetten) + Claude-status.
 - `src/services/`: `spotify.ts` (PKCE, redirect `freakingdj://callback`), `github.ts`, `player.ts`
   (toevoegen/vervangen), `dj.ts` (verzoek → antwoord → opzoeken → regels), `watcher.ts`, `status.ts`.
-- `src/logic/`: pure logica met tests (`rules`, `learning`, `pool`, `queue`, `status`, `text`, `base64`).
+- `src/live.tsx`: Live DJ-lus (zie boven).
+- `src/logic/`: pure logica met tests (`rules`, `learning`, `pool`, `queue`, `live`, `status`, `text`, `base64`).
 
 ## Spotify Web API (development mode, 2026)
 Beschikbaar: top items, recently played, saved tracks, search (max 10), player (queue get/add, play, next,

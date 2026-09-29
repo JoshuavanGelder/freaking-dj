@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, Pressable, TextInput, View } from 'react-native';
 import { useApp } from '../store';
 import { useJob } from '../job';
+import { useLive } from '../live';
 import { useNav } from '../nav';
 import { C, F } from '../theme';
 import { Icon } from '../icons';
@@ -33,6 +34,7 @@ export function DjScreen() {
   const { state, signals, decide } = useApp();
   const { job, error, clearError, health, requestPlan, cancel, warm } = useJob();
   const nav = useNav();
+  const { live } = useLive();
   const [text, setText] = useState('');
   const [setup, setSetup] = useState<{ spotify: boolean; github: boolean } | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -78,6 +80,14 @@ export function DjScreen() {
       </Row>
 
       {health.level === 'storing' || health.level === 'let op' ? <Banner level={health.level} text={health.text} /> : null}
+
+      {live ? (
+        <Banner
+          level="ok"
+          text={`Live DJ loopt: ${live.vibe}. Hij zet steeds één nummer vooruit en stuurt bij op je skips.`}
+          action={{ label: 'Bekijken en bijsturen', onPress: () => nav.push({ name: 'now' }) }}
+        />
+      ) : null}
 
       {setup && (!setup.spotify || !setup.github) ? (
         <Card>

@@ -5,6 +5,7 @@ import { DEFAULT_RULES } from './logic/rules';
 import { EMPTY_LEARNED, ingest, prunePlays, tagPlays, type OpenSeg, type RawEvent } from './logic/learning';
 import type { DjResponse } from './logic/pool';
 import type { Learned, Plan, Rules, Signals, Track } from './logic/types';
+import type { LiveState } from './logic/live';
 import { signalsFor, type History } from './services/dj';
 
 export type Model = 'sonnet' | 'opus' | 'haiku';
@@ -29,6 +30,7 @@ export type AppState = {
   lastResponse: DjResponse | null;
   vibes: string[]; // laatst gebruikte vibes
   favorite: Track | null; // Eurovisie-favoriet, opgezocht op Spotify
+  live: LiveState | null; // Live DJ: één nummer vooruit
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -51,6 +53,7 @@ const EMPTY: AppState = {
   lastResponse: null,
   vibes: [],
   favorite: null,
+  live: null,
 };
 
 const KEY = 'fdj-state-v1';

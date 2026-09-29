@@ -60,6 +60,10 @@ export type DjInput = {
   favorite: Track | null;
   onStatus: (text: string) => void;
   cancel: { cancelled: boolean };
+  /** Live DJ: aantal nummers voor aanvullen (anders rules.count). */
+  count?: number;
+  /** Live DJ: al gespeeld in deze sessie; komt niet terug. */
+  extraAvoid?: Track[];
 };
 
 export type DjOutput = { plan: Plan; response: DjResponse; favorite: Track | null };
@@ -113,7 +117,8 @@ async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unr
 
 /** Vraagt Claude (via GitHub Actions) om een voorstel en maakt er een gecontroleerde wachtrij van. */
 export async function makePlan(input: DjInput): Promise<DjOutput> {
-  const { rules, learned, history, repo, onStatus, cancel } = input;
+  const { learned, history, repo, onStatus, cancel } = input;
+  const rules = input.count ? { ...input.rules, count: input.count } : input.rules;
   const now = Date.now();
   // Bij bijsturen kan de aanpassing zelf iets vragen ("begin met NF", "toch worship").
   const base = parseVibe(input.vibeText, rules);
@@ -137,6 +142,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     /* geen actief apparaat: prima */
   }
 
+  avoid.push(...(input.extraAvoid ?? []));
   const refs: ClaudeRef[] = poolForClaude(history.pool, ctx);
   const id = newId();
   const request = buildRequest({

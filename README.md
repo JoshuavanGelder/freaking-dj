@@ -28,7 +28,10 @@ Open op je telefoon de nieuwste [release](../../releases/latest) en tik op het `
   plaats van 1 à 2 minuten. Is je limiet op of het token verlopen, dan zie je dat in de app.
 - De app controleert zelf de harde regels (blocklist, worship alleen op verzoek, geen dubbelen, niet twee keer
   dezelfde artiest achter elkaar, Eurovisie-favoriet) en zoekt nieuwe nummers op in Spotify.
-- **Toevoegen** zet nummers alleen achteraan. **Vervangen** wacht tot het huidige nummer klaar is. Spotify kan
+- **Live DJ** zet steeds maar één nummer vooruit in je wachtrij en kiest het volgende pas als het vorige begint.
+  Skip je iets, dan kiest hij meteen anders; bij veel skips of als de lijst bijna op is stuurt Claude op de
+  achtergrond bij. Bijsturen ("rustiger", "meer NF") kan ook tussendoor, zonder dat het huidige nummer stopt.
+- **Hele wachtrij**: **toevoegen** zet nummers alleen achteraan. **Vervangen** wacht tot het huidige nummer klaar is. Spotify kan
   de wachtrij niet leegmaken, dus oude nummers worden overgeslagen met het volume heel even op 0.
 - Van je skips leert de app: doorspringen, te vaak gedraaid (2 weken rust), geen zin in (per vibe) en
   niet leuk (pas definitief als jij het bevestigt). Alles staat in de tab **Geleerd**.

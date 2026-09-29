@@ -3,6 +3,7 @@ import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApp } from '../store';
 import { useJob } from '../job';
+import { useLive } from '../live';
 import { useNav } from '../nav';
 import { C } from '../theme';
 import { Icon } from '../icons';
@@ -21,7 +22,8 @@ export function PlanScreen({ planId }: { planId: string }) {
   const insets = useSafeAreaInsets();
   const plan = state.plans.find((p) => p.id === planId);
   const [adjust, setAdjust] = useState('');
-  const [sheet, setSheet] = useState<{ old: number } | null>(null);
+  const [sheet, setSheet] = useState<{ old: number; live: boolean } | null>(null);
+  const live = useLive();
   const [allowSkip, setAllowSkip] = useState(false);
   const [checking, setChecking] = useState(false);
   const [showRemoved, setShowRemoved] = useState(false);
@@ -36,7 +38,7 @@ export function PlanScreen({ planId }: { planId: string }) {
     );
   }
   const newCount = plan.items.filter((i) => i.isNew).length;
-  const busy = !!job;
+  const busy = !!job || !!live.starting;
 
   const swap = (index: number) => {
     const ctx = {
@@ -60,28 +62,28 @@ export function PlanScreen({ planId }: { planId: string }) {
     if (next) nav.replace({ name: 'plan', planId: next.id });
   };
 
-  const toSpotify = async () => {
+  const toSpotify = async (asLive: boolean) => {
     setChecking(true);
     clearError();
     try {
       const snap = await snapshot();
       const ids = plan.items.map((i) => i.track.id);
       if (hasOldQueue(snap.queue.map((t) => t.id), ids)) {
-        setSheet({ old: snap.queue.filter((t) => !ids.includes(t.id)).length });
+        setSheet({ old: snap.queue.filter((t) => !ids.includes(t.id)).length, live: asLive });
       } else {
-        await run('toevoegen');
+        await run('toevoegen', asLive);
       }
     } catch (e: any) {
       // Geen apparaat of geen verbinding: gewoon proberen toe te voegen (de speler geeft een nette melding).
-      await run('toevoegen');
+      await run('toevoegen', asLive);
     } finally {
       setChecking(false);
     }
   };
 
-  const run = async (mode: 'toevoegen' | 'vervangen') => {
+  const run = async (mode: 'toevoegen' | 'vervangen', asLive: boolean) => {
     setSheet(null);
-    const ok = await sendToSpotify(plan, mode, allowSkip);
+    const ok = asLive ? await live.start(plan, mode, allowSkip) : await sendToSpotify(plan, mode, allowSkip);
     if (ok) nav.replace({ name: 'now' });
   };
 
@@ -168,14 +170,24 @@ export function PlanScreen({ planId }: { planId: string }) {
       </ScrollView>
 
       <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 16, paddingBottom: 12, backgroundColor: '#121212F2' }}>
-        {job?.kind === 'queue' ? (
+        {job?.kind === 'queue' || live.starting ? (
           <Row style={{ gap: 10, justifyContent: 'center', height: 50 }}>
             <ActivityIndicator color={C.accent} />
-            <T weight="semibold">{job.status}</T>
+            <T weight="semibold" numberOfLines={1} style={{ flexShrink: 1 }}>
+              {live.starting ?? job?.status}
+            </T>
           </Row>
         ) : (
-          <Button label={checking ? 'Wachtrij bekijken…' : 'Zet in mijn wachtrij'} icon="queue" onPress={toSpotify} disabled={busy || checking} />
+          <Row style={{ gap: 10 }}>
+            <Button label={checking ? 'Bekijken…' : 'Live DJ'} icon="spark" onPress={() => toSpotify(true)} disabled={busy || checking} style={{ flex: 1 }} />
+            <Button label="Hele wachtrij" variant="outline" onPress={() => toSpotify(false)} disabled={busy || checking} style={{ flex: 1, paddingHorizontal: 12 }} />
+          </Row>
         )}
+        {live.error ? (
+          <T size={12} color={C.warn} style={{ marginTop: 6 }}>
+            {live.error}
+          </T>
+        ) : null}
       </View>
 
       <Sheet visible={!!sheet} onClose={() => setSheet(null)}>
@@ -183,7 +195,9 @@ export function PlanScreen({ planId }: { planId: string }) {
           Er staan nog {sheet?.old ?? 0} nummers in je wachtrij
         </T>
         <T size={14} color={C.muted}>
-          Toevoegen zet deze {plan.items.length} nummers achteraan. Vervangen haalt de oude wachtrij echt weg; dat gebeurt pas als het huidige nummer klaar is.
+          {sheet?.live
+            ? 'Live DJ zet steeds één nummer vooruit. Achteraan: hij begint na je huidige wachtrij. Vervangen: de oude wachtrij gaat weg zodra het huidige nummer klaar is.'
+            : `Toevoegen zet deze ${plan.items.length} nummers achteraan. Vervangen haalt de oude wachtrij echt weg; dat gebeurt pas als het huidige nummer klaar is.`}
         </T>
         <Row style={{ justifyContent: 'space-between', gap: 12 }}>
           <View style={{ flex: 1 }}>
@@ -194,8 +208,8 @@ export function PlanScreen({ planId }: { planId: string }) {
           </View>
           <Toggle on={allowSkip} onChange={setAllowSkip} label="Huidig nummer mag geskipt worden" />
         </Row>
-        <Button label="Toevoegen achteraan" onPress={() => run('toevoegen')} />
-        <Button label="Vervangen" variant="outline" onPress={() => run('vervangen')} />
+        <Button label={sheet?.live ? 'Na mijn wachtrij beginnen' : 'Toevoegen achteraan'} onPress={() => run('toevoegen', !!sheet?.live)} />
+        <Button label="Vervangen" variant="outline" onPress={() => run('vervangen', !!sheet?.live)} />
         <Row style={{ gap: 6 }}>
           <Icon name="alert" size={14} color={C.dim} />
           <T size={12} color={C.dim} style={{ flex: 1 }}>

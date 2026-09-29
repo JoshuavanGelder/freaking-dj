@@ -6,6 +6,7 @@ import { useFonts } from 'expo-font';
 import { Figtree_400Regular, Figtree_600SemiBold, Figtree_700Bold, Figtree_800ExtraBold } from '@expo-google-fonts/figtree';
 import { AppProvider, useApp } from './src/store';
 import { JobProvider, useJob } from './src/job';
+import { LiveProvider, useLive } from './src/live';
 import { Nav, NavProvider, Route, Tab, useNav } from './src/nav';
 import { C, F } from './src/theme';
 import { Icon, IconName } from './src/icons';
@@ -25,7 +26,9 @@ export default function App() {
     <SafeAreaProvider>
       <StatusBar style="light" />
       <AppProvider>
-        <JobProvider>{fontsLoaded || fontError ? <Root /> : <Loading />}</JobProvider>
+        <JobProvider>
+          <LiveProvider>{fontsLoaded || fontError ? <Root /> : <Loading />}</LiveProvider>
+        </JobProvider>
       </AppProvider>
     </SafeAreaProvider>
   );
@@ -138,6 +141,7 @@ function Root() {
 function MiniPlayer({ overTabs }: { overTabs: boolean }) {
   const nav = useNav();
   const { job } = useJob();
+  const { live, starting } = useLive();
   const insets = useSafeAreaInsets();
   const [pb, setPb] = useState<sp.Playback | null>(null);
   const { tab } = nav;
@@ -157,9 +161,10 @@ function MiniPlayer({ overTabs }: { overTabs: boolean }) {
       alive = false;
       clearInterval(timer);
     };
-  }, [tab]);
+  }, [tab, live?.current?.id]);
 
-  const running = job?.kind === 'queue';
+  const running = job?.kind === 'queue' || !!starting;
+  const status = starting ?? job?.status;
   if (!pb?.item && !running) return null;
   const pct = pb?.item?.durationMs ? (100 * (pb.progressMs + (Date.now() - pb.at) * (pb.isPlaying ? 1 : 0))) / pb.item.durationMs : 0;
   return (
@@ -170,8 +175,13 @@ function MiniPlayer({ overTabs }: { overTabs: boolean }) {
       <View style={{ flexDirection: 'row', alignItems: 'center', padding: 8, gap: 10 }}>
         <Cover uri={pb?.item?.image} size={40} />
         <View style={{ flex: 1 }}>
+          {live && !running ? (
+            <T size={10} weight="bold" color={C.accent} style={{ letterSpacing: 1 }}>
+              LIVE DJ · {live.vibe.toUpperCase()}
+            </T>
+          ) : null}
           <T size={14} weight="semibold" numberOfLines={1}>
-            {running ? job?.status : pb?.item?.name}
+            {running ? status : pb?.item?.name}
           </T>
           <T size={12} color={running ? C.accent : C.muted} numberOfLines={1}>
             {running ? 'Bezig met je wachtrij' : `${pb?.item?.artists.join(', ')}${pb?.device ? ` · ${pb.device.name}` : ''}`}
