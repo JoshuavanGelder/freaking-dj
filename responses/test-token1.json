@@ -1,0 +1,11 @@
+{
+ "id": "test-token1",
+ "finishedAt": "2026-09-29T12:24:16.134Z",
+ "durationMs": 2843,
+ "status": "token",
+ "message": "Het Claude-token werkt niet (verlopen of ongeldig). Maak een nieuw token met \"claude setup-token\" en zet het als secret CLAUDE_CODE_OAUTH_TOKEN.",
+ "resetAt": null,
+ "answer": null,
+ "costUsd": 0,
+ "model": "sonnet"
+}
