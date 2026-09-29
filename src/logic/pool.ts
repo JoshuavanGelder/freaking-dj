@@ -141,7 +141,7 @@ export function buildRequest(args: {
     adjust: args.adjust ?? null,
     now: nowLabel(args.now),
     count: rules.count,
-    spares: 8,
+    spares: 5,
     newEvery: rules.newEvery,
     artistStart: vibe.artistStart,
     worshipAllowed: vibe.worship,

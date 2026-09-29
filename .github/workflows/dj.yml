@@ -1,25 +1,33 @@
 name: DJ
 
-# De app zet een verzoek in de branch dj-data (requests/<id>.json) en start deze workflow.
-# Claude Code stelt met jouw Claude-abonnement (secret CLAUDE_CODE_OAUTH_TOKEN, gemaakt met
-# `claude setup-token`) de wachtrij samen; het antwoord komt in dj-data/responses/<id>.json.
+# De app zet een verzoek in de branch dj-data (requests/<id>.json). Claude Code stelt met jouw
+# Claude-abonnement (secret CLAUDE_CODE_OAUTH_TOKEN) de wachtrij samen; het antwoord komt in
+# dj-data/responses/<id>.json.
+#
+# request_id = "standby": warme DJ die ~10 min klaarstaat en nieuwe verzoeken meteen oppakt
+# (de app start die zodra je hem opent). Anders: één losse run voor dat ene verzoek.
 run-name: DJ ${{ inputs.request_id }}
 
 on:
   workflow_dispatch:
     inputs:
       request_id:
-        description: Id van het verzoek in dj-data/requests
+        description: Id van het verzoek in dj-data/requests, of "standby"
         required: true
         type: string
 
 permissions:
   contents: write
 
+concurrency:
+  # Nooit twee warme DJ's tegelijk; losse runs mogen naast elkaar.
+  group: ${{ inputs.request_id == 'standby' && 'dj-standby' || format('dj-{0}', github.run_id) }}
+  cancel-in-progress: false
+
 jobs:
   dj:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: ${{ inputs.request_id == 'standby' && 50 || 12 }}
     env:
       REQUEST_ID: ${{ inputs.request_id }}
     steps:
@@ -39,13 +47,20 @@ jobs:
       - name: Claude Code installeren
         run: npm install -g @anthropic-ai/claude-code --no-audit --no-fund
 
+      - name: Warme DJ
+        if: inputs.request_id == 'standby'
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: node dj/standby.mjs data
+
       - name: Wachtrij samenstellen
+        if: inputs.request_id != 'standby'
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: node dj/run.mjs "$REQUEST_ID" data
 
       - name: Antwoord terugzetten
-        if: always()
+        if: always() && inputs.request_id != 'standby'
         working-directory: data
         run: |
           if [ ! -f "responses/$REQUEST_ID.json" ]; then
@@ -55,10 +70,17 @@ jobs:
           fi
           git config user.name "freaking-dj"
           git config user.email "freaking-dj@users.noreply.github.com"
-          git add -A requests responses
+          git add -A responses
           git commit -q -m "DJ-antwoord $REQUEST_ID" || exit 0
           for i in 1 2 3 4 5; do
-            git pull -q --rebase origin dj-data && git push -q origin HEAD:dj-data && exit 0
+            if git pull -q --rebase origin dj-data; then
+              git push -q origin HEAD:dj-data && exit 0
+            else
+              # De warme DJ was ons voor met hetzelfde antwoord: dan is het goed.
+              git rebase --abort 2>/dev/null
+              git fetch -q origin dj-data
+              git cat-file -e "origin/dj-data:responses/$REQUEST_ID.json" 2>/dev/null && exit 0
+            fi
             sleep $((i * 2))
           done
           exit 1

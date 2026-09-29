@@ -31,7 +31,7 @@ function ago(ts: number): string {
 
 export function DjScreen() {
   const { state, signals, decide } = useApp();
-  const { job, error, clearError, health, requestPlan, cancel } = useJob();
+  const { job, error, clearError, health, requestPlan, cancel, warm } = useJob();
   const nav = useNav();
   const [text, setText] = useState('');
   const [setup, setSetup] = useState<{ spotify: boolean; github: boolean } | null>(null);
@@ -74,7 +74,7 @@ export function DjScreen() {
     <Screen>
       <Row style={{ justifyContent: 'space-between' }}>
         <H1>{greeting()}</H1>
-        <StatusDot level={health.level} />
+        <StatusDot level={health.level} warm={warm} />
       </Row>
 
       {health.level === 'storing' || health.level === 'let op' ? <Banner level={health.level} text={health.text} /> : null}
@@ -117,7 +117,9 @@ export function DjScreen() {
             </T>
           </Row>
           <T size={12} color={C.dim}>
-            Claude draait in GitHub Actions met je abonnement; dat duurt meestal 1 à 2 minuten. Je kunt de app gewoon wegleggen.
+            {warm === 'klaar'
+              ? 'De DJ staat klaar; dit duurt meestal zo\u2019n 20 seconden.'
+              : 'De DJ start nog op bij GitHub; de eerste keer duurt het wat langer. Je kunt de app gewoon wegleggen.'}
           </T>
           <Button label="Stoppen" small variant="outline" onPress={cancel} style={{ alignSelf: 'flex-start' }} />
         </Card>
@@ -228,9 +230,9 @@ export function DjScreen() {
   );
 }
 
-function StatusDot({ level }: { level: 'ok' | 'let op' | 'storing' | 'onbekend' }) {
-  const color = level === 'ok' ? C.accent : level === 'let op' ? C.amber : level === 'storing' ? C.warn : C.dim;
-  const label = level === 'ok' ? 'Claude' : level === 'onbekend' ? 'Claude ?' : 'Claude';
+function StatusDot({ level, warm }: { level: 'ok' | 'let op' | 'storing' | 'onbekend'; warm: 'klaar' | 'opwarmen' | null }) {
+  const color = level === 'storing' ? C.warn : level === 'let op' ? C.amber : warm === 'klaar' ? C.accent : level === 'ok' && !warm ? C.accent : C.dim;
+  const label = level === 'storing' ? 'Claude storing' : warm === 'klaar' ? 'DJ klaar' : warm === 'opwarmen' ? 'Opwarmen' : 'Claude';
   return (
     <Row style={{ gap: 6, backgroundColor: C.card, borderRadius: 999, paddingHorizontal: 10, height: 28 }}>
       <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: color }} />

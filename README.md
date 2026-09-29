@@ -23,8 +23,9 @@ Open op je telefoon de nieuwste [release](../../releases/latest) en tik op het `
 
 ## Hoe het werkt
 - De app zet je verzoek (vibe, regels, wat hij geleerd heeft, je geschiedenis) in branch `dj-data` en start de
-  workflow **DJ**. Die draait de officiële Claude Code met je abonnement en zet het antwoord terug. Dat duurt
-  meestal 1 à 2 minuten. Is je limiet op of het token verlopen, dan zie je dat in de app.
+  workflow **DJ**. Die draait de officiële Claude Code met je abonnement en zet het antwoord terug.
+  Zodra je de app opent, staat er een **warme DJ** klaar (10 minuten), zodat een voorstel ~20 seconden duurt in
+  plaats van 1 à 2 minuten. Is je limiet op of het token verlopen, dan zie je dat in de app.
 - De app controleert zelf de harde regels (blocklist, worship alleen op verzoek, geen dubbelen, niet twee keer
   dezelfde artiest achter elkaar, Eurovisie-favoriet) en zoekt nieuwe nummers op in Spotify.
 - **Toevoegen** zet nummers alleen achteraan. **Vervangen** wacht tot het huidige nummer klaar is. Spotify kan

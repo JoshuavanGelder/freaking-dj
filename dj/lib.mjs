@@ -129,3 +129,18 @@ export function parseCliOutput(stdout) {
     return null;
   }
 }
+
+/**
+ * Welke verzoeken moet de warme DJ nog doen? Die zonder antwoord, niet ouder dan maxAgeMs,
+ * oudste eerst. requests = [{ id, createdAt }], responded = Set van ids.
+ */
+export function pendingIds(requests, responded, now, maxAgeMs = 15 * 60 * 1000) {
+  return requests
+    .filter((r) => validId(r.id) && r.id !== 'standby' && !responded.has(r.id))
+    .filter((r) => {
+      const t = Date.parse(r.createdAt);
+      return Number.isFinite(t) && now - t <= maxAgeMs;
+    })
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
+    .map((r) => r.id);
+}

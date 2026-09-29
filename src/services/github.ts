@@ -64,10 +64,15 @@ export async function checkRepo(repo: RepoRef): Promise<string | null> {
   }
 }
 
+const branchOk = new Set<string>();
+
 /** Maakt de branch dj-data aan (vanaf main) als die nog niet bestaat. */
 export async function ensureDataBranch(repo: RepoRef): Promise<void> {
+  const key = `${repo.owner}/${repo.repo}`;
+  if (branchOk.has(key)) return;
   try {
     await gh(repo, `/git/ref/heads/${DATA_BRANCH}`);
+    branchOk.add(key);
     return;
   } catch (e: any) {
     if (e?.status !== 404) throw e;
@@ -114,4 +119,20 @@ export async function findRun(repo: RepoRef, id: string): Promise<RunInfo | null
   const r = await gh<any>(repo, `/actions/workflows/${WORKFLOW}/runs?event=workflow_dispatch&per_page=10`);
   const run = (r?.workflow_runs ?? []).find((x: any) => x.display_title === `DJ ${id}`);
   return run ? { status: run.status, conclusion: run.conclusion, url: run.html_url } : null;
+}
+
+export type StandbyState = 'klaar' | 'opwarmen' | null;
+
+/** Staat er een warme DJ klaar (of komt die eraan)? */
+export async function standbyState(repo: RepoRef): Promise<StandbyState> {
+  const r = await gh<any>(repo, `/actions/workflows/${WORKFLOW}/runs?event=workflow_dispatch&per_page=15`);
+  const runs = (r?.workflow_runs ?? []).filter((x: any) => x.display_title === 'DJ standby');
+  if (runs.some((x: any) => x.status === 'in_progress')) return 'klaar';
+  if (runs.some((x: any) => x.status === 'queued' || x.status === 'waiting' || x.status === 'pending' || x.status === 'requested')) return 'opwarmen';
+  return null;
+}
+
+/** Start een warme DJ: blijft ~10 minuten klaarstaan voor nieuwe verzoeken. */
+export async function startStandby(repo: RepoRef): Promise<void> {
+  await dispatch(repo, 'standby');
 }

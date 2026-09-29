@@ -15,6 +15,7 @@ export type Settings = {
   spotifyClientId: string;
   model: Model;
   watcher: boolean;
+  warmDj: boolean; // warme DJ starten als je de app opent
 };
 
 export type AppState = {
@@ -36,6 +37,7 @@ export const DEFAULT_SETTINGS: Settings = {
   spotifyClientId: '',
   model: 'sonnet',
   watcher: true,
+  warmDj: true,
 };
 
 const EMPTY: AppState = {

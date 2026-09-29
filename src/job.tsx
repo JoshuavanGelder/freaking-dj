@@ -24,6 +24,9 @@ type JobCtx = {
   sendToSpotify: (plan: Plan, mode: 'toevoegen' | 'vervangen', allowSkip: boolean) => Promise<boolean>;
   refreshHistory: () => Promise<History | null>;
   cancel: () => void;
+  /** Warme DJ: 'klaar' = staat klaar, 'opwarmen' = wordt gestart, null = uit. */
+  warm: gh.StandbyState;
+  warmUp: () => void;
 };
 
 const Ctx = createContext<JobCtx | null>(null);
@@ -48,6 +51,63 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
   const refreshHealth = useCallback(() => {
     fetchClaudeStatus().then(setStatusPage);
   }, []);
+
+  // Warme DJ: zodra je de app opent staat er binnen een halve minuut een machine klaar,
+  // zodat je verzoek niet hoeft te wachten tot GitHub er een opstart.
+  const [warm, setWarm] = useState<gh.StandbyState>(null);
+  const warmBusy = useRef(false);
+  const lastWarm = useRef(0);
+  /** start = zo nodig een warme DJ starten; anders alleen de status bijwerken. */
+  const checkWarm = useCallback(async (start: boolean) => {
+    if (warmBusy.current) return;
+    if (start && Date.now() - lastWarm.current < 30_000) return;
+    warmBusy.current = true;
+    try {
+      if (!(await gh.getToken())) return;
+      const repo = { owner: stateRef.current.settings.owner, repo: stateRef.current.settings.repo };
+      let st = await gh.standbyState(repo);
+      if (!st && start && stateRef.current.settings.warmDj) {
+        lastWarm.current = Date.now();
+        await gh.startStandby(repo);
+        st = 'opwarmen';
+      }
+      setWarm(st);
+    } catch {
+      setWarm(null);
+    } finally {
+      warmBusy.current = false;
+    }
+  }, []);
+  const warmUp = useCallback(() => {
+    checkWarm(true);
+  }, [checkWarm]);
+
+  useEffect(() => {
+    warmUp();
+    const sub = RNAppState.addEventListener('change', (st) => {
+      if (st === 'active') warmUp();
+    });
+    // Alleen de status bijwerken; opnieuw starten gebeurt bij openen en na een verzoek.
+    const timer = setInterval(() => {
+      if (RNAppState.currentState === 'active') checkWarm(false);
+    }, 30_000);
+    return () => {
+      sub.remove();
+      clearInterval(timer);
+    };
+  }, [warmUp, checkWarm]);
+
+  // Luistergeschiedenis alvast ophalen, zodat een verzoek daar niet op hoeft te wachten.
+  useEffect(() => {
+    const h = stateRef.current.history;
+    if (h && Date.now() - h.fetchedAt < HISTORY_MAX_AGE) return;
+    sp.isConnected().then((ok) => {
+      if (!ok) return;
+      fetchHistory()
+        .then((hist) => update((x) => ({ ...x, history: hist })))
+        .catch(() => undefined);
+    });
+  }, [update]);
 
   useEffect(() => {
     refreshHealth();
@@ -165,8 +225,8 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ job, error, clearError: () => setError(null), health, refreshHealth, requestPlan, sendToSpotify, refreshHistory, cancel }),
-    [job, error, health, refreshHealth, requestPlan, sendToSpotify, refreshHistory, cancel],
+    () => ({ job, error, clearError: () => setError(null), health, refreshHealth, requestPlan, sendToSpotify, refreshHistory, cancel, warm, warmUp }),
+    [job, error, health, refreshHealth, requestPlan, sendToSpotify, refreshHistory, cancel, warm, warmUp],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

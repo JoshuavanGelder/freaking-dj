@@ -12,9 +12,9 @@ import type { Device } from '../logic/queue';
 import { isWatching, lastEventAt, openBatterySettings, openSpotify, startWatcher, stopWatcher, watcherAvailable } from '../services/watcher';
 
 const MODELS: { value: Model; label: string; hint: string }[] = [
-  { value: 'sonnet', label: 'Sonnet', hint: 'snel, weinig verbruik' },
-  { value: 'opus', label: 'Opus', hint: 'beste keuzes, meer verbruik' },
-  { value: 'haiku', label: 'Haiku', hint: 'snelst, zuinigst' },
+  { value: 'sonnet', label: 'Sonnet', hint: 'goede keuzes, ~15 s' },
+  { value: 'haiku', label: 'Haiku', hint: 'snelst (~5–10 s), iets minder verfijnd' },
+  { value: 'opus', label: 'Opus', hint: 'beste keuzes, trager en meer verbruik' },
 ];
 
 export function SettingsScreen() {
@@ -178,6 +178,20 @@ export function SettingsScreen() {
             style={{ alignSelf: 'flex-start' }}
             onPress={() => Linking.openURL(`https://github.com/${s.owner}/${s.repo}/settings/secrets/actions`)}
           />
+        </Card>
+        <Card>
+          <Row style={{ justifyContent: 'space-between', gap: 12 }}>
+            <View style={{ flex: 1 }}>
+              <T weight="semibold">Warme DJ</T>
+              <T size={12} color={C.muted}>
+                Als je de app opent, zet GitHub alvast een machine klaar die 10 minuten wacht. Dan heb je een voorstel in ~20 s in plaats van 1 à 2 minuten.
+              </T>
+            </View>
+            <Toggle on={s.warmDj} label="Warme DJ" onChange={(v) => setS({ warmDj: v })} />
+          </Row>
+          <T size={12} color={C.dim}>
+            Kost GitHub Actions-minuten: gratis bij een openbare repo, bij een privé-repo telt het mee voor je 2000 gratis minuten per maand (±10 min per keer openen).
+          </T>
         </Card>
         <Card>
           <T weight="bold">Model</T>

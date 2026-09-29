@@ -15,7 +15,12 @@ Eigenaar: Joshua van Gelder (Nederlands; antwoord in het Nederlands). Stijl: bij
 - Die workflow draait de **officiële, ongewijzigde Claude Code** (`npm i -g @anthropic-ai/claude-code`,
   `claude -p`) met secret `CLAUDE_CODE_OAUTH_TOKEN` (gemaakt met `claude setup-token`, 1 jaar geldig).
   Dat is de door Anthropic ondersteunde manier voor Pro/Max in GitHub Actions. Geen `--bare` (die leest geen OAuth).
-- `dj/run.mjs` schrijft `responses/<id>.json` met `status` ok | limiet | token | fout (+ `resetAt`). De app
+- **Warme DJ**: bij het openen van de app start `dj.yml` met `request_id=standby` (run-name `DJ standby`):
+  `dj/standby.mjs` blijft 10 min na het laatste verzoek klaarstaan en pakt nieuwe `requests/` meteen op
+  (git fetch elke 1,5 s). Staat er geen warme DJ, dan start de app een losse run. Vangnet: na 75 s alsnog een losse run.
+- Snelheid: `--effort low` (niet voor haiku), pool-nummers zonder titel/artiest in het antwoord, 5 reserves,
+  nieuwe nummers parallel opzoeken, geschiedenis vooraf ophalen, app pollt elke 2 s.
+- `dj/handle.mjs` (via `run.mjs` of `standby.mjs`) schrijft `responses/<id>.json` met `status` ok | limiet | token | fout (+ `resetAt`). De app
   toont limiet/token/storing; daarnaast `status.claude.com/api/v2/summary.json`.
 - Claude krijgt `dj/prompt.md` als systeemprompt en `dj/schema.json` als `--json-schema`; alleen WebSearch.
   Werkmap is een lege tmp-map, zodat Claude dit bestand niet ziet.

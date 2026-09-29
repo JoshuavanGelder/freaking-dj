@@ -85,19 +85,30 @@ async function resolveNew(item: ClaudeItem): Promise<Track | null> {
 }
 
 async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unresolved: string[]): Promise<PlanItem[]> {
-  const out: PlanItem[] = [];
-  for (const it of list) {
+  // Nieuwe nummers tegelijk opzoeken (max. 4 tegelijk), de volgorde blijft zoals Claude hem gaf.
+  const slots: (PlanItem | null)[] = new Array(list.length).fill(null);
+  const toFind: number[] = [];
+  list.forEach((it, i) => {
     const known = it.ref ? refs.get(it.ref) : undefined;
     if (known) {
       const { tier: _t, plays: _p, ...track } = known;
-      out.push({ track, style: it.style, isNew: false, energy: it.energy });
-      continue;
+      slots[i] = { track, style: it.style, isNew: false, energy: it.energy };
+    } else if (it.title && it.artist) {
+      toFind.push(i);
     }
-    const track = await resolveNew(it);
-    if (track) out.push({ track, style: it.style, isNew: it.new || !it.ref, energy: it.energy });
-    else unresolved.push(`${it.title} – ${it.artist}`);
-  }
-  return out;
+  });
+  let next = 0;
+  const worker = async () => {
+    while (next < toFind.length) {
+      const i = toFind[next++];
+      const it = list[i];
+      const track = await resolveNew(it);
+      if (track) slots[i] = { track, style: it.style, isNew: it.new || !it.ref, energy: it.energy };
+      else unresolved.push(`${it.title} – ${it.artist}`);
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+  return slots.filter((x): x is PlanItem => !!x);
 }
 
 /** Vraagt Claude (via GitHub Actions) om een voorstel en maakt er een gecontroleerde wachtrij van. */
@@ -145,35 +156,52 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   onStatus('Verzoek naar GitHub sturen');
   await gh.ensureDataBranch(repo);
   await gh.putRequest(repo, id, request);
-  await gh.dispatch(repo, id);
+  // Staat er een warme DJ klaar? Dan pakt die het verzoek meteen op; anders een losse run starten.
+  let standby = await gh.standbyState(repo).catch(() => null);
+  let dispatched = false;
+  if (!standby) {
+    await gh.dispatch(repo, id);
+    dispatched = true;
+  }
 
   // Wachten op het antwoord (Claude Code draait in GitHub Actions).
   const started = Date.now();
   let response: DjResponse | null = null;
   let runUrl: string | undefined;
-  let lastRunCheck = 0;
+  let lastRunCheck = Date.now();
   while (!response) {
     if (cancel.cancelled) throw new DjError('fout', 'Gestopt');
     const secs = Math.round((Date.now() - started) / 1000);
-    if (Date.now() - lastRunCheck > 10_000) {
+    if (!dispatched) {
+      onStatus(standby === 'klaar' ? `Claude stelt je wachtrij samen (${secs} s)` : `De DJ warmt op (${secs} s)`);
+      // Vangnet: de warme DJ is net gestopt of doet het niet; dan alsnog een losse run.
+      if (Date.now() - lastRunCheck > 20_000) {
+        lastRunCheck = Date.now();
+        standby = await gh.standbyState(repo).catch(() => standby);
+        if (!standby || secs > 75) {
+          await gh.dispatch(repo, id);
+          dispatched = true;
+        }
+      }
+    } else if (Date.now() - lastRunCheck > 8_000) {
       lastRunCheck = Date.now();
       const run = await gh.findRun(repo, id).catch(() => null);
       if (run) {
         runUrl = run.url;
         if (run.status === 'completed' && run.conclusion !== 'success') {
           // De workflow schrijft ook bij fouten een antwoord; kijk nog één keer.
-          await sleep(4000);
+          await sleep(3000);
           response = await gh.getResponse(repo, id).catch(() => null);
           if (!response) throw new DjError('fout', `De DJ-workflow is mislukt (${run.conclusion}).`, null, run.url);
           break;
         }
-        onStatus(run.status === 'queued' ? `In de wachtrij bij GitHub (${secs} s)` : `Claude stelt je wachtrij samen (${secs} s)`);
+        onStatus(run.status === 'queued' ? `Wachten op een machine bij GitHub (${secs} s)` : `Claude stelt je wachtrij samen (${secs} s)`);
       } else {
         onStatus(`Workflow starten (${secs} s)`);
       }
     }
     if (secs > 13 * 60) throw new DjError('fout', 'Claude deed er te lang over (meer dan 13 minuten).', null, runUrl);
-    await sleep(4000);
+    await sleep(2000);
     response = await gh.getResponse(repo, id).catch(() => null);
   }
 
@@ -189,11 +217,11 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   onStatus('Nummers opzoeken in Spotify');
   const refMap = new Map(refs.map((r) => [r.ref, r.track]));
   const unresolved: string[] = [];
-  const items = await toPlanItems(answer.items, refMap, unresolved);
-  const spares = await toPlanItems(answer.spares, refMap, []);
-
-  let favorite = input.favorite;
-  if (vibe.eurovision) favorite = await resolveFavorite(rules, favorite);
+  const [items, spares, favorite] = await Promise.all([
+    toPlanItems(answer.items, refMap, unresolved),
+    toPlanItems(answer.spares, refMap, []),
+    vibe.eurovision ? resolveFavorite(rules, input.favorite) : Promise.resolve(input.favorite),
+  ]);
   const favInItems = items.some((it) => isFavorite(it.track, rules));
   if (vibe.eurovision && !favorite && !favInItems) unresolved.push(`${rules.eurovisionFavorite.title} – ${rules.eurovisionFavorite.artist} (favoriet)`);
 

@@ -66,3 +66,17 @@ test('renderRequest bevat vibe, regels en pool', () => {
   assert.match(t, /t1\|Ordinary/);
   assert.match(t, /3–4 known/);
 });
+
+test('pendingIds: alleen recente verzoeken zonder antwoord, oudste eerst', async () => {
+  const { pendingIds } = await import('./lib.mjs');
+  const now = Date.parse('2026-09-29T12:00:00Z');
+  const reqs = [
+    { id: 'bbb-2', createdAt: '2026-09-29T11:59:00Z' },
+    { id: 'aaa-1', createdAt: '2026-09-29T11:58:00Z' },
+    { id: 'old-1', createdAt: '2026-09-29T10:00:00Z' },
+    { id: 'done-1', createdAt: '2026-09-29T11:59:30Z' },
+    { id: 'bad', createdAt: null },
+    { id: '../x', createdAt: '2026-09-29T11:59:00Z' },
+  ];
+  assert.deepEqual(pendingIds(reqs, new Set(['done-1']), now), ['aaa-1', 'bbb-2']);
+});

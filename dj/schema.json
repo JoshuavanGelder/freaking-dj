@@ -12,8 +12,8 @@
         "additionalProperties": false,
         "properties": {
           "ref": { "type": "string", "description": "Pool ref like t12 for known tracks, empty string for new tracks." },
-          "title": { "type": "string" },
-          "artist": { "type": "string", "description": "Primary artist." },
+          "title": { "type": "string", "description": "Only for new tracks; empty string for pool tracks." },
+          "artist": { "type": "string", "description": "Primary artist; only for new tracks, empty string for pool tracks." },
           "style": { "type": "string", "description": "Short Dutch style label; same label for the same style." },
           "new": { "type": "boolean" },
           "energy": { "type": "integer", "description": "1 = calm ... 5 = full power." }
