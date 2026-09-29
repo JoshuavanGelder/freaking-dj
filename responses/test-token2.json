@@ -1,0 +1,66 @@
+{
+ "id": "test-token2",
+ "finishedAt": "2026-09-29T12:32:34.081Z",
+ "durationMs": 4282,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t1",
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "The Search",
+    "artist": "NF",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "Wake Me Up",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lose Yourself",
+    "artist": "Eminem",
+    "style": "Hiphop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t4",
+    "title": "Ordinary",
+    "artist": "Alex Warren",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   }
+  ],
+  "title": "Codeer-focus",
+  "note": "Je krijgt vooral je eigen favorieten met één nieuwe hiphop-track erbij."
+ },
+ "costUsd": 0.016871999999999998,
+ "model": "sonnet"
+}
