@@ -1,0 +1,258 @@
+{
+ "id": "mumr7t7i-q3nnb",
+ "finishedAt": "2026-09-29T14:11:12.242Z",
+ "durationMs": 19867,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Code &amp; Eurovisie 2026",
+  "note": "Je favoriet Viva, Moldova! opent, en tussen je coding-favorieten zitten steeds Eurovisie-inzendingen met een paar nieuwe tracks.",
+  "items": [
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Cha Cha Cha",
+    "artist": "Käärijä",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stefania",
+    "artist": "Kalush Orchestra",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Radioactive",
+    "artist": "Imagine Dragons",
+    "style": "Coding-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Wasted Love",
+    "artist": "JJ",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Coding-pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0566252,
+ "model": "sonnet"
+}
