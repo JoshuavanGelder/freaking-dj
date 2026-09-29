@@ -96,6 +96,13 @@ class SpotifyWatcherService : Service() {
     val r = object : BroadcastReceiver() {
       override fun onReceive(context: Context, intent: Intent) {
         EventStore.handle(context, intent)
+        // Live DJ: bij een nieuw nummer meteen het volgende klaarzetten (ook met je scherm uit).
+        if (intent.action == EventStore.META) {
+          val uri = intent.getStringExtra("id")
+          if (uri != null && LiveQueuer.isActive(context)) {
+            LiveQueuer.onBroadcast(context, uri.substringAfterLast(':'), intent.getStringExtra("artist") ?: "")
+          }
+        }
       }
     }
     val filter = IntentFilter().apply {
@@ -110,6 +117,7 @@ class SpotifyWatcherService : Service() {
     }
     receiver = r
     running = true
+    LiveQueuer.resumeIfActive(this)
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY

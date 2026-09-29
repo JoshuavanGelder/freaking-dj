@@ -42,6 +42,49 @@ class SpotifyWatcherModule : Module() {
 
     AsyncFunction("readAndClear") { EventStore.readAndClear(ctx) }
 
+    // ---------- Spotify-token (native is eigenaar, zodat de achtergrond ook kan vernieuwen) ----------
+
+    AsyncFunction("authSet") { clientId: String, refresh: String, access: String, expiresAt: Double ->
+      SpotifyAuth.set(ctx, clientId, refresh, access, expiresAt.toLong())
+      true
+    }
+
+    AsyncFunction("authClear") {
+      SpotifyAuth.clear(ctx)
+      true
+    }
+
+    Function("hasAuth") { SpotifyAuth.hasAuth(ctx) }
+
+    AsyncFunction("accessToken") { force: Boolean -> SpotifyAuth.accessToken(ctx, force) }
+
+    // ---------- Live DJ in de dienst ----------
+
+    AsyncFunction("liveStart") { queuedId: String, candidatesJson: String ->
+      // De dienst moet draaien om de Spotify-broadcasts op te vangen.
+      val intent = Intent(ctx, SpotifyWatcherService::class.java)
+      if (Build.VERSION.SDK_INT >= 26) ctx.startForegroundService(intent) else ctx.startService(intent)
+      LiveQueuer.start(ctx, queuedId, candidatesJson)
+      true
+    }
+
+    AsyncFunction("liveSetCandidates") { candidatesJson: String ->
+      LiveQueuer.setCandidates(ctx, candidatesJson)
+      true
+    }
+
+    AsyncFunction("liveSetQueued") { id: String, metaJson: String ->
+      LiveQueuer.setQueued(ctx, id, metaJson)
+      true
+    }
+
+    AsyncFunction("liveStop") {
+      LiveQueuer.stop(ctx)
+      true
+    }
+
+    AsyncFunction("liveState") { LiveQueuer.state(ctx) }
+
     AsyncFunction("listen") { prompt: String, promise: Promise ->
       val activity = appContext.currentActivity
       if (activity == null) {

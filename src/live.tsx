@@ -6,7 +6,8 @@ import { useApp } from './store';
 import * as sp from './services/spotify';
 import { addToEnd, replaceQueue } from './services/player';
 import { DjError, fetchHistory, makePlan } from './services/dj';
-import { applyReplan, feedbackForClaude, observe, pickNext, startLive, takeNext, type LiveState } from './logic/live';
+import { applyReplan, feedbackForClaude, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './logic/live';
+import * as W from 'spotify-watcher';
 import { dislikedKeys } from './logic/learning';
 import { parseVibe, rejectReason } from './logic/rules';
 import { adjustKind, type AdjustKind } from './logic/adjust';
@@ -33,6 +34,12 @@ export function useLive(): LiveCtx {
 }
 
 const IDLE_STOP_MS = 30 * 60 * 1000; // niets gespeeld: na een half uur stopt Live DJ vanzelf
+/** Dienst had het volgende nummer al klaar moeten zetten; na zoveel ms doet de app het zelf. */
+const NATIVE_GRACE_MS = 8_000;
+
+function toCandidate(it: PlanItem): W.LiveCandidate {
+  return { id: it.track.id, artists: it.track.artists, isNew: it.isNew, style: it.style, durationMs: it.track.durationMs };
+}
 
 export function LiveProvider({ children }: { children: React.ReactNode }) {
   const { state, update, savePlan, signals } = useApp();
@@ -48,6 +55,8 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
   const replanBusy = useRef(false);
   const lastReplanTry = useRef(0);
   const idleSince = useRef<number | null>(null);
+  const pendingSince = useRef<number | null>(null);
+  const native = W.available;
 
   // De store is leidend bij opstarten (Live DJ loopt door na herstart van de app).
   useEffect(() => {
@@ -96,6 +105,9 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     };
     return !rejectReason(t, ctx);
   }, []);
+
+  /** Wat de dienst mag kiezen: de rest van de lijst, al gecontroleerd op je regels. */
+  const candidates = useCallback((L: LiveState): W.LiveCandidate[] => L.upcoming.filter((it) => allowed(it.track)).slice(0, 40).map(toCandidate), [allowed]);
 
   /** Claude laten bijsturen of aanvullen, op de achtergrond. */
   const replan = useCallback(
@@ -184,24 +196,54 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         idleSince.current ??= now;
         if (now - idleSince.current > IDLE_STOP_MS) {
           commit(null);
+          W.liveStop().catch(() => undefined);
           setError('Live DJ gestopt: er speelde een half uur niets.');
           return;
         }
       } else {
         idleSince.current = null;
       }
-      const r = observe(L0, { id: pb.item?.id ?? null, progressMs: pb.progressMs, durationMs: pb.item?.durationMs ?? 0, isPlaying: pb.isPlaying, at: now }, lookup);
+      let L1 = L0;
+      if (native) {
+        const ns = await W.liveState();
+        if (ns) {
+          if (!ns.active) {
+            if (ns.error.includes('gestopt')) {
+              commit(null);
+              setError(ns.error);
+              return;
+            }
+            // Dienst draait (nog) niet mee, bv. na een update: opnieuw starten.
+            await W.liveStart(L0.queuedId ?? '', candidates(L0));
+          } else {
+            L1 = reconcileNative(L0, ns, lookup, now);
+            if (ns.error && !ns.error.includes('gestopt')) setError(ns.error);
+          }
+        }
+      }
+      const r = observe(L1, { id: pb.item?.id ?? null, progressMs: pb.progressMs, durationMs: pb.item?.durationMs ?? 0, isPlaying: pb.isPlaying, at: now }, lookup);
       commit(r.state);
       for (const a of r.actions) {
         if (a.type === 'queueNext') {
           const L = liveRef.current;
-          if (!L || L.queuedId) continue;
+          if (!L || L.queuedId) {
+            pendingSince.current = null;
+            continue;
+          }
+          // Met de dienst: die zet het volgende nummer binnen een seconde klaar. Alleen als dat niet
+          // gebeurt (Spotify stuurde geen seintje, of een fout) doet de app het zelf.
+          if (native) {
+            pendingSince.current ??= now;
+            if (now - pendingSince.current < NATIVE_GRACE_MS) continue;
+          }
+          pendingSince.current = null;
           const pick = pickNext(L, pb.item ? { artists: pb.item.artists } : null, allowed);
           if (!pick) continue;
           const t = takeNext(L, pick.index, now, pick.why);
           commit(t.state); // eerst vastleggen, zodat er nooit twee tegelijk in de wachtrij gaan
           try {
             await sp.addToQueue(t.item.track.id, pb.device?.id);
+            if (native) await W.liveSetQueued(t.item.track.id, toCandidate(t.item));
           } catch (e: any) {
             const cur = liveRef.current;
             if (cur) commit({ ...cur, queuedId: null, upcoming: [t.item, ...cur.upcoming] });
@@ -226,7 +268,15 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     } finally {
       busy.current = false;
     }
-  }, [commit, lookup, allowed, replan]);
+  }, [commit, lookup, allowed, replan, candidates, native]);
+
+  // De dienst steeds de actuele lijst geven (na bijsturen, na een keuze).
+  const upcomingKey = state.live ? `${state.live.planId}|${state.live.upcoming.length}|${state.live.upcoming[0]?.track.id ?? ''}|${state.live.queuedId ?? ''}` : '';
+  useEffect(() => {
+    const L = liveRef.current;
+    if (!native || !L || L.status !== 'actief') return;
+    W.liveSetCandidates(candidates(L)).catch(() => undefined);
+  }, [upcomingKey, native, candidates]);
 
   // De lus: elke 4 s als de app open is, elke 8 s op de achtergrond (de meeluister-dienst houdt de app wakker).
   const active = state.live?.status === 'actief';
@@ -256,7 +306,9 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         const cancel = { cancelled: false };
         if (mode === 'vervangen') await replaceQueue([first.track], stateRef.current.rules, { allowSkip }, setStarting, cancel);
         else await addToEnd([first.track], stateRef.current.rules, setStarting, cancel);
-        commit(startLive(plan.id, plan.vibe, [...plan.items, ...plan.spares], first.track.id, Date.now()));
+        const L = startLive(plan.id, plan.vibe, [...plan.items, ...plan.spares], first.track.id, Date.now());
+        commit(L);
+        if (native) await W.liveStart(first.track.id, candidates(L), toCandidate(first));
         return true;
       } catch (e: any) {
         setError(e?.message ?? String(e));
@@ -265,7 +317,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         setStarting(null);
       }
     },
-    [commit],
+    [commit, candidates, native],
   );
 
   const steer = useCallback(
@@ -282,6 +334,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
   const stop = useCallback(() => {
     commit(null);
     setError(null);
+    W.liveStop().catch(() => undefined);
   }, [commit]);
 
   const value = useMemo(

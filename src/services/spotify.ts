@@ -4,6 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import * as SecureStore from 'expo-secure-store';
 import type { Track } from '../logic/types';
 import type { Device } from '../logic/queue';
+import * as W from 'spotify-watcher';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -72,10 +73,13 @@ export async function login(clientId: string): Promise<void> {
   await SecureStore.setItemAsync(K_REFRESH, tokens.refreshToken);
   await SecureStore.setItemAsync(K_LOGIN_AT, String(Date.now()));
   await storeAccess(tokens.accessToken, tokens.expiresIn ?? 3600);
+  // De meeluister-dienst beheert het token voortaan (ook met je scherm uit).
+  await W.authSet(clientId, tokens.refreshToken, tokens.accessToken, Date.now() + (tokens.expiresIn ?? 3600) * 1000);
 }
 
 export async function logout(): Promise<void> {
   access = null;
+  await W.authClear();
   await Promise.all([K_REFRESH, K_ACCESS, K_EXPIRES, K_LOGIN_AT].map((k) => SecureStore.deleteItemAsync(k)));
 }
 
@@ -108,7 +112,30 @@ async function refresh(): Promise<string> {
   return json.access_token;
 }
 
-async function token(): Promise<string> {
+/** Native module aanwezig: die is eigenaar van het token (één refresh-token, geen dubbel vernieuwen). */
+async function nativeToken(force: boolean): Promise<string> {
+  if (!W.hasAuth()) {
+    // Eenmalig overzetten vanuit een oudere versie.
+    const refreshToken = await SecureStore.getItemAsync(K_REFRESH);
+    const clientId = await SecureStore.getItemAsync(K_CLIENT);
+    if (!refreshToken || !clientId) throw new SpotifyError(401, 'Spotify is niet gekoppeld (zie Instellingen).');
+    const a = await SecureStore.getItemAsync(K_ACCESS);
+    const e = Number((await SecureStore.getItemAsync(K_EXPIRES)) ?? 0);
+    await W.authSet(clientId, refreshToken, a ?? '', e);
+  }
+  try {
+    return await W.accessToken(force);
+  } catch (e: any) {
+    if (!W.hasAuth()) {
+      await SecureStore.deleteItemAsync(K_REFRESH);
+      throw new SpotifyError(401, 'De Spotify-koppeling is verlopen. Koppel opnieuw in Instellingen.');
+    }
+    throw new SpotifyError(0, e?.message ?? 'Spotify-token ophalen mislukt');
+  }
+}
+
+async function token(force = false): Promise<string> {
+  if (W.available) return nativeToken(force);
   if (access && access.expires > Date.now()) return access.token;
   const t = await SecureStore.getItemAsync(K_ACCESS);
   const e = Number((await SecureStore.getItemAsync(K_EXPIRES)) ?? 0);
@@ -138,7 +165,8 @@ export async function sp<T = any>(path: string, init: RequestInit = {}, attempt 
   });
   if (res.status === 401 && attempt === 0) {
     access = null;
-    await refresh();
+    if (W.available) await token(true);
+    else await refresh();
     return sp<T>(path, init, 1);
   }
   if (res.status === 429 && attempt < 2) {

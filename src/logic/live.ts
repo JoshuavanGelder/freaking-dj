@@ -25,6 +25,10 @@ export type LiveAction = { type: 'queueNext' } | { type: 'replan'; reason: 'aanv
 
 export const QUICK_SKIP_MS = 30_000;
 export const REFILL_BELOW = 5;
+/** Langer niet gekeken (app sliep)? Dan weten we niet hoe lang het vorige nummer echt speelde. */
+export const SLEEP_GAP_MS = 25_000;
+/** Speelt er iets anders terwijl ons nummer klaar zou moeten staan: na zoveel ms controleren. */
+export const CHAIN_CHECK_MS = 8_000;
 
 export function startLive(planId: string, vibe: string, items: PlanItem[], firstQueuedId: string | null, now: number): LiveState {
   return {
@@ -62,7 +66,8 @@ export function observe(
 
   if (obs.id && (!cur || cur.id !== obs.id)) {
     // Ander nummer begonnen: het vorige afsluiten.
-    if (cur && cur.ours) {
+    const slept = cur ? obs.at - cur.at > SLEEP_GAP_MS : false;
+    if (cur && cur.ours && !slept) {
       const info = lookup(cur.id);
       if (info) {
         const full = isFullListen(cur.progressMs, cur.durationMs);
@@ -76,13 +81,14 @@ export function observe(
     state.current = { id: obs.id, progressMs: obs.progressMs, durationMs: obs.durationMs, ours, at: obs.at };
     if (!state.queuedId) {
       actions.push({ type: 'queueNext' });
-    } else if (!ours && obs.at - state.queuedAt > 20_000) {
+    } else if (!ours && obs.at - state.queuedAt > CHAIN_CHECK_MS) {
       // Er speelt iets anders terwijl ons nummer nog in de wachtrij zou moeten staan: even controleren.
       actions.push({ type: 'chainBroken' });
     }
   } else if (cur && obs.id === cur.id) {
     state.current = { ...cur, progressMs: Math.max(cur.progressMs, obs.progressMs), durationMs: obs.durationMs || cur.durationMs, at: obs.at };
-    if (!state.queuedId && cur.ours) actions.push({ type: 'queueNext' });
+    // Niets klaar staan is altijd fout zolang Live DJ loopt (ook na een geskipt nummer of autoplay).
+    if (!state.queuedId) actions.push({ type: 'queueNext' });
   }
 
   // Claude laten bijsturen: bijna op, of twee snelle skips op rij.
@@ -184,4 +190,32 @@ export function feedbackForClaude(s: LiveState): string {
 export function applyReplan(s: LiveState, items: PlanItem[], planId: string, played: number, note: string): LiveState {
   const skip = new Set([...s.played.map((p) => p.track.id), ...(s.queuedId ? [s.queuedId] : [])]);
   return { ...s, planId, upcoming: items.filter((it) => !skip.has(it.track.id)), lastReplanAt: played, note };
+}
+
+/** Wat de meeluister-dienst deed terwijl de app sliep, verwerken. */
+export function reconcileNative(
+  s: LiveState,
+  native: { active: boolean; queuedId: string; history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[] },
+  lookup: (id: string) => { track: Track; style: string; isNew: boolean } | null,
+  now: number,
+): LiveState {
+  let state = s;
+  // Gespeelde nummers die de app zelf niet zag (dubbelen binnen 90 s overslaan).
+  const extra: LivePlayed[] = [];
+  for (const h of native.history) {
+    if (state.played.some((p) => p.track.id === h.id && Math.abs(p.at - h.at) < 90_000)) continue;
+    if (h.at < state.startedAt) continue;
+    const info = lookup(h.id);
+    if (info) extra.push({ ...info, outcome: h.outcome, listenedMs: h.listenedMs, at: h.at });
+  }
+  if (extra.length) state = { ...state, played: [...state.played, ...extra].sort((a, b) => a.at - b.at) };
+  // De dienst zette een ander nummer klaar: overnemen.
+  if (native.active && native.queuedId && native.queuedId !== state.queuedId) {
+    const consumed = new Set([native.queuedId, ...native.history.map((h) => h.id)]);
+    state = { ...state, queuedId: native.queuedId, queuedAt: now, upcoming: state.upcoming.filter((it) => !consumed.has(it.track.id)) };
+  } else if (native.active && !native.queuedId && state.queuedId) {
+    // De dienst kon niets klaarzetten (lijst op of Spotify-fout): de app neemt het over.
+    state = { ...state, queuedId: null };
+  }
+  return state;
 }

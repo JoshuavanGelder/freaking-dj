@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyReplan, feedbackForClaude, observe, pickNext, startLive, takeNext, type LiveState } from './live.ts';
+import { applyReplan, feedbackForClaude, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
 import type { PlanItem, Track } from './types.ts';
 
 const tr = (id: string, artist: string, name = id): Track => ({ id, name, artists: [artist], durationMs: 200_000 });
@@ -114,4 +114,35 @@ test('feedback voor Claude noemt gehoord en geskipt', () => {
   });
   assert.match(f, /Helemaal geluisterd: Hope – NF/);
   assert.match(f, /Geskipt: Firestone – Kygo \(EDM, nieuw\) na 5 s/);
+});
+
+test('na slapen: geen verkeerde skip, en toch meteen het volgende klaarzetten', () => {
+  const { s, lookup } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z'), it('e', 'Q'), it('f', 'R')]);
+  let st = observe(s, { id: 'a', progressMs: 1000, durationMs: 200_000, isPlaying: true, at: T0 }, lookup).state;
+  st = { ...st, queuedId: 'b' };
+  // App sliep 10 minuten; er speelt nu een autoplay-nummer en b is al voorbij.
+  const r = observe(st, { id: 'auto', progressMs: 3000, durationMs: 200_000, isPlaying: true, at: T0 + 600_000 }, lookup);
+  assert.equal(r.state.played.length, 0, 'a niet als skip tellen');
+  assert.ok(r.actions.some((x) => x.type === 'chainBroken'));
+  // Na de controle (b staat er niet meer) moet er direct iets klaargezet worden, ook al is "auto" niet van ons.
+  const r2 = observe({ ...r.state, queuedId: null }, { id: 'auto', progressMs: 7000, durationMs: 200_000, isPlaying: true, at: T0 + 604_000 }, lookup);
+  assert.ok(r2.actions.some((x) => x.type === 'queueNext'));
+});
+
+test('reconcileNative: klaargezet nummer en geschiedenis van de dienst overnemen', () => {
+  const { s, lookup } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z')]);
+  const r = reconcileNative(
+    { ...s, queuedId: 'a' },
+    { active: true, queuedId: 'c', history: [{ id: 'a', outcome: 'full', listenedMs: 200_000, at: T0 + 200_000 }, { id: 'b', outcome: 'skip', listenedMs: 4000, at: T0 + 204_000 }] },
+    lookup,
+    T0 + 205_000,
+  );
+  assert.equal(r.queuedId, 'c');
+  assert.deepEqual(r.upcoming.map((x) => x.track.id), ['d']);
+  assert.deepEqual(r.played.map((p) => `${p.track.id}:${p.outcome}`), ['a:full', 'b:skip']);
+  // Nog een keer: geen dubbelen.
+  const again = reconcileNative(r, { active: true, queuedId: 'c', history: [{ id: 'a', outcome: 'full', listenedMs: 200_000, at: T0 + 200_000 }] }, lookup, T0 + 206_000);
+  assert.equal(again.played.length, 2);
+  // Dienst kon niets klaarzetten: app neemt over.
+  assert.equal(reconcileNative(r, { active: true, queuedId: '', history: [] }, lookup, T0 + 207_000).queuedId, null);
 });
