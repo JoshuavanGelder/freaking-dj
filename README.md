@@ -15,8 +15,9 @@ Open op je telefoon de nieuwste [release](../../releases/latest) en tik op het `
 2. **GitHub-token** — [github.com/settings/personal-access-tokens/new](https://github.com/settings/personal-access-tokens/new):
    fine-grained, alleen repo `freaking-dj`, rechten **Contents** en **Actions**: *Read and write*.
    Plak het in Instellingen → Claude via GitHub.
-3. **Claude-token** — één keer, op een computer met Claude Code: `claude setup-token`. Zet het token in deze repo
-   bij *Settings → Secrets and variables → Actions* als secret **`CLAUDE_CODE_OAUTH_TOKEN`** (1 jaar geldig).
+3. **Claude-token** — open een Codespace op deze repo (knop *Code → Codespaces*, kan op je telefoon) en draai
+   `bash scripts/claude-token.sh`. Dat maakt het token met `claude setup-token`, test het en zet het meteen als
+   secret **`CLAUDE_CODE_OAUTH_TOKEN`** (1 jaar geldig; daarna het script opnieuw draaien).
 4. **Meeluisteren** — in Spotify: Instellingen → Afspelen → **Apparaatuitzending** aan. Zet de batterij van
    Freaking DJ op *Onbeperkt* (Samsung stopt anders de dienst).
 

@@ -85,7 +85,12 @@ child.on('close', (code) => {
   clearTimeout(timer);
   const out = parseCliOutput(stdout);
   const res = classify(out, `${stdout}\n${stderr}`, code ?? 1);
-  if (res.status !== 'ok') console.error((stderr || stdout).slice(-2000));
+  if (res.status !== 'ok') {
+    console.error((stderr || stdout).slice(-2000));
+    // Korte melding als annotation: die is via de API te lezen (de job-logs niet altijd).
+    const said = String((out && out.result) || stderr || stdout || '').replace(/sk-ant-[A-Za-z0-9_-]+/g, '[token]');
+    console.log(`::warning title=claude::${res.status}: ${said.replace(/\s+/g, ' ').slice(0, 400)}`);
+  }
   writeResponse({ ...res, costUsd: out && typeof out.total_cost_usd === 'number' ? out.total_cost_usd : null, model });
 });
 child.on('error', (err) => {
