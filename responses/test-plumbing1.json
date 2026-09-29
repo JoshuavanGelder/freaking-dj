@@ -1,9 +1,0 @@
-{
- "id": "test-plumbing1",
- "finishedAt": "2026-09-29T11:50:19.109Z",
- "durationMs": 0,
- "status": "token",
- "message": "Er is nog geen Claude-token: zet het secret CLAUDE_CODE_OAUTH_TOKEN in de repo (maak het met \"claude setup-token\").",
- "resetAt": null,
- "answer": null
-}
