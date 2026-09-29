@@ -1,0 +1,258 @@
+{
+ "id": "mun0p0pp-xk1n9",
+ "finishedAt": "2026-09-29T18:36:28.888Z",
+ "durationMs": 15379,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Lekdij feestmix",
+  "note": "Je krijgt swingende meezingers en feestknallers uit je favorieten, met af en toe iets nieuws.",
+  "items": [
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t72",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t171",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Can't Stop the Feeling!",
+    "artist": "Justin Timberlake",
+    "style": "Feest-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t48",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t218",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Sweet but Psycho",
+    "artist": "Ava Max",
+    "style": "Feest-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t98",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Shut Up and Dance",
+    "artist": "WALK THE MOON",
+    "style": "Feest-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t96",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t139",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t212",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t192",
+    "title": "",
+    "artist": "",
+    "style": "Feest-pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.061838000000000004,
+ "model": "sonnet"
+}
