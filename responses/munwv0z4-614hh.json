@@ -1,0 +1,378 @@
+{
+ "id": "munwv0z4-614hh",
+ "finishedAt": "2026-09-30T09:37:01.682Z",
+ "durationMs": 21316,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Wallen en War on Drugs",
+  "note": "Ik heb twaalf van je eigen nummers vervangen door nieuwe die passen bij Morgan Wallen en The War on Drugs.",
+  "items": [
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Free Fallin'",
+    "artist": "Tom Petty",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Under The Pressure",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sand In My Boots",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Come to the City",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Thinkin' Bout Me",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I'm on Fire",
+    "artist": "Bruce Springsteen",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t54",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Son of a Sinner",
+    "artist": "Jelly Roll",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Red Eyes",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Wasted On You",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Something in the Orange",
+    "artist": "Zach Bryan",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "American Girl",
+    "artist": "Tom Petty",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Fake Empire",
+    "artist": "The National",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Pain",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t57",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Dancing in the Dark",
+    "artist": "Bruce Springsteen",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Tennessee Whiskey",
+    "artist": "Chris Stapleton",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t141",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Strangest Thing",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t193",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Eyes To The Wind",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Cowgirls",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t195",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t219",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Use Somebody",
+    "artist": "Kings of Leon",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Pretty Pimpin",
+    "artist": "Kurt Vile",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t152",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "In Chains",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t162",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t212",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stick Season",
+    "artist": "Noah Kahan",
+    "style": "Folk-rock",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "",
+    "title": "Holding On",
+    "artist": "The War On Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Everything I Love",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sex on Fire",
+    "artist": "Kings of Leon",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "You Proof",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0685068,
+ "model": "sonnet"
+}
