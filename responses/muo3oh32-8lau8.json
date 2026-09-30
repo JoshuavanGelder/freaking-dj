@@ -1,0 +1,178 @@
+{
+ "id": "muo3oh32-8lau8",
+ "finishedAt": "2026-09-30T12:47:47.755Z",
+ "durationMs": 16537,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding: rock en dance",
+  "note": "Je skipte popperige Eurovisie-nummers en NF, dus ik ga voor Eurovisie-rock, dance en pop-rock zonder herhalingen.",
+  "items": [
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stefania",
+    "artist": "Kalush Orchestra",
+    "style": "Eurovisie-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t126",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Only Teardrops",
+    "artist": "Emmelie de Forest",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t204",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t37",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t182",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t206",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t148",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t72",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Waterloo",
+    "artist": "ABBA",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.05536880000000001,
+ "model": "sonnet"
+}
