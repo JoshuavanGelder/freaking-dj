@@ -17,7 +17,24 @@ export type LiveState = {
   current: { id: string; progressMs: number; durationMs: number; ours: boolean; at: number } | null;
   lastReplanAt: number; // aantal gespeelde nummers bij de laatste bijsturing door Claude
   startedAt: number;
+  /** Alles wat we in deze sessie ooit klaargezet hebben, ook als het zo snel geskipt werd dat de app het nooit zag spelen. */
+  served?: Track[];
 };
+
+const SERVED_MAX = 300;
+
+/** Legt vast dat dit nummer in deze sessie is klaargezet/gespeeld (dan komt het nooit meer terug). */
+export function withServed(s: LiveState, track: Track | null | undefined): LiveState {
+  if (!track) return s;
+  const list = s.served ?? [];
+  if (list.some((t) => t.id === track.id)) return s;
+  return { ...s, served: [...list, track].slice(-SERVED_MAX) };
+}
+
+/** Speelt er iets anders dan wat de app het laatst zag? Dan loopt de app achter (bv. na een snelle skip) en moet hij niets "herstellen". */
+export function appLagging(s: LiveState, playingId: string | null): boolean {
+  return !!playingId && !!s.current && s.current.id !== playingId;
+}
 
 export type Observation = { id: string | null; progressMs: number; durationMs: number; isPlaying: boolean; at: number };
 
@@ -43,6 +60,7 @@ export function startLive(planId: string, vibe: string, items: PlanItem[], first
     current: null,
     lastReplanAt: 0,
     startedAt: now,
+    served: items.filter((it) => it.track.id === firstQueuedId).map((it) => it.track),
   };
 }
 
@@ -75,6 +93,7 @@ export function observe(
       }
     }
     const ours = obs.id === state.queuedId || !!lookup(obs.id);
+    state = withServed(state, lookup(obs.id)?.track);
     if (obs.id === state.queuedId) {
       state.queuedId = null;
     }
@@ -88,6 +107,8 @@ export function observe(
   } else if (cur && obs.id === cur.id) {
     state.current = { ...cur, progressMs: Math.max(cur.progressMs, obs.progressMs), durationMs: obs.durationMs || cur.durationMs, at: obs.at };
     // Niets klaar staan is altijd fout zolang Live DJ loopt (ook na een geskipt nummer of autoplay).
+    // Wat "klaarstaat" kan niet tegelijk spelen: dan is de toestand verouderd (bv. snel geskipt), dus herstellen.
+    if (state.queuedId === obs.id) state.queuedId = null;
     if (!state.queuedId) actions.push({ type: 'queueNext' });
   }
 
@@ -116,6 +137,7 @@ export function usedSet(s: LiveState, extra: Track[] = []): UsedSet {
     keys.add(songKey(t.name, t.artists));
   };
   s.played.forEach((p) => add(p.track));
+  (s.served ?? []).forEach(add);
   extra.forEach(add);
   if (s.queuedId) ids.add(s.queuedId);
   if (s.current) ids.add(s.current.id);
@@ -198,7 +220,7 @@ export function pickNext(
 export function takeNext(s: LiveState, index: number, now: number, why = ''): { state: LiveState; item: PlanItem } {
   const item = s.upcoming[index];
   const upcoming = s.upcoming.filter((_, i) => i !== index);
-  return { state: { ...s, upcoming, queuedId: item.track.id, queuedAt: now, note: why ? `Aangepast: ${why}` : s.note }, item };
+  return { state: withServed({ ...s, upcoming, queuedId: item.track.id, queuedAt: now, note: why ? `Aangepast: ${why}` : s.note }, item.track), item };
 }
 
 /** Samenvatting voor Claude: wat er in deze sessie gehoord en geskipt is. */
@@ -246,6 +268,9 @@ export function reconcileNative(
   now: number,
 ): LiveState {
   let state = s;
+  // Alles wat de dienst klaarzette of zag spelen onthouden, ook wat de app zelf nooit zag (te snel geskipt).
+  for (const h of native.history) state = withServed(state, lookup(h.id)?.track);
+  if (native.queuedId) state = withServed(state, lookup(native.queuedId)?.track);
   // Gespeelde nummers die de app zelf niet zag (dubbelen binnen 90 s overslaan).
   const extra: LivePlayed[] = [];
   for (const h of native.history) {
@@ -255,8 +280,12 @@ export function reconcileNative(
     if (info) extra.push({ ...info, outcome: h.outcome, listenedMs: h.listenedMs, at: h.at });
   }
   if (extra.length) state = { ...state, played: [...state.played, ...extra].sort((a, b) => a.at - b.at) };
-  // De dienst zette een ander nummer klaar: overnemen.
-  if (native.active && native.queuedId && native.queuedId !== state.queuedId) {
+  // De dienst zette een ander nummer klaar: overnemen. Speelt dat nummer al, dan is het van de dienst
+  // verouderd (die kiest bij de eerstvolgende controle het echte volgende) en nemen we het niet over.
+  const playingNow = state.current?.id ?? null;
+  if (native.active && native.queuedId && native.queuedId === playingNow) {
+    if (state.queuedId === native.queuedId) state = { ...state, queuedId: null };
+  } else if (native.active && native.queuedId && native.queuedId !== state.queuedId) {
     const consumed = new Set([native.queuedId, ...native.history.map((h) => h.id)]);
     state = { ...state, queuedId: native.queuedId, queuedAt: now, upcoming: state.upcoming.filter((it) => !consumed.has(it.track.id)) };
   } else if (native.active && !native.queuedId && state.queuedId) {

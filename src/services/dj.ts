@@ -167,7 +167,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     rules,
     signals,
     learned,
-    avoid,
+    avoid: avoid.slice(0, 80), // de weigering hierboven (ctx) geldt voor alles; Claude hoeft maar de meest recente te lezen
     now: new Date(now),
     model: input.model,
   });

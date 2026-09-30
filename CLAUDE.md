@@ -58,6 +58,10 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   `alreadyQueued`/`alreadyKeys`, niet alleen als tip aan Claude). De dienst filtert in `setCandidates` zelf ook op klaargezet/lastId/geschiedenis,
   omdat de app soms achterloopt. Reload-knop: `missingQueued` met `now` doet niets binnen `QUEUE_LAG_MS` (Spotify loopt na een skip achter)
   en kijkt eerst 2 s later nog eens voordat iets opnieuw wordt toegevoegd.
+  `LiveState.served` (`withServed`) is het logboek van alles wat ooit klaargezet is, ook als het te snel geskipt werd om gezien te
+  worden (of tijdens slaap): dat, plus Spotify's `recently-played` sinds de start, gaat mee in `usedSet`/`applyReplan`.
+  Een `queuedId` dat al speelt is verouderd: `observe` en `reconcileNative` herstellen dat (de lus kiest dan het echte volgende), en de
+  reload-knop zegt alleen "klopt" als het nummer echt in `q.next` staat; loopt de app achter (`appLagging`) dan herstelt hij niets.
 - **Reload-knop op het Nu-scherm** (`resync` in `live.tsx`, `missingQueued` in `live.ts`): controleert of `queuedId` nog in de
   Spotify-wachtrij staat (of al speelt) en zet het anders opnieuw klaar, ook bij de dienst (`liveSetQueued`). Voor als je de
   wachtrij leegmaakte terwijl Live DJ liep. Beperking: Spotify toont maar ±20 nummers van de wachtrij.

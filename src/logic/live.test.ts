@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, QUEUE_LAG_MS, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
+import { appLagging, applyReplan, feedbackForClaude, missingQueued, observe, pickNext, QUEUE_LAG_MS, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
 import type { PlanItem, Track } from './types.ts';
 
 const tr = (id: string, artist: string, name = id): Track => ({ id, name, artists: [artist], durationMs: 200_000 });
@@ -201,4 +201,50 @@ test('pickNext: kiest nooit wat nu speelt, klaarstaat of al gespeeld is (ook nie
   };
   const p = pickNext(st, tr('a', 'NF'), () => true)!;
   assert.equal(st.upcoming[p.index].track.id, 'd');
+});
+
+test('te snel geskipt om gezien te worden: nummer komt toch niet terug na bijsturen', () => {
+  const items = [it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z'), it('e', 'Q')];
+  const { s, lookup } = setup(items, 'a');
+  // a speelt; de DJ kiest b en zet het klaar.
+  let st = observe(s, { id: 'a', progressMs: 0, durationMs: 200_000, isPlaying: true, at: T0 }, lookup).state;
+  st = takeNext(st, st.upcoming.findIndex((x) => x.track.id === 'b'), T0 + 1000).state;
+  // b en c worden razendsnel weggeklikt: de app ziet ze nooit spelen, ze staan niet in "played".
+  st = { ...st, queuedId: null };
+  assert.equal(st.played.some((p) => p.track.id === 'b'), false);
+  const re = applyReplan(st, [it('b', 'X'), it('d', 'Z'), it('e', 'Q')], 'p2', 0, 'x');
+  assert.deepEqual(re.upcoming.map((x) => x.track.id), ['d', 'e'], 'b was al klaargezet en komt niet terug');
+});
+
+test('reconcileNative onthoudt ook wat de dienst klaarzette of zag spelen', () => {
+  const { s, lookup } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z')]);
+  const r = reconcileNative(s, { active: true, queuedId: 'c', history: [{ id: 'b', outcome: 'skip', listenedMs: 1000, at: T0 - 1 }] }, lookup, T0 + 1);
+  const ids = (r.served ?? []).map((t) => t.id);
+  assert.ok(ids.includes('b') && ids.includes('c'));
+  assert.equal(applyReplan(r, [it('b', 'X'), it('c', 'Y'), it('d', 'Z')], 'p2', 0, 'x').upcoming.map((x) => x.track.id).join(), 'd');
+});
+
+test('klaargezet nummer dat al speelt wordt hersteld en er wordt een nieuw volgend gekozen', () => {
+  const { s, lookup } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y')], null);
+  // Verouderd: de app dacht dat b klaarstond, maar b speelt al (en de app zag dat al).
+  const stale: LiveState = { ...s, queuedId: 'b', current: { id: 'b', progressMs: 1000, durationMs: 200_000, ours: true, at: T0 } };
+  const r = observe(stale, { id: 'b', progressMs: 5000, durationMs: 200_000, isPlaying: true, at: T0 + 4000 }, lookup);
+  assert.equal(r.state.queuedId, null);
+  assert.ok(r.actions.some((x) => x.type === 'queueNext'));
+});
+
+test('reconcileNative neemt geen klaargezet nummer over dat al speelt', () => {
+  const { s, lookup } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y')], null);
+  const stale: LiveState = { ...s, queuedId: 'b', current: { id: 'b', progressMs: 1000, durationMs: 200_000, ours: true, at: T0 } };
+  const r = reconcileNative(stale, { active: true, queuedId: 'b', history: [] }, lookup, T0 + 5000);
+  assert.equal(r.queuedId, null);
+});
+
+test('appLagging: speelt er iets anders dan de app het laatst zag', () => {
+  const { s } = setup([it('a', 'NF')], null);
+  const st: LiveState = { ...s, current: { id: 'a', progressMs: 0, durationMs: 1, ours: true, at: T0 } };
+  assert.equal(appLagging(st, 'a'), false);
+  assert.equal(appLagging(st, 'zz'), true);
+  assert.equal(appLagging({ ...st, current: null }, 'zz'), false);
+  assert.equal(appLagging(st, null), false);
 });

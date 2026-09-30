@@ -6,7 +6,7 @@ import { useApp } from './store';
 import * as sp from './services/spotify';
 import { addToEnd, replaceQueue } from './services/player';
 import { DjError, fetchHistory, makePlan } from './services/dj';
-import { applyReplan, feedbackForClaude, isUsed, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, usedSet, type LiveState } from './logic/live';
+import { appLagging, applyReplan, feedbackForClaude, isUsed, observe, pickNext, QUEUE_LAG_MS, reconcileNative, startLive, takeNext, usedSet, type LiveState } from './logic/live';
 import * as W from 'spotify-watcher';
 import { dislikedKeys } from './logic/learning';
 import { parseVibe, rejectReason } from './logic/rules';
@@ -49,6 +49,12 @@ function restrictedMessage(name?: string | null): string {
 
 function toCandidate(it: PlanItem): W.LiveCandidate {
   return { id: it.track.id, artists: it.track.artists, isNew: it.isNew, style: it.style, durationMs: it.track.durationMs };
+}
+
+/** Wat Spotify zelf als gespeeld kent sinds Live DJ begon: vangt ook op wat de app niet zag (scherm uit, te snel geskipt). */
+async function recentlyHeard(since: number): Promise<Track[]> {
+  const r = await sp.recentlyPlayed().catch(() => []);
+  return r.filter((x) => x.playedAt >= since - 120_000).map((x) => x.track);
 }
 
 export function LiveProvider({ children }: { children: React.ReactNode }) {
@@ -144,6 +150,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
       setError(null);
       commit({ ...L, lastReplanAt: L.played.length });
       try {
+        const heard = await recentlyHeard(L.startedAt);
         const s = stateRef.current;
         let history = s.history;
         if (!history) {
@@ -177,7 +184,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           // Toevoegen/weghalen: de rest blijft staan; anders een frisse lijst van 15.
           count: kind === 'breed' ? 15 : undefined,
           adjustKind: kind,
-          extraAvoid: [...L.played.map((p) => p.track), ...inUse(L)],
+          extraAvoid: [...heard, ...[...(L.served ?? [])].reverse(), ...[...L.played].reverse().map((p) => p.track), ...inUse(L)],
           excludeUsed: true,
         });
         savePlan({ ...out.plan, title: `Live: ${out.plan.title}` });
@@ -202,7 +209,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
                 ? out.plan.items
                 : [...out.plan.items, ...out.plan.spares];
           const text = manual && out.plan.change ? `${note} (${out.plan.change})` : note;
-          commit(applyReplan(cur, items, out.plan.id, cur.played.length, text, [...inUse(cur), ...inSpotify]));
+          commit(applyReplan(cur, items, out.plan.id, cur.played.length, text, [...inUse(cur), ...inSpotify, ...heard]));
         }
       } catch (e: any) {
         const resp = e instanceof DjError ? (e as any).response : null;
@@ -390,19 +397,34 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     try {
       // Spotify's wachtrij loopt na een skip of nummerwissel even achter: ziet het er kwijt uit, dan
       // eerst nog een keer kijken voordat we iets opnieuw toevoegen (anders staat het er dubbel in).
-      let q = await sp.queue();
-      let pb = await sp.playback();
-      let L = liveRef.current;
-      if (!L || L.status !== 'actief') return null;
-      let id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null, Date.now());
-      if (id) {
-        await new Promise((r) => setTimeout(r, RECHECK_MS));
-        [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
+      // "De wachtrij klopt" zeggen we alleen als het klaargezette nummer er echt in staat.
+      let [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
+      let L: LiveState | null = liveRef.current;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        if (attempt > 0) {
+          await new Promise((r) => setTimeout(r, RECHECK_MS));
+          [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
+        }
         L = liveRef.current;
         if (!L || L.status !== 'actief') return null;
-        id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null, Date.now());
+        const playingId = pb.item?.id ?? null;
+        // Speelt er al iets anders dan de app het laatst zag (snel geskipt)? Dan loopt de app achter: niets "herstellen".
+        if (appLagging(L, playingId)) return { level: 'info' as const, text: 'Live DJ is nog bezig met je skip te verwerken; probeer het zo nog eens.' };
+        if (!L.queuedId) return { level: 'info' as const, text: 'Er staat nu niets van Live DJ klaar; het volgende nummer wordt zo gekozen.' };
+        if (playingId === L.queuedId) {
+          // Het "klaargezette" nummer speelt al: de app liep achter. Herstellen; de lus kiest het echte volgende.
+          commit({ ...L, queuedId: null });
+          return { level: 'info' as const, text: 'Het nummer dat klaar zou staan speelt al. Live DJ kiest nu het volgende.' };
+        }
+        if (q.next.some((t) => t.id === L!.queuedId)) {
+          const nm = lookup(L.queuedId)?.track.name;
+          return { level: 'ok' as const, text: `De wachtrij klopt: ${nm ? `"${nm}"` : 'het volgende nummer'} staat klaar in Spotify.` };
+        }
+        if (Date.now() - L.queuedAt < QUEUE_LAG_MS) return { level: 'info' as const, text: 'Het volgende nummer is net klaargezet; Spotify laat het zo zien. Vernieuw straks nog eens.' };
       }
-      if (!id) return { level: 'ok' as const, text: L.queuedId ? 'De wachtrij klopt: het volgende nummer staat klaar.' : 'Live DJ zet zo het volgende nummer klaar.' };
+      // Twee keer gekeken en het klaargezette nummer staat er echt niet in: opnieuw toevoegen.
+      if (!L?.queuedId) return null;
+      const id: string = L.queuedId;
       const devKey = pb.device?.id ?? pb.device?.name ?? null;
       if (pb.device?.isRestricted || (devKey && restrictedDev.current === devKey)) {
         restrictedDev.current = devKey;
