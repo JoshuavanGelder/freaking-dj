@@ -151,7 +151,25 @@ object LiveQueuer {
   }
 
   fun setCandidates(ctx: Context, candidatesJson: String) {
-    synchronized(lock) { prefs(ctx).edit().putString("candidates", candidatesJson).apply() }
+    synchronized(lock) {
+      val p = prefs(ctx)
+      // De app loopt soms achter op wat de dienst net deed (bv. na bijsturen door Claude): zet nooit
+      // iets terug in de lijst dat al klaarstaat, speelt of gespeeld is.
+      val used = HashSet<String>()
+      val queued = p.getString("queuedId", "") ?: ""
+      val last = p.getString("lastId", "") ?: ""
+      if (queued.isNotEmpty()) used.add(queued)
+      if (last.isNotEmpty()) used.add(last)
+      val history = JSONArray(p.getString("history", "[]") ?: "[]")
+      for (i in 0 until history.length()) used.add(history.getJSONObject(i).optString("id"))
+      val incoming = JSONArray(candidatesJson)
+      val kept = JSONArray()
+      for (i in 0 until incoming.length()) {
+        val c = incoming.getJSONObject(i)
+        if (c.optString("id") !in used) kept.put(c)
+      }
+      p.edit().putString("candidates", kept.toString()).apply()
+    }
   }
 
   /** De app heeft zelf een nummer klaargezet (vangnet): dat is nu het nummer om op te wachten. */

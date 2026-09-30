@@ -13,6 +13,7 @@ import {
   type EnforceContext,
 } from './rules.ts';
 import type { PlanItem, PoolTrack, Signals, Track } from './types.ts';
+import { songKey } from './text.ts';
 
 const NOW = Date.parse('2026-09-29T12:00:00Z');
 const noSignals = (): Signals => ({ resting: {}, notNow: {}, jumpTargets: {}, suspicions: [], disliked: [] });
@@ -83,6 +84,16 @@ test('enforce: dubbelen, blocklist en al in wachtrij eruit', () => {
   const r = enforce([a, b, c, d], [], ctx('coding', { alreadyQueued: q }));
   assert.deepEqual(r.items.map((x) => x.track.name), ['Believer']);
   assert.deepEqual(r.removed.map((x) => x.reason).sort(), ['blocklist', 'dubbel', 'staat al in je wachtrij']);
+});
+
+test('enforce: een andere versie van wat al speelt of klaarstaat komt er ook niet in', () => {
+  const playing = tr('Hope (Remastered 2020)', 'NF', 'p1');
+  const again = it('Hope', 'NF'); // ander id, zelfde nummer
+  const fresh = it('Wake Me Up', 'Avicii');
+  const c = ctx('coding', { alreadyQueued: new Set([playing.id]), alreadyKeys: new Set([songKey(playing.name, playing.artists)]) });
+  assert.equal(rejectReason(again.track, c), 'staat al in je wachtrij');
+  const r = enforce([again, fresh], [], c);
+  assert.deepEqual(r.items.map((x) => x.track.name), ['Wake Me Up']);
 });
 
 test('enforce: eurovisie-favoriet zit er altijd in, op plek 3', () => {

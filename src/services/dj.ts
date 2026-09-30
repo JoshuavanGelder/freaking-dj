@@ -67,6 +67,8 @@ export type DjInput = {
   adjustKind?: AdjustKind;
   /** Live DJ: al gespeeld in deze sessie; komt niet terug. */
   extraAvoid?: Track[];
+  /** Live DJ: alles in `avoid` (Spotify-wachtrij + extraAvoid) ook echt weigeren, niet alleen als tip aan Claude geven. */
+  excludeUsed?: boolean;
 };
 
 export type DjOutput = { plan: Plan; response: DjResponse; favorite: Track | null };
@@ -139,7 +141,6 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     eurovision: base.eurovision || !!extra?.eurovision,
   };
   const signals = signalsFor(learned, history, now);
-  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned) };
 
   onStatus('Wat er nu speelt bekijken');
   const avoid: Track[] = [];
@@ -152,6 +153,8 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   }
 
   avoid.push(...(input.extraAvoid ?? []));
+  const used = input.excludeUsed ? { ids: new Set(avoid.map((t) => t.id)), keys: new Set(avoid.map((t) => songKey(t.name, t.artists))) } : null;
+  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
   const refs: ClaudeRef[] = poolForClaude(history.pool, ctx);
   const id = newId();
   const request = buildRequest({

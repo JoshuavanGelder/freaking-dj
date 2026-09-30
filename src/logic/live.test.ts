@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
+import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, QUEUE_LAG_MS, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
 import type { PlanItem, Track } from './types.ts';
 
 const tr = (id: string, artist: string, name = id): Track => ({ id, name, artists: [artist], durationMs: 200_000 });
@@ -159,4 +159,46 @@ test('missingQueued: wat wij klaarzetten en uit de wachtrij verdween, moet terug
   // Niets klaargezet, of Live DJ gepauzeerd: niets te herstellen.
   assert.equal(missingQueued({ ...s, queuedId: null }, [], 'old0'), null);
   assert.equal(missingQueued({ ...s, status: 'gepauzeerd' }, [], 'old0'), null);
+});
+
+test('missingQueued: net klaargezet (Spotify loopt achter) -> niet nog eens toevoegen', () => {
+  const { s } = setup([it('a', 'NF'), it('b', 'X')], 'a'); // queuedAt = T0
+  assert.equal(missingQueued(s, [], 'old0', T0 + 3_000), null, 'binnen 10 s: Spotify toont het misschien nog niet');
+  assert.equal(missingQueued(s, [], 'old0', T0 + QUEUE_LAG_MS + 1), 'a', 'daarna echt kwijt');
+  assert.equal(missingQueued(s, ['a'], 'old0', T0 + 60_000), null);
+});
+
+test('bijsturen door Claude: wat nu speelt of klaarstaat komt niet terug in de lijst', () => {
+  const { s } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z')], null);
+  // b speelt nu (nog niet in "played"), c staat klaar, a is al gespeeld.
+  const st: LiveState = {
+    ...s,
+    played: [{ track: tr('a', 'NF'), style: 'Rap', isNew: false, outcome: 'full', listenedMs: 1, at: 1 }],
+    current: { id: 'b', progressMs: 5000, durationMs: 200_000, ours: true, at: T0 },
+    queuedId: 'c',
+  };
+  const re = applyReplan(st, [it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z'), it('e', 'Q')], 'p2', 1, 'bijgestuurd');
+  assert.deepEqual(re.upcoming.map((x) => x.track.id), ['d', 'e']);
+});
+
+test('bijsturen door Claude: ook een andere versie van hetzelfde nummer en wat in Spotify klaarstaat eruit', () => {
+  const { s } = setup([it('a', 'NF')], null);
+  const st: LiveState = { ...s, played: [{ track: tr('h1', 'NF', 'Hope'), style: 'Rap', isNew: false, outcome: 'skip', listenedMs: 4000, at: 1 }] };
+  const remaster = { ...it('h2', 'NF'), track: tr('h2', 'NF', 'Hope - Remastered 2020') };
+  const inSpotify = [tr('q1', 'Kygo', 'Firestone')];
+  const re = applyReplan(st, [remaster, it('q1', 'Kygo'), { ...it('q2', 'Kygo'), track: tr('q2', 'Kygo', 'Firestone (Radio Edit)') }, it('n1', 'Avicii')], 'p2', 1, 'x', inSpotify);
+  assert.deepEqual(re.upcoming.map((x) => x.track.id), ['n1']);
+});
+
+test('pickNext: kiest nooit wat nu speelt, klaarstaat of al gespeeld is (ook niet in een andere versie)', () => {
+  const { s } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y'), it('d', 'Z')], null);
+  const st: LiveState = {
+    ...s,
+    played: [{ track: tr('h1', 'X', 'Song B'), style: 'Pop', isNew: false, outcome: 'full', listenedMs: 1, at: 1 }],
+    current: { id: 'a', progressMs: 1000, durationMs: 200_000, ours: true, at: T0 },
+    queuedId: 'c',
+    upcoming: [it('a', 'NF'), { ...it('b2', 'X'), track: tr('b2', 'X', 'Song B - Remastered') }, it('c', 'Y'), it('d', 'Z')],
+  };
+  const p = pickNext(st, tr('a', 'NF'), () => true)!;
+  assert.equal(st.upcoming[p.index].track.id, 'd');
 });

@@ -1,7 +1,7 @@
 // Live DJ: de app zet steeds maar één nummer vooruit in Spotify en kiest het volgende pas als het
 // vorige begint. Zo kan hij meteen reageren op skips. Pure logica, zodat we het kunnen testen.
 import type { PlanItem, Track } from './types.ts';
-import { norm, shareArtist } from './text.ts';
+import { norm, shareArtist, songKey } from './text.ts';
 
 export type LivePlayed = { track: Track; style: string; isNew: boolean; outcome: 'full' | 'skip'; listenedMs: number; at: number };
 
@@ -101,6 +101,31 @@ export function observe(
   return { state, actions };
 }
 
+export type UsedSet = { ids: Set<string>; keys: Set<string> };
+
+/**
+ * Alles wat in deze sessie al gespeeld is, nu speelt of klaarstaat: op id én op titel+artiest
+ * (dan vangen we ook een andere versie van hetzelfde nummer af). `extra` = nummers die we van
+ * buiten kennen, bv. wat er nu echt in de Spotify-wachtrij staat.
+ */
+export function usedSet(s: LiveState, extra: Track[] = []): UsedSet {
+  const ids = new Set<string>();
+  const keys = new Set<string>();
+  const add = (t: Track) => {
+    ids.add(t.id);
+    keys.add(songKey(t.name, t.artists));
+  };
+  s.played.forEach((p) => add(p.track));
+  extra.forEach(add);
+  if (s.queuedId) ids.add(s.queuedId);
+  if (s.current) ids.add(s.current.id);
+  return { ids, keys };
+}
+
+export function isUsed(u: UsedSet, t: Track): boolean {
+  return u.ids.has(t.id) || u.keys.has(songKey(t.name, t.artists));
+}
+
 /** Trailing skips (de laatste gespeelde nummers die geskipt werden), nieuwste eerst. */
 function recentSkips(played: LivePlayed[]): LivePlayed[] {
   const out: LivePlayed[] = [];
@@ -118,9 +143,11 @@ function recentSkips(played: LivePlayed[]): LivePlayed[] {
  */
 export function pickNext(
   s: LiveState,
-  currentTrack: { artists: string[]; style?: string } | null,
+  currentTrack: { artists: string[]; name?: string; style?: string } | null,
   allowed: (t: Track) => boolean,
 ): { index: number; why: string } | null {
+  const used = usedSet(s);
+  if (currentTrack?.name) used.keys.add(songKey(currentTrack.name, currentTrack.artists));
   const skips = recentSkips(s.played);
   const last = s.played[s.played.length - 1];
   const jumpedTo = last && last.outcome === 'full' && s.played.length >= 3 && s.played.slice(-3, -1).every((p) => p.outcome === 'skip') ? last : null;
@@ -131,7 +158,7 @@ export function pickNext(
   let first: { index: number; why: string } | null = null; // wat zonder bijsturen de volgende was
   s.upcoming.forEach((it, i) => {
     if (!allowed(it.track)) return;
-    if (s.played.some((p) => p.track.id === it.track.id)) return;
+    if (isUsed(used, it.track)) return; // al gespeeld, speelt nu of staat klaar (ook een andere versie)
     let score = -i;
     let why = '';
     if (currentTrack && shareArtist(currentTrack.artists, it.track.artists)) score -= 100;
@@ -186,20 +213,28 @@ export function feedbackForClaude(s: LiveState): string {
   return parts.join(' ');
 }
 
-/** Nieuwe lijst van Claude inpassen: alles wat al gespeeld is of in de wachtrij staat eruit. */
-export function applyReplan(s: LiveState, items: PlanItem[], planId: string, played: number, note: string): LiveState {
-  const skip = new Set([...s.played.map((p) => p.track.id), ...(s.queuedId ? [s.queuedId] : [])]);
-  return { ...s, planId, upcoming: items.filter((it) => !skip.has(it.track.id)), lastReplanAt: played, note };
+/**
+ * Nieuwe lijst van Claude inpassen: alles wat al gespeeld is, nu speelt, klaarstaat of in de
+ * Spotify-wachtrij zit (`extra`) eruit, ook als het een andere versie van hetzelfde nummer is.
+ */
+export function applyReplan(s: LiveState, items: PlanItem[], planId: string, played: number, note: string, extra: Track[] = []): LiveState {
+  const used = usedSet(s, extra);
+  return { ...s, planId, upcoming: items.filter((it) => !isUsed(used, it.track)), lastReplanAt: played, note };
 }
+
+/** Spotify toont een net klaargezet nummer soms pas na even in de wachtrij (vooral na een skip). */
+export const QUEUE_LAG_MS = 10_000;
 
 /**
  * Staat het nummer dat wij klaarzetten nog in de Spotify-wachtrij? Zo niet (bv. omdat je de wachtrij
  * leegmaakte terwijl Live DJ liep), dan geeft dit het id terug dat opnieuw toegevoegd moet worden.
- * Speelt het nummer al, dan is er niets kwijt.
+ * Speelt het nummer al, dan is er niets kwijt. Met `now`: is het nummer net pas klaargezet, dan loopt
+ * Spotify's wachtrij misschien nog achter en doen we niets (anders komt het dubbel in de wachtrij).
  */
-export function missingQueued(s: LiveState, queueIds: string[], currentId: string | null): string | null {
+export function missingQueued(s: LiveState, queueIds: string[], currentId: string | null, now?: number): string | null {
   if (s.status !== 'actief' || !s.queuedId) return null;
   if (currentId === s.queuedId || queueIds.includes(s.queuedId)) return null;
+  if (now !== undefined && now - s.queuedAt < QUEUE_LAG_MS) return null;
   return s.queuedId;
 }
 

@@ -6,7 +6,7 @@ import { useApp } from './store';
 import * as sp from './services/spotify';
 import { addToEnd, replaceQueue } from './services/player';
 import { DjError, fetchHistory, makePlan } from './services/dj';
-import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './logic/live';
+import { applyReplan, feedbackForClaude, isUsed, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, usedSet, type LiveState } from './logic/live';
 import * as W from 'spotify-watcher';
 import { dislikedKeys } from './logic/learning';
 import { parseVibe, rejectReason } from './logic/rules';
@@ -38,6 +38,8 @@ export function useLive(): LiveCtx {
 const IDLE_STOP_MS = 30 * 60 * 1000; // niets gespeeld: na een half uur stopt Live DJ vanzelf
 /** Dienst had het volgende nummer al klaar moeten zetten; na zoveel ms doet de app het zelf. */
 const NATIVE_GRACE_MS = 8_000;
+/** Reload-knop: zo lang wachten voor een tweede blik op Spotify's wachtrij voordat we iets opnieuw toevoegen. */
+const RECHECK_MS = 2_000;
 const RESTRICTED = 'Beperkt apparaat';
 
 /** Uitleg als Spotify een apparaat niet laat bedienen (Restricted device: geen wachtrij via de Web API). */
@@ -115,8 +117,20 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     return !rejectReason(t, ctx);
   }, []);
 
-  /** Wat de dienst mag kiezen: de rest van de lijst, al gecontroleerd op je regels. */
-  const candidates = useCallback((L: LiveState): W.LiveCandidate[] => L.upcoming.filter((it) => allowed(it.track)).slice(0, 40).map(toCandidate), [allowed]);
+  /** Nummers die nu spelen of klaarstaan (met naam, zodat ook een andere versie herkend wordt). */
+  const inUse = useCallback(
+    (L: LiveState): Track[] => [L.current?.id, L.queuedId].map((id) => (id ? lookup(id)?.track : null)).filter((t): t is Track => !!t),
+    [lookup],
+  );
+
+  /** Wat de dienst mag kiezen: de rest van de lijst, al gecontroleerd op je regels en zonder wat al gespeeld is of klaarstaat. */
+  const candidates = useCallback(
+    (L: LiveState): W.LiveCandidate[] => {
+      const used = usedSet(L, inUse(L));
+      return L.upcoming.filter((it) => allowed(it.track) && !isUsed(used, it.track)).slice(0, 40).map(toCandidate);
+    },
+    [allowed, inUse],
+  );
 
   /** Claude laten bijsturen of aanvullen, op de achtergrond. */
   const replan = useCallback(
@@ -163,12 +177,21 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           // Toevoegen/weghalen: de rest blijft staan; anders een frisse lijst van 15.
           count: kind === 'breed' ? 15 : undefined,
           adjustKind: kind,
-          extraAvoid: L.played.map((p) => p.track),
+          extraAvoid: [...L.played.map((p) => p.track), ...inUse(L)],
+          excludeUsed: true,
         });
         savePlan({ ...out.plan, title: `Live: ${out.plan.title}` });
         update((x) => ({ ...x, lastResponse: out.response }));
-        const cur = liveRef.current;
+        let cur = liveRef.current;
         if (cur && cur.status === 'actief') {
+          // Claude deed er even over: eerst bijwerken wat de dienst en Spotify intussen deden, zodat er
+          // niets terugkomt dat al speelt, klaarstaat of net gespeeld is.
+          if (native) {
+            const ns = await W.liveState().catch(() => null);
+            if (ns?.active) cur = reconcileNative(cur, ns, lookup, Date.now());
+          }
+          const q = await sp.queue().catch(() => null);
+          const inSpotify = q ? [...(q.current ? [q.current] : []), ...q.next] : [];
           const note = manual ? `Bijgestuurd: ${adjust.split('.')[0]}` : 'Claude heeft de rest aangepast aan wat je skipte en luisterde';
           const added = new Set(out.plan.addedIds ?? []);
           // Toegevoegde nummers vooraan, zodat ze snel langskomen; de rest in dezelfde volgorde.
@@ -179,7 +202,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
                 ? out.plan.items
                 : [...out.plan.items, ...out.plan.spares];
           const text = manual && out.plan.change ? `${note} (${out.plan.change})` : note;
-          commit(applyReplan(cur, items, out.plan.id, cur.played.length, text));
+          commit(applyReplan(cur, items, out.plan.id, cur.played.length, text, [...inUse(cur), ...inSpotify]));
         }
       } catch (e: any) {
         const resp = e instanceof DjError ? (e as any).response : null;
@@ -190,7 +213,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         setReplanning(false);
       }
     },
-    [commit, update, savePlan],
+    [commit, update, savePlan, inUse, lookup, native],
   );
 
   /** Eén rondje: kijken wat er speelt en zo nodig het volgende nummer klaarzetten. */
@@ -259,7 +282,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
             if (now - pendingSince.current < NATIVE_GRACE_MS) continue;
           }
           pendingSince.current = null;
-          const pick = pickNext(L, pb.item ? { artists: pb.item.artists } : null, allowed);
+          const pick = pickNext(L, pb.item ? { artists: pb.item.artists, name: pb.item.name } : null, allowed);
           if (!pick) continue;
           const t = takeNext(L, pick.index, now, pick.why);
           commit(t.state); // eerst vastleggen, zodat er nooit twee tegelijk in de wachtrij gaan
@@ -365,10 +388,20 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     if (busy.current) return { level: 'info' as const, text: 'Live DJ is net bezig met de wachtrij; probeer het zo nog eens.' };
     busy.current = true; // de lus wacht zolang, zodat er niet twee keer hetzelfde nummer wordt toegevoegd
     try {
-      const [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
-      const L = liveRef.current;
+      // Spotify's wachtrij loopt na een skip of nummerwissel even achter: ziet het er kwijt uit, dan
+      // eerst nog een keer kijken voordat we iets opnieuw toevoegen (anders staat het er dubbel in).
+      let q = await sp.queue();
+      let pb = await sp.playback();
+      let L = liveRef.current;
       if (!L || L.status !== 'actief') return null;
-      const id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null);
+      let id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null, Date.now());
+      if (id) {
+        await new Promise((r) => setTimeout(r, RECHECK_MS));
+        [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
+        L = liveRef.current;
+        if (!L || L.status !== 'actief') return null;
+        id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null, Date.now());
+      }
       if (!id) return { level: 'ok' as const, text: L.queuedId ? 'De wachtrij klopt: het volgende nummer staat klaar.' : 'Live DJ zet zo het volgende nummer klaar.' };
       const devKey = pb.device?.id ?? pb.device?.name ?? null;
       if (pb.device?.isRestricted || (devKey && restrictedDev.current === devKey)) {

@@ -79,6 +79,8 @@ export type EnforceContext = {
   now: number;
   /** Staat al in de wachtrij of speelt nu (bij toevoegen): niet nog eens. */
   alreadyQueued?: Set<string>;
+  /** Titel+artiest van wat al speelt/klaarstaat/gespeeld is (vangt een andere versie van hetzelfde nummer af). */
+  alreadyKeys?: Set<string>;
   /** Je Eurovisie-favoriet, al opgezocht op Spotify. */
   favorite?: Track | null;
   /** Titel+artiest van bevestigd niet-leuke nummers (vangt andere versies af). */
@@ -96,7 +98,7 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     return 'niet leuk (bevestigd)';
   }
   if (!vibe.worship && isWorshipArtist(track.artists, rules.worshipArtists)) return 'worship alleen op verzoek';
-  if (ctx.alreadyQueued?.has(track.id)) return 'staat al in je wachtrij';
+  if (ctx.alreadyQueued?.has(track.id) || ctx.alreadyKeys?.has(songKey(track.name, track.artists))) return 'staat al in je wachtrij';
   if (!fav) {
     const rest = signals.resting[track.id];
     if (rest && rest > now) return 'rust (te vaak gedraaid)';

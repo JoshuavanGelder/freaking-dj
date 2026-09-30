@@ -52,6 +52,12 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   na 2 skips in één stijl even een andere stijl. Houd die twee gelijk.
 - Claude stuurt op de achtergrond bij (`makePlan` met `count: 15`) bij 2 snelle skips of < 5 over; handmatig via
   het Nu-scherm. Stopt vanzelf na 30 min niets spelen (JS én dienst).
+- **Geen dubbelen na bijsturen** (`usedSet`/`isUsed` in `live.ts`): wat gespeeld is, nu speelt, klaarstaat of in de Spotify-wachtrij zit
+  (ook een andere versie: `songKey`) komt nooit terug. Geldt in `applyReplan` (vlak voor het inpassen wordt eerst `reconcileNative`
+  gedaan en `sp.queue()` opgehaald), `pickNext`, `candidates()` en bij `makePlan` met `excludeUsed` (dan echt geweigerd via
+  `alreadyQueued`/`alreadyKeys`, niet alleen als tip aan Claude). De dienst filtert in `setCandidates` zelf ook op klaargezet/lastId/geschiedenis,
+  omdat de app soms achterloopt. Reload-knop: `missingQueued` met `now` doet niets binnen `QUEUE_LAG_MS` (Spotify loopt na een skip achter)
+  en kijkt eerst 2 s later nog eens voordat iets opnieuw wordt toegevoegd.
 - **Reload-knop op het Nu-scherm** (`resync` in `live.tsx`, `missingQueued` in `live.ts`): controleert of `queuedId` nog in de
   Spotify-wachtrij staat (of al speelt) en zet het anders opnieuw klaar, ook bij de dienst (`liveSetQueued`). Voor als je de
   wachtrij leegmaakte terwijl Live DJ liep. Beperking: Spotify toont maar ±20 nummers van de wachtrij.
