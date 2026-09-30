@@ -1,0 +1,258 @@
+{
+ "id": "muns46q3-0mzjr",
+ "finishedAt": "2026-09-30T07:24:02.289Z",
+ "durationMs": 14194,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Kantoorvibe met collega",
+  "note": "Lekker meezingbare pop en country op middelhoge energie, zonder harde rap of worship, met een paar nieuwe tracks ertussen.",
+  "items": [
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Please Please Please",
+    "artist": "Sabrina Carpenter",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t48",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t104",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t116",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t171",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Someone You Loved",
+    "artist": "Lewis Capaldi",
+    "style": "Pop",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t118",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sapphire",
+    "artist": "Ed Sheeran",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t150",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t189",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "BIRDS OF A FEATHER",
+    "artist": "Billie Eilish",
+    "style": "Pop",
+    "new": true,
+    "energy": 2
+   }
+  ]
+ },
+ "costUsd": 0.0522528,
+ "model": "sonnet"
+}
