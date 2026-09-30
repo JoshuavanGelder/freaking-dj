@@ -20,11 +20,13 @@ function mmss(ms: number): string {
 export function NowScreen() {
   const { state } = useApp();
   const { job, error } = useJob();
+  const { resync } = useLive();
   const nav = useNav();
   const insets = useSafeAreaInsets();
   const [snap, setSnap] = useState<Snapshot | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [tick, setTick] = useState(0);
+  const [syncNote, setSyncNote] = useState<{ level: 'ok' | 'info'; text: string } | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -34,6 +36,24 @@ export function NowScreen() {
       setErr(e?.message ?? String(e));
     }
   }, []);
+
+  /** Reload-knop: eerst de wachtrij controleren (Live DJ zet zo nodig terug wat mist), dan het scherm verversen. */
+  const reload = useCallback(async () => {
+    try {
+      setSyncNote(await resync());
+    } catch (e: any) {
+      setSyncNote(null);
+      setErr(e?.message ?? String(e));
+    }
+    await load();
+  }, [resync, load]);
+
+  // De melding na een reload verdwijnt vanzelf.
+  useEffect(() => {
+    if (!syncNote) return;
+    const t = setTimeout(() => setSyncNote(null), 8000);
+    return () => clearTimeout(t);
+  }, [syncNote]);
 
   useEffect(() => {
     load();
@@ -64,7 +84,7 @@ export function NowScreen() {
           <T size={13} weight="bold" color={C.muted} style={{ letterSpacing: 1 }}>
             NU
           </T>
-          <IconButton icon="refresh" label="Vernieuwen" onPress={load} color={C.ink} />
+          <IconButton icon="refresh" label="Vernieuwen" onPress={reload} color={C.ink} />
         </Row>
 
         {job?.kind === 'queue' ? (
@@ -75,6 +95,7 @@ export function NowScreen() {
         ) : null}
         {error ? <Banner level="storing" text={`${error.title}. ${error.message}`} /> : null}
         {err ? <Banner level="let op" text={err} /> : null}
+        {syncNote ? <Banner level={syncNote.level} text={syncNote.text} /> : null}
 
         {!snap && !err ? <ActivityIndicator color={C.accent} style={{ marginTop: 40 }} /> : null}
 

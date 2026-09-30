@@ -192,6 +192,17 @@ export function applyReplan(s: LiveState, items: PlanItem[], planId: string, pla
   return { ...s, planId, upcoming: items.filter((it) => !skip.has(it.track.id)), lastReplanAt: played, note };
 }
 
+/**
+ * Staat het nummer dat wij klaarzetten nog in de Spotify-wachtrij? Zo niet (bv. omdat je de wachtrij
+ * leegmaakte terwijl Live DJ liep), dan geeft dit het id terug dat opnieuw toegevoegd moet worden.
+ * Speelt het nummer al, dan is er niets kwijt.
+ */
+export function missingQueued(s: LiveState, queueIds: string[], currentId: string | null): string | null {
+  if (s.status !== 'actief' || !s.queuedId) return null;
+  if (currentId === s.queuedId || queueIds.includes(s.queuedId)) return null;
+  return s.queuedId;
+}
+
 /** Wat de meeluister-dienst deed terwijl de app sliep, verwerken. */
 export function reconcileNative(
   s: LiveState,

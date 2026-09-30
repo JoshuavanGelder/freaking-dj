@@ -52,6 +52,9 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   na 2 skips in één stijl even een andere stijl. Houd die twee gelijk.
 - Claude stuurt op de achtergrond bij (`makePlan` met `count: 15`) bij 2 snelle skips of < 5 over; handmatig via
   het Nu-scherm. Stopt vanzelf na 30 min niets spelen (JS én dienst).
+- **Reload-knop op het Nu-scherm** (`resync` in `live.tsx`, `missingQueued` in `live.ts`): controleert of `queuedId` nog in de
+  Spotify-wachtrij staat (of al speelt) en zet het anders opnieuw klaar, ook bij de dienst (`liveSetQueued`). Voor als je de
+  wachtrij leegmaakte terwijl Live DJ liep. Beperking: Spotify toont maar ±20 nummers van de wachtrij.
 - **Restricted device**: sommige Connect-apparaten (bv. "Kantoor") nemen geen wachtrij-commando's aan (403). `live.tsx`
   onthoudt dat apparaat (`restrictedDev`), probeert het niet steeds opnieuw en toont uitleg; bij een ander apparaat
   gaat het vanzelf weer door. Overzetten doen we nooit zelf.

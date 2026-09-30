@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { applyReplan, feedbackForClaude, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
+import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './live.ts';
 import type { PlanItem, Track } from './types.ts';
 
 const tr = (id: string, artist: string, name = id): Track => ({ id, name, artists: [artist], durationMs: 200_000 });
@@ -145,4 +145,18 @@ test('reconcileNative: klaargezet nummer en geschiedenis van de dienst overnemen
   assert.equal(again.played.length, 2);
   // Dienst kon niets klaarzetten: app neemt over.
   assert.equal(reconcileNative(r, { active: true, queuedId: '', history: [] }, lookup, T0 + 207_000).queuedId, null);
+});
+
+test('missingQueued: wat wij klaarzetten en uit de wachtrij verdween, moet terug', () => {
+  const { s } = setup([it('a', 'NF'), it('b', 'X'), it('c', 'Y')], 'a');
+  // Staat er nog in (ook achter oude nummers): niets te doen.
+  assert.equal(missingQueued(s, ['old1', 'a'], 'old0'), null);
+  // Wachtrij leeggemaakt: het klaargezette nummer moet opnieuw.
+  assert.equal(missingQueued(s, [], 'old0'), 'a');
+  assert.equal(missingQueued(s, ['old1', 'old2'], null), 'a');
+  // Speelt al: niets kwijt.
+  assert.equal(missingQueued(s, [], 'a'), null);
+  // Niets klaargezet, of Live DJ gepauzeerd: niets te herstellen.
+  assert.equal(missingQueued({ ...s, queuedId: null }, [], 'old0'), null);
+  assert.equal(missingQueued({ ...s, status: 'gepauzeerd' }, [], 'old0'), null);
 });

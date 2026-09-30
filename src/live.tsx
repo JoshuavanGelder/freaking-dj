@@ -6,7 +6,7 @@ import { useApp } from './store';
 import * as sp from './services/spotify';
 import { addToEnd, replaceQueue } from './services/player';
 import { DjError, fetchHistory, makePlan } from './services/dj';
-import { applyReplan, feedbackForClaude, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './logic/live';
+import { applyReplan, feedbackForClaude, missingQueued, observe, pickNext, reconcileNative, startLive, takeNext, type LiveState } from './logic/live';
 import * as W from 'spotify-watcher';
 import { dislikedKeys } from './logic/learning';
 import { parseVibe, rejectReason } from './logic/rules';
@@ -21,6 +21,8 @@ type LiveCtx = {
   start: (plan: Plan, mode: 'vervangen' | 'toevoegen', allowSkip: boolean) => Promise<boolean>;
   steer: (text: string) => void;
   stop: () => void;
+  /** Controleert of het klaargezette nummer nog in de Spotify-wachtrij staat en zet het anders terug. null = Live DJ loopt niet. */
+  resync: () => Promise<{ level: 'ok' | 'info'; text: string } | null>;
   /** Info over een nummer uit de live-sessie (voor het scherm). */
   lookup: (id: string) => { track: Track; style: string; isNew: boolean } | null;
 };
@@ -356,6 +358,45 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     [replan],
   );
 
+  /** Reload-knop: staat wat wij klaarzetten nog in de Spotify-wachtrij? Zo niet (bv. je maakte de wachtrij leeg), dan opnieuw toevoegen. */
+  const resync = useCallback(async () => {
+    const L0 = liveRef.current;
+    if (!L0 || L0.status !== 'actief') return null;
+    if (busy.current) return { level: 'info' as const, text: 'Live DJ is net bezig met de wachtrij; probeer het zo nog eens.' };
+    busy.current = true; // de lus wacht zolang, zodat er niet twee keer hetzelfde nummer wordt toegevoegd
+    try {
+      const [q, pb] = await Promise.all([sp.queue(), sp.playback()]);
+      const L = liveRef.current;
+      if (!L || L.status !== 'actief') return null;
+      const id = missingQueued(L, q.next.map((t) => t.id), q.current?.id ?? pb.item?.id ?? null);
+      if (!id) return { level: 'ok' as const, text: L.queuedId ? 'De wachtrij klopt: het volgende nummer staat klaar.' : 'Live DJ zet zo het volgende nummer klaar.' };
+      const devKey = pb.device?.id ?? pb.device?.name ?? null;
+      if (pb.device?.isRestricted || (devKey && restrictedDev.current === devKey)) {
+        restrictedDev.current = devKey;
+        setError(restrictedMessage(pb.device?.name));
+        return null;
+      }
+      const info = lookup(id);
+      try {
+        await sp.addToQueue(id, pb.device?.id);
+      } catch (e: any) {
+        if (/restricted/i.test(e?.message ?? '')) {
+          restrictedDev.current = devKey;
+          setError(restrictedMessage(pb.device?.name));
+          return null;
+        }
+        throw e;
+      }
+      if (native && info) await W.liveSetQueued(id, { id, artists: info.track.artists, isNew: info.isNew, style: info.style, durationMs: info.track.durationMs });
+      const cur = liveRef.current;
+      if (cur) commit({ ...cur, queuedAt: Date.now() });
+      setError(null);
+      return { level: 'ok' as const, text: `${info ? `"${info.track.name}"` : 'Het klaargezette nummer'} stond niet meer in je wachtrij en is opnieuw toegevoegd.` };
+    } finally {
+      busy.current = false;
+    }
+  }, [commit, lookup, native]);
+
   const stop = useCallback(() => {
     commit(null);
     setError(null);
@@ -363,8 +404,8 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
   }, [commit]);
 
   const value = useMemo(
-    () => ({ live: state.live, starting, replanning, error, start, steer, stop, lookup }),
-    [state.live, starting, replanning, error, start, steer, stop, lookup],
+    () => ({ live: state.live, starting, replanning, error, start, steer, stop, resync, lookup }),
+    [state.live, starting, replanning, error, start, steer, stop, resync, lookup],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
