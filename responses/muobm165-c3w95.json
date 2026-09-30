@@ -1,0 +1,378 @@
+{
+ "id": "muobm165-c3w95",
+ "finishedAt": "2026-09-30T16:30:09.393Z",
+ "durationMs": 20131,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Legday Full Power",
+  "note": "Je krijgt vooral stevige rap, rock en EDM uit je favorieten, met een paar nieuwe gymbangers ertussen.",
+  "items": [
+   {
+    "ref": "t137",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stronger",
+    "artist": "Kanye West",
+    "style": "Gym-rap",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t82",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Can't Hold Us",
+    "artist": "Macklemore & Ryan Lewis",
+    "style": "Gym-rap",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t76",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "rockstar",
+    "artist": "Post Malone",
+    "style": "Gym-rap",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t88",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t140",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t86",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t187",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t102",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t101",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t165",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "SICKO MODE",
+    "artist": "Travis Scott",
+    "style": "Gym-rap",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t148",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t125",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t132",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Enter Sandman",
+    "artist": "Metallica",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t138",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t144",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Turn Down for What",
+    "artist": "DJ Snake",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t150",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t79",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t99",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t85",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.070362,
+ "model": "sonnet"
+}
