@@ -1,0 +1,178 @@
+{
+ "id": "muodgyys-5nz5o",
+ "finishedAt": "2026-09-30T17:21:50.239Z",
+ "durationMs": 13777,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Legday: rock en NF",
+  "note": "Je luisterde AC/DC en Alex Warren helemaal uit, dus je krijgt meer stevige rock en NF, en geen Eminem of Imagine Dragons meer.",
+  "items": [
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Enter Sandman",
+    "artist": "Metallica",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t75",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t173",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t72",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Welcome to the Jungle",
+    "artist": "Guns N' Roses",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t76",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t152",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Levels - Radio Edit",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t135",
+    "title": "",
+    "artist": "",
+    "style": "Gym-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t131",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0546648,
+ "model": "sonnet"
+}
