@@ -1,0 +1,378 @@
+{
+ "id": "munyen0f-qk9x7",
+ "finishedAt": "2026-09-30T10:20:08.598Z",
+ "durationMs": 14583,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding, Eurovisie en Morgan",
+  "note": "Ik heb vijf nieuwe nummers en een paar andere vervangen door extra Morgan Wallen en de rest van je wachtrij gelaten zoals hij was.",
+  "items": [
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Cha Cha Cha",
+    "artist": "Käärijä",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t61",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Hard Rock Hallelujah",
+    "artist": "Lordi",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t59",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "SPACE MAN",
+    "artist": "Sam Ryder",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t58",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t100",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stefania",
+    "artist": "Kalush Orchestra",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t140",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t60",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Franse chanson",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t102",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0591468,
+ "model": "sonnet"
+}
