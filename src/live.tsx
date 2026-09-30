@@ -36,6 +36,12 @@ export function useLive(): LiveCtx {
 const IDLE_STOP_MS = 30 * 60 * 1000; // niets gespeeld: na een half uur stopt Live DJ vanzelf
 /** Dienst had het volgende nummer al klaar moeten zetten; na zoveel ms doet de app het zelf. */
 const NATIVE_GRACE_MS = 8_000;
+const RESTRICTED = 'Beperkt apparaat';
+
+/** Uitleg als Spotify een apparaat niet laat bedienen (Restricted device: geen wachtrij via de Web API). */
+function restrictedMessage(name?: string | null): string {
+  return `${RESTRICTED}: ${name ?? 'dit apparaat'} laat geen wachtrij toe via Spotify, dus Live DJ kan hier niets klaarzetten. Speel via je telefoon of pc (bij een speaker: via Bluetooth of kabel); Live DJ gaat vanzelf verder zodra het apparaat wisselt.`;
+}
 
 function toCandidate(it: PlanItem): W.LiveCandidate {
   return { id: it.track.id, artists: it.track.artists, isNew: it.isNew, style: it.style, durationMs: it.track.durationMs };
@@ -56,6 +62,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
   const lastReplanTry = useRef(0);
   const idleSince = useRef<number | null>(null);
   const pendingSince = useRef<number | null>(null);
+  const restrictedDev = useRef<string | null>(null); // apparaat dat geen wachtrij-commando's aanneemt
   const native = W.available;
 
   // De store is leidend bij opstarten (Live DJ loopt door na herstart van de app).
@@ -192,6 +199,12 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
     try {
       const pb = await sp.playback();
       const now = Date.now();
+      const devKey = pb.device?.id ?? pb.device?.name ?? null;
+      if (restrictedDev.current && devKey !== restrictedDev.current) {
+        // Ander apparaat: opnieuw proberen en de uitleg weghalen.
+        restrictedDev.current = null;
+        setError((e) => (e?.startsWith(RESTRICTED) ? null : e));
+      }
       if (!pb.item || !pb.isPlaying) {
         idleSince.current ??= now;
         if (now - idleSince.current > IDLE_STOP_MS) {
@@ -217,7 +230,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
             await W.liveStart(L0.queuedId ?? '', candidates(L0));
           } else {
             L1 = reconcileNative(L0, ns, lookup, now);
-            if (ns.error && !ns.error.includes('gestopt')) setError(ns.error);
+            if (ns.error && !ns.error.includes('gestopt') && !restrictedDev.current) setError(ns.error);
           }
         }
       }
@@ -228,6 +241,13 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           const L = liveRef.current;
           if (!L || L.queuedId) {
             pendingSince.current = null;
+            continue;
+          }
+          // Restricted device: Spotify laat hier geen wachtrij toe. Niet steeds opnieuw proberen, wel uitleggen.
+          if (pb.device?.isRestricted || (devKey && restrictedDev.current === devKey)) {
+            restrictedDev.current = devKey;
+            pendingSince.current = null;
+            setError(restrictedMessage(pb.device?.name));
             continue;
           }
           // Met de dienst: die zet het volgende nummer binnen een seconde klaar. Alleen als dat niet
@@ -247,7 +267,12 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           } catch (e: any) {
             const cur = liveRef.current;
             if (cur) commit({ ...cur, queuedId: null, upcoming: [t.item, ...cur.upcoming] });
-            setError(`In de wachtrij zetten lukte niet: ${e?.message ?? e}`);
+            if (/restricted/i.test(e?.message ?? '')) {
+              restrictedDev.current = devKey;
+              setError(restrictedMessage(pb.device?.name));
+            } else {
+              setError(`In de wachtrij zetten lukte niet: ${e?.message ?? e}`);
+            }
           }
         } else if (a.type === 'chainBroken') {
           const L = liveRef.current;

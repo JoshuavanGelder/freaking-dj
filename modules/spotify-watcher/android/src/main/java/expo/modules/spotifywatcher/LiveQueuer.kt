@@ -258,7 +258,8 @@ object LiveQueuer {
         val candidates = JSONArray(p.getString("candidates", "[]") ?: "[]")
         val back = JSONArray().put(next)
         for (i in 0 until candidates.length()) back.put(candidates.getJSONObject(i))
-        p.edit().putString("candidates", back.toString()).putString("queuedId", "").putString("error", "Wachtrij zetten mislukt ($code)").apply()
+        val why = if (text.contains("Restricted device", ignoreCase = true)) "Dit apparaat laat geen wachtrij toe (Restricted device)" else "Wachtrij zetten mislukt ($code)"
+        p.edit().putString("candidates", back.toString()).putString("queuedId", "").putString("error", why).apply()
       }
     } else {
       setError(ctx, "")

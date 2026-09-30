@@ -151,6 +151,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 function friendly(status: number, msg: string): string {
   if (status === 404 && /device/i.test(msg)) return 'Geen actief Spotify-apparaat gevonden.';
   if (status === 403 && /premium/i.test(msg)) return 'Hiervoor is Spotify Premium nodig.';
+  if (status === 403 && /restricted/i.test(msg)) return 'Dit apparaat laat geen bediening op afstand toe (Restricted device).';
   if (status === 403) return `Spotify weigert dit: ${msg}`;
   if (status === 429) return 'Spotify zegt: te veel verzoeken. Probeer het zo nog eens.';
   return msg || `Spotify-fout ${status}`;

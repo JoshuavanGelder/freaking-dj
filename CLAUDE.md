@@ -52,6 +52,9 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   na 2 skips in één stijl even een andere stijl. Houd die twee gelijk.
 - Claude stuurt op de achtergrond bij (`makePlan` met `count: 15`) bij 2 snelle skips of < 5 over; handmatig via
   het Nu-scherm. Stopt vanzelf na 30 min niets spelen (JS én dienst).
+- **Restricted device**: sommige Connect-apparaten (bv. "Kantoor") nemen geen wachtrij-commando's aan (403). `live.tsx`
+  onthoudt dat apparaat (`restrictedDev`), probeert het niet steeds opnieuw en toont uitleg; bij een ander apparaat
+  gaat het vanzelf weer door. Overzetten doen we nooit zelf.
 
 ## Leren van skips (`src/logic/learning.ts`)
 Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) die de Spotify-broadcasts
