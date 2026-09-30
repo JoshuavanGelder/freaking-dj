@@ -83,11 +83,14 @@ export async function accessToken(force = false): Promise<string> {
 
 // ---------- Live DJ in de dienst ----------
 
-export type LiveCandidate = { id: string; artists: string[]; isNew: boolean; style: string; durationMs: number };
+/** `key` = songKey (titel + artiest, zonder versie-toevoegingen): de dienst herkent daarmee ook een andere versie van een nummer dat al geweest is. */
+export type LiveCandidate = { id: string; artists: string[]; isNew: boolean; style: string; durationMs: number; key?: string };
 export type NativeLiveState = {
   active: boolean;
   queuedId: string;
   history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[];
+  /** Alles wat de dienst in deze sessie klaarzette of zag spelen (ook zonder geschiedenis). Ontbreekt bij een oudere dienst. */
+  served?: string[];
   error: string;
 };
 

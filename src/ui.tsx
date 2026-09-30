@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleProp, Text, TextInput, TextStyle, View, ViewStyle } from 'react-native';
+import { Dimensions, Modal, Pressable, ScrollView, StyleProp, Text, TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { C, F } from './theme';
@@ -175,8 +175,11 @@ export function Chip({ label, on, onPress, icon }: { label: string; on?: boolean
       accessibilityState={{ selected: !!on }}
       onPress={onPress}
       style={({ pressed }) => ({
-        height: 34,
-        paddingHorizontal: 14,
+        // Minimale hoogte met ruimte boven en onder: lange vibes lopen over twee regels zonder de rand te raken.
+        minHeight: 40,
+        paddingVertical: 10,
+        paddingHorizontal: 18,
+        maxWidth: Dimensions.get('window').width - 40,
         borderRadius: 999,
         backgroundColor: on ? C.accent : C.cardHi,
         flexDirection: 'row',
@@ -186,7 +189,7 @@ export function Chip({ label, on, onPress, icon }: { label: string; on?: boolean
       })}
     >
       {icon ? <Icon name={icon} size={15} color={on ? C.onAccent : C.ink} strokeWidth={2.4} /> : null}
-      <Text style={{ fontFamily: F.semibold, fontSize: 14, color: on ? C.onAccent : C.ink }}>{label}</Text>
+      <Text style={{ fontFamily: F.semibold, fontSize: 14, lineHeight: 19, color: on ? C.onAccent : C.ink, flexShrink: 1 }}>{label}</Text>
     </Pressable>
   );
 }

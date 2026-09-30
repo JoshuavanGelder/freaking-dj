@@ -1,6 +1,7 @@
 package expo.modules.spotifywatcher
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.PowerManager
@@ -121,6 +122,7 @@ object LiveQueuer {
   private const val PREFS = "fdj-live"
   private const val QUICK_SKIP_MS = 30_000L
   private const val IDLE_STOP_MS = 30 * 60 * 1000L
+  private const val SERVED_MAX = 500
   private val lock = Any()
   private val executor = Executors.newSingleThreadExecutor()
   private var thread: HandlerThread? = null
@@ -145,9 +147,40 @@ object LiveQueuer {
         .putString("lastId", "")
         .putLong("lastAt", 0L)
         .putString("lastMeta", "{}")
+        .putString("served", JSONArray().put(queuedId).toString())
+        .putString("servedKeys", "[]")
         .apply()
     }
     ensureLoop(ctx)
+  }
+
+  // ---------- sessiegeheugen: alles wat in deze sessie klaargezet is of speelde ----------
+
+  private fun readSet(p: SharedPreferences, name: String): MutableSet<String> {
+    val out = LinkedHashSet<String>()
+    try {
+      val a = JSONArray(p.getString(name, "[]") ?: "[]")
+      for (i in 0 until a.length()) {
+        val v = a.optString(i)
+        if (v.isNotEmpty()) out.add(v)
+      }
+    } catch (_: Exception) {
+    }
+    return out
+  }
+
+  private fun trimSet(set: MutableSet<String>) {
+    while (set.size > SERVED_MAX) {
+      val iter = set.iterator()
+      iter.next()
+      iter.remove()
+    }
+  }
+
+  private fun writeServed(edit: SharedPreferences.Editor, ids: MutableSet<String>, keys: MutableSet<String>) {
+    trimSet(ids)
+    trimSet(keys)
+    edit.putString("served", JSONArray(ids).toString()).putString("servedKeys", JSONArray(keys).toString())
   }
 
   fun setCandidates(ctx: Context, candidatesJson: String) {
@@ -162,11 +195,15 @@ object LiveQueuer {
       if (last.isNotEmpty()) used.add(last)
       val history = JSONArray(p.getString("history", "[]") ?: "[]")
       for (i in 0 until history.length()) used.add(history.getJSONObject(i).optString("id"))
+      // Ook alles wat de dienst ooit klaarzette of zag spelen, ook zonder geschiedenis (scherm uit, geen Apparaatuitzending).
+      used.addAll(readSet(p, "served"))
+      val usedKeys = readSet(p, "servedKeys")
       val incoming = JSONArray(candidatesJson)
       val kept = JSONArray()
       for (i in 0 until incoming.length()) {
         val c = incoming.getJSONObject(i)
-        if (c.optString("id") !in used) kept.put(c)
+        val key = c.optString("key")
+        if (c.optString("id") !in used && (key.isEmpty() || key !in usedKeys)) kept.put(c)
       }
       p.edit().putString("candidates", kept.toString()).apply()
     }
@@ -174,7 +211,20 @@ object LiveQueuer {
 
   /** De app heeft zelf een nummer klaargezet (vangnet): dat is nu het nummer om op te wachten. */
   fun setQueued(ctx: Context, id: String, metaJson: String) {
-    synchronized(lock) { prefs(ctx).edit().putString("queuedId", id).putString("queuedMeta", metaJson).apply() }
+    synchronized(lock) {
+      val p = prefs(ctx)
+      val ids = readSet(p, "served")
+      val keys = readSet(p, "servedKeys")
+      if (id.isNotEmpty()) ids.add(id)
+      try {
+        val key = JSONObject(metaJson).optString("key")
+        if (key.isNotEmpty()) keys.add(key)
+      } catch (_: Exception) {
+      }
+      val edit = p.edit().putString("queuedId", id).putString("queuedMeta", metaJson)
+      writeServed(edit, ids, keys)
+      edit.apply()
+    }
   }
 
   fun stop(ctx: Context) {
@@ -191,6 +241,7 @@ object LiveQueuer {
       o.put("active", p.getBoolean("active", false))
       o.put("queuedId", p.getString("queuedId", "") ?: "")
       o.put("history", JSONArray(p.getString("history", "[]") ?: "[]"))
+      o.put("served", JSONArray(p.getString("served", "[]") ?: "[]"))
       o.put("error", p.getString("error", "") ?: "")
       return o.toString()
     }
@@ -220,6 +271,10 @@ object LiveQueuer {
       val lastAt = p.getLong("lastAt", 0L)
       val edit = p.edit()
       val history = JSONArray(p.getString("history", "[]") ?: "[]")
+      // Sessiegeheugen: wat nu speelt is geweest, ook als het geen nummer van ons is (autoplay) en ook zonder broadcast.
+      val servedIds = readSet(p, "served")
+      val servedKeys = readSet(p, "servedKeys")
+      if (id.isNotEmpty()) servedIds.add(id)
       if (fromBroadcast && id != lastId) {
         // Het vorige nummer afsluiten, als dat van ons was: helemaal gehoord of geskipt.
         val lastMeta = JSONObject(p.getString("lastMeta", "{}") ?: "{}")
@@ -241,6 +296,7 @@ object LiveQueuer {
       }
       val queuedId = p.getString("queuedId", "") ?: ""
       if (id != queuedId || queuedId.isEmpty()) {
+        writeServed(edit, servedIds, servedKeys)
         edit.apply()
         return
       }
@@ -249,9 +305,12 @@ object LiveQueuer {
       if (currentMeta.optString("id") != id) currentMeta = JSONObject().put("id", id).put("artists", JSONArray(artists))
       edit.putString("lastMeta", currentMeta.toString())
       val candidates = JSONArray(p.getString("candidates", "[]") ?: "[]")
-      pick = choose(candidates, currentMeta, artists, history)
+      val currentKey = currentMeta.optString("key")
+      if (currentKey.isNotEmpty()) servedKeys.add(currentKey)
+      pick = choose(candidates, currentMeta, artists, history, servedIds, servedKeys)
       if (pick == null) {
         edit.putString("queuedId", "")
+        writeServed(edit, servedIds, servedKeys)
         edit.apply()
         return
       }
@@ -264,6 +323,11 @@ object LiveQueuer {
       edit.putString("candidates", rest.toString())
       edit.putString("queuedId", pick!!.optString("id"))
       edit.putString("queuedMeta", pick.toString())
+      // Direct onthouden, nog voor Spotify antwoordt: zo komt het nooit meer terug, ook niet via een nieuwe lijst van de app.
+      servedIds.add(pick!!.optString("id"))
+      val pickKey = pick!!.optString("key")
+      if (pickKey.isNotEmpty()) servedKeys.add(pickKey)
+      writeServed(edit, servedIds, servedKeys)
       edit.apply()
     }
     val next = pick ?: return
@@ -277,7 +341,15 @@ object LiveQueuer {
         val back = JSONArray().put(next)
         for (i in 0 until candidates.length()) back.put(candidates.getJSONObject(i))
         val why = if (text.contains("Restricted device", ignoreCase = true)) "Dit apparaat laat geen wachtrij toe (Restricted device)" else "Wachtrij zetten mislukt ($code)"
-        p.edit().putString("candidates", back.toString()).putString("queuedId", "").putString("error", why).apply()
+        // Het nummer is niet klaargezet: weer uit het sessiegeheugen, anders wordt het nooit meer gekozen.
+        val ids = readSet(p, "served")
+        val keys = readSet(p, "servedKeys")
+        ids.remove(next.optString("id"))
+        val nk = next.optString("key")
+        if (nk.isNotEmpty()) keys.remove(nk)
+        val edit = p.edit().putString("candidates", back.toString()).putString("queuedId", "").putString("error", why)
+        writeServed(edit, ids, keys)
+        edit.apply()
       }
     } else {
       setError(ctx, "")
@@ -292,7 +364,14 @@ object LiveQueuer {
   }
 
   /** Zelfde gedachte als pickNext: volgorde aanhouden, maar na skips bijsturen. */
-  private fun choose(candidates: JSONArray, current: JSONObject, currentArtists: List<String>, history: JSONArray): JSONObject? {
+  private fun choose(
+    candidates: JSONArray,
+    current: JSONObject,
+    currentArtists: List<String>,
+    history: JSONArray,
+    servedIds: Set<String>,
+    servedKeys: Set<String>,
+  ): JSONObject? {
     if (candidates.length() == 0) return null
     val cur = names(current.optJSONArray("artists"))
     cur.addAll(currentArtists.map { it.trim().lowercase() })
@@ -319,6 +398,10 @@ object LiveQueuer {
     var bestScore = Int.MIN_VALUE
     for (k in 0 until candidates.length()) {
       val c = candidates.getJSONObject(k)
+      // Al klaargezet of gespeeld in deze sessie (ook een andere versie via `key`): nooit opnieuw.
+      val cid = c.optString("id")
+      val ckey = c.optString("key")
+      if (cid in servedIds || (ckey.isNotEmpty() && ckey in servedKeys)) continue
       val artists = names(c.optJSONArray("artists"))
       var score = -k
       if (artists.any { it in cur }) score -= 100

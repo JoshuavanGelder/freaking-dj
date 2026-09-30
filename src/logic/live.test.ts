@@ -248,3 +248,24 @@ test('appLagging: speelt er iets anders dan de app het laatst zag', () => {
   assert.equal(appLagging({ ...st, current: null }, 'zz'), false);
   assert.equal(appLagging(st, null), false);
 });
+
+test('reconcileNative: nummers die de dienst klaarzette terwijl de app sliep (geen geschiedenis, bv. zonder Apparaatuitzending) komen niet terug', () => {
+  const items = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((id, i) => it(id, `Artiest ${i}`));
+  const { s, lookup } = setup(items, 'a');
+  // De dienst zette b, c, d en e achter elkaar klaar (je skipte door); de app zag alleen nog het laatste (e).
+  // Zonder Apparaatuitzending schrijft de dienst geen geschiedenis: alleen `served` vertelt wat er geweest is.
+  const r = reconcileNative(s, { active: true, queuedId: 'e', history: [], served: ['a', 'b', 'c', 'd', 'e'], error: '' }, lookup, T0 + 60_000);
+  assert.deepEqual(r.upcoming.map((x) => x.track.id), ['f', 'g']);
+  for (const id of ['a', 'b', 'c', 'd', 'e']) assert.ok((r.served ?? []).some((t) => t.id === id), `${id} moet als geweest onthouden zijn`);
+  // Nieuwe kandidaten voor de dienst mogen er geen van bevatten.
+  const p = pickNext(r, null, () => true)!;
+  assert.equal(r.upcoming[p.index].track.id, 'f');
+});
+
+test('reconcileNative: ouder bericht van de dienst zonder served-lijst blijft werken', () => {
+  const items = ['a', 'b', 'c'].map((id, i) => it(id, `Artiest ${i}`));
+  const { s, lookup } = setup(items, 'a');
+  const r = reconcileNative(s, { active: true, queuedId: 'b', history: [] } as any, lookup, T0 + 1000);
+  assert.equal(r.queuedId, 'b');
+  assert.deepEqual(r.upcoming.map((x) => x.track.id), ['c']);
+});

@@ -60,6 +60,14 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   en kijkt eerst 2 s later nog eens voordat iets opnieuw wordt toegevoegd.
   `LiveState.served` (`withServed`) is het logboek van alles wat ooit klaargezet is, ook als het te snel geskipt werd om gezien te
   worden (of tijdens slaap): dat, plus Spotify's `recently-played` sinds de start, gaat mee in `usedSet`/`applyReplan`.
+  **Sessiegeheugen in de dienst** (`LiveQueuer`, SharedPreferences `fdj-live`, sleutels `served` en `servedKeys`): de dienst onthoudt
+  zelf elk nummer dat hij klaarzet of ziet spelen, ook zonder Apparaatuitzending (dan schrijft hij geen `history`). `setCandidates` en
+  `choose` weigeren alles daarin, ook een andere versie via `key` (= `songKey`, door JS meegegeven in elke kandidaat). Een mislukte
+  POST haalt het nummer weer uit het geheugen. `state()` geeft `served` terug en `reconcileNative` neemt die over in `LiveState.served`
+  en haalt die nummers uit `upcoming`. Oorzaak van het terugkomen in build-15: de app zag alleen het laatst klaargezette nummer van de
+  dienst, dus nummers die de dienst daarvoor klaarzette (snel geskipt, scherm uit) bleven in `upcoming` en gingen via `setCandidates` terug.
+  Nog open: zonder broadcast schrijft de dienst geen `history`, dus `choose` past zich dan niet aan skips aan (alleen JS `pickNext` doet dat);
+  en `liveStart` (herstart van de dienst) maakt `served` leeg, waarna alleen de JS-kant het geheugen nog heeft.
   Een `queuedId` dat al speelt is verouderd: `observe` en `reconcileNative` herstellen dat (de lus kiest dan het echte volgende), en de
   reload-knop zegt alleen "klopt" als het nummer echt in `q.next` staat; loopt de app achter (`appLagging`) dan herstelt hij niets.
 - **Reload-knop op het Nu-scherm** (`resync` in `live.tsx`, `missingQueued` in `live.ts`): controleert of `queuedId` nog in de
@@ -80,6 +88,7 @@ geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sess
 ## Bouwen en controleren (sandbox zonder npm)
 - `npm install` werkt lokaal niet; Google Maven/SDK ook niet. Wel: node 22, `tsc`, python3.
 - Tests: `npm test` (node --experimental-strip-types). Logica-bestanden importeren elkaar met `.ts`-extensie.
+- Kotlin-check zonder Android SDK: kotlinc (GitHub-release) met kleine stubs voor `android.*` en `org.json` compileert `LiveQueuer.kt` los (Maven is geblokkeerd).
 - Typecheck lokaal: `./scripts/typecheck-local.sh` (stubs in `scripts/typecheck-stubs.d.ts`).
 - CI `android.yml`: job `checks` (tests, expo install --fix, tsc) en job `build` (prebuild, Gradle, release).
   Fouten staan als annotations (`title=gradle|tsc|test`); lees ze via de API (check-runs → annotations).

@@ -10,6 +10,7 @@ import { C } from '../theme';
 import { Icon } from '../icons';
 import { Banner, Bar, Button, Chip, Cover, Field, H1, IconButton, Row, T, TrackRow } from '../ui';
 import { snapshot, type Snapshot } from '../services/player';
+import { uniqueQueue } from '../logic/queue';
 
 function mmss(ms: number): string {
   const s = Math.max(0, Math.round(ms / 1000));
@@ -68,6 +69,7 @@ export function NowScreen() {
   }, [load]);
 
   // Welke nummers kwamen uit een voorstel (en uit welke vibe)?
+  const shownQueue = snap ? uniqueQueue(snap.current, snap.queue) : [];
   const fromPlan = new Map<string, { vibe: string; isNew: boolean }>();
   for (const p of [...state.plans].reverse()) for (const it of p.items) fromPlan.set(it.track.id, { vibe: p.vibe, isNew: it.isNew });
 
@@ -139,12 +141,12 @@ export function NowScreen() {
 
         <LivePanel />
 
-        {snap && snap.queue.length ? (
+        {snap && shownQueue.length ? (
           <View style={{ gap: 8 }}>
             <T size={18} weight="bold">
               In je Spotify-wachtrij
             </T>
-            {snap.queue.slice(0, 30).map((t, i) => {
+            {shownQueue.slice(0, 30).map((t, i) => {
               const src = fromPlan.get(t.id);
               return (
                 <TrackRow

@@ -20,6 +20,7 @@ declare module 'react-native' {
   export const View: any, Text: any, Pressable: any, ScrollView: any, TextInput: any, ActivityIndicator: any, BackHandler: any;
   export const StyleSheet: { create<T>(s: T): T; absoluteFill: any };
   export function useWindowDimensions(): { width: number; height: number };
+  export const Dimensions: { get(w: 'window' | 'screen'): { width: number; height: number } };
   export type StyleProp<T> = any; export type ViewStyle = any; export type TextStyle = any; export type KeyboardTypeOptions = string;
 }
 declare module 'react-native-svg' { const Svg: any; export default Svg; export const Circle: any, Path: any, Line: any, Text: any, Rect: any; }
@@ -59,8 +60,8 @@ declare module 'spotify-watcher' {
   export function isRunning(): boolean; export function lastEventAt(): number; export function start(): Promise<boolean>; export function stop(): Promise<boolean>;
   export function readAndClear(): Promise<string>; export function listen(p: string, h?: string[]): Promise<string[]>; export function openBatterySettings(): Promise<boolean>; export function openSpotify(): Promise<boolean>;
   export function authSet(c: string, r: string, a: string, e: number): Promise<void>; export function authClear(): Promise<void>; export function hasAuth(): boolean; export function accessToken(force?: boolean): Promise<string>;
-  export type LiveCandidate = { id: string; artists: string[]; isNew: boolean; style: string; durationMs: number };
-  export type NativeLiveState = { active: boolean; queuedId: string; history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[]; error: string };
+  export type LiveCandidate = { id: string; artists: string[]; isNew: boolean; style: string; durationMs: number; key?: string };
+  export type NativeLiveState = { active: boolean; queuedId: string; history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[]; served?: string[]; error: string };
   export function liveStart(q: string, c: LiveCandidate[], m?: LiveCandidate): Promise<boolean>; export function liveSetCandidates(c: LiveCandidate[]): Promise<void>;
   export function liveSetQueued(id: string, m: LiveCandidate | null): Promise<void>; export function liveStop(): Promise<void>; export function liveState(): Promise<NativeLiveState | null>;
 }

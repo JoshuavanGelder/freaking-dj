@@ -74,3 +74,18 @@ export function hasOldQueue(queueIds: string[], planIds: string[]): boolean {
   const plan = new Set(planIds);
   return queueIds.some((id) => !plan.has(id));
 }
+
+/**
+ * Wachtrij zoals we die tonen: zonder het nummer dat nu speelt en zonder herhalingen. Spotify geeft bij een lege
+ * wachtrij soms steeds hetzelfde nummer terug (de automatische terugval) dat er niet echt in staat.
+ * Alleen voor het scherm; de logica rond toevoegen en vervangen blijft de ruwe lijst gebruiken.
+ */
+export function uniqueQueue<T extends { id: string }>(current: { id: string } | null, next: T[]): T[] {
+  const seen = new Set<string>();
+  if (current) seen.add(current.id);
+  return next.filter((t) => {
+    if (seen.has(t.id)) return false;
+    seen.add(t.id);
+    return true;
+  });
+}

@@ -263,14 +263,28 @@ export function missingQueued(s: LiveState, queueIds: string[], currentId: strin
 /** Wat de meeluister-dienst deed terwijl de app sliep, verwerken. */
 export function reconcileNative(
   s: LiveState,
-  native: { active: boolean; queuedId: string; history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[] },
+  native: {
+    active: boolean;
+    queuedId: string;
+    history: { id: string; outcome: 'full' | 'skip'; listenedMs: number; at: number }[];
+    /** Alles wat de dienst in deze sessie klaarzette of zag spelen, ook zonder geschiedenis (geen Apparaatuitzending). */
+    served?: string[];
+  },
   lookup: (id: string) => { track: Track; style: string; isNew: boolean } | null,
   now: number,
 ): LiveState {
   let state = s;
   // Alles wat de dienst klaarzette of zag spelen onthouden, ook wat de app zelf nooit zag (te snel geskipt).
-  for (const h of native.history) state = withServed(state, lookup(h.id)?.track);
-  if (native.queuedId) state = withServed(state, lookup(native.queuedId)?.track);
+  const nativeServed = new Set<string>([...(native.served ?? []), ...native.history.map((h) => h.id)]);
+  if (native.queuedId) nativeServed.add(native.queuedId);
+  for (const id of nativeServed) state = withServed(state, lookup(id)?.track);
+  // Wat de dienst al gebruikte hoort niet meer in de lijst van de app (ook niet als een andere versie).
+  const dropUsed = (st: LiveState): LiveState => {
+    const used = usedSet(st);
+    const upcoming = st.upcoming.filter((it) => !isUsed(used, it.track));
+    return upcoming.length === st.upcoming.length ? st : { ...st, upcoming };
+  };
+  state = dropUsed(state);
   // Gespeelde nummers die de app zelf niet zag (dubbelen binnen 90 s overslaan).
   const extra: LivePlayed[] = [];
   for (const h of native.history) {
@@ -292,5 +306,5 @@ export function reconcileNative(
     // De dienst kon niets klaarzetten (lijst op of Spotify-fout): de app neemt het over.
     state = { ...state, queuedId: null };
   }
-  return state;
+  return dropUsed(state);
 }

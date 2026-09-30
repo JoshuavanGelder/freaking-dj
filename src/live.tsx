@@ -9,6 +9,7 @@ import { DjError, fetchHistory, makePlan } from './services/dj';
 import { appLagging, applyReplan, feedbackForClaude, isUsed, observe, pickNext, QUEUE_LAG_MS, reconcileNative, startLive, takeNext, usedSet, type LiveState } from './logic/live';
 import * as W from 'spotify-watcher';
 import { dislikedKeys } from './logic/learning';
+import { songKey } from './logic/text';
 import { parseVibe, rejectReason } from './logic/rules';
 import { adjustKind, type AdjustKind } from './logic/adjust';
 import type { Plan, PlanItem, Track } from './logic/types';
@@ -48,7 +49,7 @@ function restrictedMessage(name?: string | null): string {
 }
 
 function toCandidate(it: PlanItem): W.LiveCandidate {
-  return { id: it.track.id, artists: it.track.artists, isNew: it.isNew, style: it.style, durationMs: it.track.durationMs };
+  return { id: it.track.id, artists: it.track.artists, isNew: it.isNew, style: it.style, durationMs: it.track.durationMs, key: songKey(it.track.name, it.track.artists) };
 }
 
 /** Wat Spotify zelf als gespeeld kent sinds Live DJ begon: vangt ook op wat de app niet zag (scherm uit, te snel geskipt). */
@@ -442,7 +443,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         }
         throw e;
       }
-      if (native && info) await W.liveSetQueued(id, { id, artists: info.track.artists, isNew: info.isNew, style: info.style, durationMs: info.track.durationMs });
+      if (native && info) await W.liveSetQueued(id, { id, artists: info.track.artists, isNew: info.isNew, style: info.style, durationMs: info.track.durationMs, key: songKey(info.track.name, info.track.artists) });
       const cur = liveRef.current;
       if (cur) commit({ ...cur, queuedAt: Date.now() });
       setError(null);
