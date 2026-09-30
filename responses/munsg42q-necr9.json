@@ -1,0 +1,178 @@
+{
+ "id": "munsg42q-necr9",
+ "finishedAt": "2026-09-30T07:33:17.841Z",
+ "durationMs": 13438,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Kantoorvibe, feelgood doorgaan",
+  "note": "Je blijft bij de lichte indie- en pop-sfeer van wat je helemaal luisterde, zonder herhalingen en zonder de zwaardere nummers.",
+  "items": [
+   {
+    "ref": "t116",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t171",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t177",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t118",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t147",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Shut Up and Dance",
+    "artist": "WALK THE MOON",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t189",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t176",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Budapest",
+    "artist": "George Ezra",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sunflower - Spider-Man: Into the Spider-Verse",
+    "artist": "Post Malone",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t104",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t150",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t145",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t187",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 2
+   }
+  ]
+ },
+ "costUsd": 0.0499568,
+ "model": "sonnet"
+}
