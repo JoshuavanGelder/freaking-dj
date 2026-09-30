@@ -1,0 +1,178 @@
+{
+ "id": "munseyax-7jcpc",
+ "finishedAt": "2026-09-30T07:32:24.302Z",
+ "durationMs": 13419,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Kantoor-sessie vervolg",
+  "note": "Je bleef bij melodieuze pop en indie-rock, dus ik hield het daarbij, zonder herhalingen van eerder gespeelde nummers.",
+  "items": [
+   {
+    "ref": "t172",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t148",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Riptide",
+    "artist": "Vance Joy",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t169",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t206",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Die With A Smile",
+    "artist": "Lady Gaga",
+    "style": "Pop",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t203",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t107",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t218",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stick Season",
+    "artist": "Noah Kahan",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t204",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t110",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t164",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t153",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t209",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t173",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0516528,
+ "model": "sonnet"
+}
