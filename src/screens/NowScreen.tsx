@@ -157,14 +157,17 @@ function LivePanel() {
   };
   return (
     <View style={{ gap: 12, backgroundColor: C.card, borderRadius: 10, padding: 14 }}>
-      <Row style={{ justifyContent: 'space-between' }}>
-        <Row style={{ gap: 8 }}>
+      <Row style={{ justifyContent: 'space-between', gap: 10 }}>
+        {/* Lange vibe-tekst moet afbreken (flex: 1 + minWidth: 0), anders duwt hij de Stop-knop uit beeld. */}
+        <Row style={{ gap: 8, flex: 1, minWidth: 0 }}>
           <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.accent }} />
-          <T size={12} weight="bold" color={C.accent} style={{ letterSpacing: 1 }}>
+          <T size={12} weight="bold" color={C.accent} style={{ letterSpacing: 1, flex: 1, flexShrink: 1 }}>
             LIVE DJ · {live.vibe.toUpperCase()}
           </T>
         </Row>
-        <Button label="Stop" small variant="outline" onPress={stop} />
+        <View style={{ flexShrink: 0 }}>
+          <Button label="Stop" small variant="outline" onPress={stop} />
+        </View>
       </Row>
       {live.note ? (
         <T size={13} color={C.muted}>
