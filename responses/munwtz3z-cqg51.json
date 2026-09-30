@@ -1,0 +1,378 @@
+{
+ "id": "munwtz3z-cqg51",
+ "finishedAt": "2026-09-30T09:36:08.217Z",
+ "durationMs": 16349,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Under the Pressure",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t202",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Thinkin' Bout Me",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t54",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t134",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Red Eyes",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Something in the Orange",
+    "artist": "Zach Bryan",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t166",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t187",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Pain",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t57",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t217",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Tennessee Whiskey",
+    "artist": "Chris Stapleton",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t141",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t193",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Eyes to the Wind",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t150",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t195",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t219",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Use Somebody",
+    "artist": "Kings of Leon",
+    "style": "Indie-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t210",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t152",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "In Chains",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t162",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t212",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Indie-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stick Season",
+    "artist": "Noah Kahan",
+    "style": "Folk-rock",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "note": "Country van Morgan Wallen en Luke Combs gemengd met heartland- en indie-rock in de sfeer van The War on Drugs.",
+  "spares": [
+   {
+    "ref": "t164",
+    "title": "",
+    "artist": "",
+    "style": "Classic rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t187",
+    "title": "",
+    "artist": "",
+    "style": "Folk-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "American Girl",
+    "artist": "Tom Petty",
+    "style": "Classic rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Cover Me Up",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Burning",
+    "artist": "The War on Drugs",
+    "style": "Heartland-rock",
+    "new": true,
+    "energy": 4
+   }
+  ],
+  "title": "Country en Heartland-rock"
+ },
+ "costUsd": 0.0566708,
+ "model": "sonnet"
+}
