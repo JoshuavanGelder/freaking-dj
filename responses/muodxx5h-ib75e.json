@@ -1,0 +1,178 @@
+{
+ "id": "muodxx5h-ib75e",
+ "finishedAt": "2026-09-30T17:35:05.498Z",
+ "durationMs": 11382,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Legday: stevige rock",
+  "note": "Je luisterde AC/DC en Alex Warren uit, dus ik ging voor stevige rock en haalde rap en EDM eruit.",
+  "items": [
+   {
+    "ref": "t85",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Enter Sandman - Remastered 2021",
+    "artist": "Metallica",
+    "style": "Rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t169",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t209",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Welcome To The Jungle",
+    "artist": "Guns N' Roses",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Back In Black",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t212",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t71",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t208",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t179",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t176",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t168",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t182",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t207",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0516708,
+ "model": "sonnet"
+}
