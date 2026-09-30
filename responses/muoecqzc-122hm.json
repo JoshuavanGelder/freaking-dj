@@ -1,0 +1,178 @@
+{
+ "id": "muoecqzc-122hm",
+ "finishedAt": "2026-09-30T17:46:34.911Z",
+ "durationMs": 14125,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Legday: klassieke rockkracht",
+  "note": "Je luisterde T.N.T. helemaal uit, dus ik ging voor riffs en stadionrock en liet Eminem, Imagine Dragons en Fall Out Boy vallen.",
+  "items": [
+   {
+    "ref": "t206",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Back In Black",
+    "artist": "AC/DC",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t126",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t209",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Highway to Hell",
+    "artist": "AC/DC",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t205",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t176",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t173",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Livin' On A Prayer",
+    "artist": "Bon Jovi",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t204",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t187",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t71",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sweet Child O' Mine",
+    "artist": "Guns N' Roses",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t179",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t166",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t156",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Klassieke rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Don't Stop Me Now",
+    "artist": "Queen",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Jump - 2015 Remaster",
+    "artist": "Van Halen",
+    "style": "Klassieke rock",
+    "new": true,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0558588,
+ "model": "sonnet"
+}
