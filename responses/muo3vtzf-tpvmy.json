@@ -1,0 +1,178 @@
+{
+ "id": "muo3vtzf-tpvmy",
+ "finishedAt": "2026-09-30T12:53:27.050Z",
+ "durationMs": 12225,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding met Eurovisie-twist",
+  "note": "Ik heb de rest van de rij behouden, minder Eurovisie-pop toegevoegd en Eurovisie-rock en stevige pop-rock gehouden.",
+  "items": [
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t122",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Only Teardrops",
+    "artist": "Emmelie de Forest",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t200",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t178",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t202",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t144",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t69",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Waterloo",
+    "artist": "ABBA",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   }
+  ]
+ },
+ "costUsd": 0.0477288,
+ "model": "sonnet"
+}
