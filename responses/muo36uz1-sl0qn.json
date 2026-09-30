@@ -1,0 +1,178 @@
+{
+ "id": "muo36uz1-sl0qn",
+ "finishedAt": "2026-09-30T12:34:01.239Z",
+ "durationMs": 12635,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding met Eurovisie-drive",
+  "note": "Je skipte NF, Fall Out Boy en OneRepublic-hits, dus ik hou het bij Eurovisie, Morgan Wallen, Avicii en EDM, zonder herhalingen.",
+  "items": [
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Toy",
+    "artist": "Netta",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Waterloo",
+    "artist": "ABBA",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0519828,
+ "model": "sonnet"
+}
