@@ -85,6 +85,9 @@ export function PlanScreen({ planId }: { planId: string }) {
 
   const run = async (mode: 'toevoegen' | 'vervangen', asLive: boolean) => {
     setSheet(null);
+    // Hele wachtrij en Live DJ sluiten elkaar uit: een oude Live DJ-sessie (blijft bewaard na herstart)
+    // zou anders in Nu als "loopt" blijven staan en zelf nummers blijven klaarzetten.
+    if (!asLive && live.live) live.stop();
     const ok = asLive ? await live.start(plan, mode, allowSkip) : await sendToSpotify(plan, mode, allowSkip);
     if (ok) nav.replace({ name: 'now' });
   };
