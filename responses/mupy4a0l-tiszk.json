@@ -1,0 +1,378 @@
+{
+ "id": "mupy4a0l-tiszk",
+ "finishedAt": "2026-10-01T19:47:44.277Z",
+ "durationMs": 19835,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding flow",
+  "note": "Je favorieten uit rock, EDM, NF en country, met af en toe een nieuw nummer ertussen.",
+  "items": [
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "style": "EDM",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "On My Way",
+    "artist": "Alan Walker",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t48",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Dance, Dance",
+    "artist": "Fall Out Boy",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Hey Brother",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Whiskey Glasses",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Titanium",
+    "artist": "David Guetta",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t79",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t81",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Misery Business",
+    "artist": "Paramore",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t101",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t180",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t219",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t204",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t156",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t202",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t94",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t142",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.070424,
+ "model": "sonnet"
+}
