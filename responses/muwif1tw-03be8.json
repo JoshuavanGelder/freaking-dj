@@ -1,0 +1,378 @@
+{
+ "id": "muwif1tw-03be8",
+ "finishedAt": "2026-10-06T10:02:46.263Z",
+ "durationMs": 23350,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding door Vienna heen",
+  "note": "Je favoriete Eurovisie-inzendingen wisselen af met coding-energie van NF, Imagine Dragons en Avicii, plus een paar nieuwe tracks.",
+  "items": [
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Heroes",
+    "artist": "Måns Zelmerlöw",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "style": "EDM",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Whatever It Takes",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Hard Rock Hallelujah",
+    "artist": "Lordi",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t48",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t37",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t54",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Space Man",
+    "artist": "Sam Ryder",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t133",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Boulevard of Broken Dreams",
+    "artist": "Green Day",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "",
+    "title": "Waterloo",
+    "artist": "ABBA",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Satellite",
+    "artist": "Lena",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0654254,
+ "model": "sonnet"
+}
