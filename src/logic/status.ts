@@ -38,6 +38,7 @@ export function responseHealth(r: DjResponse | null, now: number): ClaudeHealth 
   if (r.status === 'limiet' && age < 12 * 3600 * 1000) {
     return { level: 'storing', text: r.resetAt ? `Je Claude-limiet is op (weer beschikbaar: ${r.resetAt}).` : 'Je Claude-limiet is op.' };
   }
-  if (r.status === 'token') return { level: 'storing', text: 'Het Claude-token werkt niet meer. Maak een nieuw token (zie Instellingen).' };
+  // Een oude tokenfout niet blijven tonen: het secret kan intussen vervangen zijn.
+  if (r.status === 'token' && age < 30 * 60 * 1000) return { level: 'storing', text: 'Het Claude-token werkt niet meer. Maak een nieuw token (zie Instellingen).' };
   return null;
 }

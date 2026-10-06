@@ -86,6 +86,9 @@ test('status: statuspagina en limiet', () => {
   const r = responseHealth({ id: 'x', status: 'limiet', message: '', resetAt: '17:00', answer: null, finishedAt: new Date(NOW).toISOString() }, NOW + 1000);
   assert.match(r?.text ?? '', /17:00/);
   assert.equal(responseHealth({ id: 'x', status: 'ok', message: '', resetAt: null, answer: null, finishedAt: new Date(NOW).toISOString() }, NOW), null);
+  const tok = { id: 'x', status: 'token' as const, message: '', resetAt: null, answer: null, finishedAt: new Date(NOW).toISOString() };
+  assert.match(responseHealth(tok, NOW + 60_000)?.text ?? '', /token/);
+  assert.equal(responseHealth(tok, NOW + 3 * 3600_000), null);
 });
 
 test('bestMatch: zelfde artiest en titel, anders niets', async () => {
