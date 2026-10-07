@@ -1,0 +1,178 @@
+{
+ "id": "muxyl88a-9hn3n",
+ "finishedAt": "2026-10-07T10:23:09.815Z",
+ "durationMs": 14199,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coding met Eurovisie-vibe",
+  "note": "Je kreeg meer NF, Fall Out Boy en Alex Warren, en geen Imagine Dragons-skips of AC/DC meer.",
+  "items": [
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Heroes",
+    "artist": "Måns Zelmerlöw",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t93",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Rim Tim Tagi Dim",
+    "artist": "Baby Lasagna",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t86",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sugar, We're Goin Down",
+    "artist": "Fall Out Boy",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Liekinheitin",
+    "artist": "Linda Lampenius",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t179",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.06745799999999999,
+ "model": "sonnet"
+}
