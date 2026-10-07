@@ -1,0 +1,178 @@
+{
+ "id": "muxwe8rz-5grh3",
+ "finishedAt": "2026-10-07T09:21:44.613Z",
+ "durationMs": 15585,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Coderen met Eurovisie",
+  "note": "Je lijst is aangevuld met meer NF, pop-rock en Eurovisie-nummers, zonder de nummers die je skipte of al hebt gehoord.",
+  "items": [
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Tout l'univers",
+    "artist": "Gjon's Tears",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t133",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Wasted Love",
+    "artist": "JJ",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t103",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t117",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Zari",
+    "artist": "Marina Satti",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t186",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t105",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Dancing Lasha Tumbai",
+    "artist": "Verka Serduchka",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 5
+   }
+  ]
+ },
+ "costUsd": 0.06589,
+ "model": "sonnet"
+}
