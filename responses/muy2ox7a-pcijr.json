@@ -1,0 +1,178 @@
+{
+ "id": "muy2ox7a-pcijr",
+ "finishedAt": "2026-10-07T12:18:01.434Z",
+ "durationMs": 15372,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Been By Now, bijgestuurd",
+  "note": "Je skipte alle nieuwe country, dus ik koos meer pop-rock en NF zoals Alex Warren en OneRepublic.",
+  "items": [
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stargazing",
+    "artist": "Myles Smith",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Radioactive",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t178",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t200",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   }
+  ]
+ },
+ "costUsd": 0.058484999999999995,
+ "model": "sonnet"
+}
