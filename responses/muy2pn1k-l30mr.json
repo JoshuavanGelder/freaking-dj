@@ -1,0 +1,378 @@
+{
+ "id": "muy2pn1k-l30mr",
+ "finishedAt": "2026-10-07T12:18:29.165Z",
+ "durationMs": 21456,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "\n<parameter name=\"title\">Mijn standaard mix",
+  "note": "Je huidige favorieten met NF, Alex Warren en Imagine Dragons voorop, plus een paar oudere en nieuwe stevige nummers.",
+  "items": [
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Let You Down",
+    "artist": "NF",
+    "style": "Pop-rap",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "style": "EDM",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Wasted On You",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t70",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "style": "Hardrock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t92",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Party Rock Anthem",
+    "artist": "LMFAO",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t28",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t65",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Radioactive",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sugar, We're Goin Down",
+    "artist": "Fall Out Boy",
+    "style": "Pop-punk",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t66",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t166",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Basket Case",
+    "artist": "Green Day",
+    "style": "Pop-punk",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t116",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t59",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t71",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t96",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Sweet but Psycho",
+    "artist": "Ava Max",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.06565499999999999,
+ "model": "sonnet"
+}
