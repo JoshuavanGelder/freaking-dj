@@ -1,0 +1,378 @@
+{
+ "id": "muxyqvny-1o400",
+ "finishedAt": "2026-10-07T10:27:23.949Z",
+ "durationMs": 16229,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Been By Now, meer Alex",
+  "note": "Ik verving een paar andere pop-rocknummers door Alex Warren (Ordinary, Burning Down, Carry You Home) en liet de rest staan.",
+  "items": [
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I Had Some Help (Feat. Morgan Wallen)",
+    "artist": "Post Malone",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Let You Down",
+    "artist": "NF",
+    "style": "Rap",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t62",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Fast Car",
+    "artist": "Luke Combs",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Cowgirls",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Wasted On You",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Whiskey Glasses",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Carry You Home",
+    "artist": "Alex Warren",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Tennessee Whiskey",
+    "artist": "Chris Stapleton",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t52",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Body Like A Back Road",
+    "artist": "Sam Hunt",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Thinkin' Bout Me",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Cruise",
+    "artist": "Florida Georgia Line",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Sand In My Boots",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t66",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t57",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Wagon Wheel",
+    "artist": "Darius Rucker",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t60",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t65",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t28",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t71",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.065351,
+ "model": "sonnet"
+}
