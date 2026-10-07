@@ -1,0 +1,226 @@
+{
+ "id": "muxys18j-43xko",
+ "finishedAt": "2026-10-07T10:28:15.380Z",
+ "durationMs": 14238,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Been By Now, country-mix",
+  "note": "Je NF, EDM en pop-rock zijn weggehaald, alleen Alex Warren is gebleven, de rest blijft in dezelfde volgorde.",
+  "items": [
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I Had Some Help (Feat. Morgan Wallen)",
+    "artist": "Post Malone",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Fast Car",
+    "artist": "Luke Combs",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Cowgirls",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Wasted On You",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Whiskey Glasses",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Carry You Home",
+    "artist": "Alex Warren",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Tennessee Whiskey",
+    "artist": "Chris Stapleton",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Body Like A Back Road",
+    "artist": "Sam Hunt",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Thinkin’ Bout Me",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Cruise",
+    "artist": "Florida Georgia Line",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sand In My Boots",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Wagon Wheel",
+    "artist": "Darius Rucker",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "",
+    "title": "More Than My Hometown",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Crazy",
+    "artist": "Luke Combs",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Need a Favor",
+    "artist": "Jelly Roll",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Die a Happy Man",
+    "artist": "Thomas Rhett",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Dirt Road Anthem",
+    "artist": "Jason Aldean",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.060763,
+ "model": "sonnet"
+}
