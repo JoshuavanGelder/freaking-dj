@@ -79,7 +79,7 @@ test('niet dezelfde artiest als wat nu speelt', () => {
   assert.equal(s.upcoming[p.index].track.id, 'c');
 });
 
-test('doorspringen: na skips naar een stijl die blijft hangen -> meer van die stijl', () => {
+test('doorskippen: het nummer waar je uitkomt is geen wens, dus geen voorkeur voor die stijl', () => {
   const items = [it('n1', 'A', 'Rock'), it('n2', 'B', 'Country'), it('n3', 'C', 'Rock')];
   const { s } = setup(items, null);
   const state: LiveState = {
@@ -91,7 +91,7 @@ test('doorspringen: na skips naar een stijl die blijft hangen -> meer van die st
     ],
   };
   const p = pickNext(state, null, () => true)!;
-  assert.equal(state.upcoming[p.index].track.id, 'n2');
+  assert.equal(state.upcoming[p.index].track.id, 'n1', 'gewoon de volgorde van het voorstel');
 });
 
 test('regels blijven gelden en gespeelde nummers komen niet terug', () => {

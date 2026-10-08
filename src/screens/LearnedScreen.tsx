@@ -24,7 +24,6 @@ export function LearnedScreen() {
   const skips = week.filter((p) => p.outcome === 'skip').length;
   const resting = Object.entries(signals.resting).filter(([, until]) => until > now);
   const notNow = Object.entries(signals.notNow);
-  const jumps = Object.entries(signals.jumpTargets).sort((a, b) => b[1] - a[1]).slice(0, 12);
   const rejected = Object.entries(L.decisions).filter(([, d]) => d === 'afgewezen');
   const last = lastEventAt();
 
@@ -53,7 +52,7 @@ export function LearnedScreen() {
 
       <Section title="Vermoedelijk niet leuk">
         <T size={13} color={C.muted}>
-          Een nieuw nummer binnen {QUICK_SKIP_MS / 1000} s geskipt, of in {SKIP_SESSIONS} sessies geskipt. Blijft een vermoeden tot jij het bevestigt; speel je het later wel helemaal af, dan vervalt het.
+          Een nieuw nummer binnen {QUICK_SKIP_MS / 1000} s geskipt, of in {SKIP_SESSIONS} sessies geskipt. Een reeks skips op rij en alles wat je in Live DJ skipt telt hier niet mee. Blijft een vermoeden tot jij het bevestigt; speel je het later wel helemaal af, dan vervalt het.
         </T>
         {signals.suspicions.length ? (
           signals.suspicions.map((s) => (
@@ -105,13 +104,6 @@ export function LearnedScreen() {
         ) : (
           <Empty text="Nog niets." />
         )}
-      </Section>
-
-      <Section title="Waar je naartoe skipte">
-        <T size={13} color={C.muted}>
-          Meerdere skips op rij die eindigen bij een nummer dat je helemaal afluistert: dat is wat je wilde.
-        </T>
-        {jumps.length ? jumps.map(([id, n]) => <Line key={id} text={`${name(id)} · ${n}×`} />) : <Empty text="Nog niets." />}
       </Section>
 
       {rejected.length ? (

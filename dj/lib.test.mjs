@@ -57,7 +57,7 @@ test('renderRequest bevat vibe, regels en pool', () => {
     mode: 'nieuw', vibe: 'coding', now: 'dinsdag 14:00', count: 25, spares: 8, newEvery: 4,
     artistStart: null, worshipAllowed: false, eurovision: false, eurovisionFavorite: 'Viva, Moldova! – Satoshi',
     rules: ['r1'], taste: ['t1'], blockedArtists: ['Loreen'], worshipArtists: ['Hillsong'],
-    learned: { jumpTargets: [], notInThisVibe: [], suspectedDislike: ['Firestone – Kygo'], disliked: [], resting: [] },
+    learned: { notInThisVibe: [], suspectedDislike: ['Firestone – Kygo'], disliked: [], resting: [] },
     avoid: [], previous: [], pool: 't1|Ordinary|Alex Warren|nu',
   });
   assert.match(t, /vibe: coding/);

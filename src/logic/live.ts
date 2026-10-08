@@ -161,7 +161,7 @@ function recentSkips(played: LivePlayed[]): LivePlayed[] {
 /**
  * Kiest het volgende nummer uit `upcoming`. Standaard gewoon de volgorde van het voorstel, maar na skips:
  * niet dezelfde artiest, minder nieuwe nummers na een geskipt nieuw nummer, en na meerdere skips in
- * dezelfde stijl even een andere stijl. Na doorspringen naar een nummer: meer van die stijl.
+ * dezelfde stijl even een andere stijl. Een nummer waar je naartoe skipte telt niet als wens: je wist niet wat er kwam.
  */
 export function pickNext(
   s: LiveState,
@@ -171,8 +171,6 @@ export function pickNext(
   const used = usedSet(s);
   if (currentTrack?.name) used.keys.add(songKey(currentTrack.name, currentTrack.artists));
   const skips = recentSkips(s.played);
-  const last = s.played[s.played.length - 1];
-  const jumpedTo = last && last.outcome === 'full' && s.played.length >= 3 && s.played.slice(-3, -1).every((p) => p.outcome === 'skip') ? last : null;
   const skipStyles = new Map<string, number>();
   for (const k of skips) skipStyles.set(norm(k.style), (skipStyles.get(norm(k.style)) ?? 0) + 1);
 
@@ -200,10 +198,6 @@ export function pickNext(
       why = why || `even geen ${it.style}`;
     } else if (sameStyleSkips === 1) {
       score -= 4;
-    }
-    if (jumpedTo && norm(jumpedTo.style) === norm(it.style)) {
-      score += 12;
-      why = why || `meer ${it.style}`;
     }
     if (!first) first = { index: i, why };
     if (!best || score > best.score) best = { index: i, score, why };

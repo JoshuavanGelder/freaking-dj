@@ -29,7 +29,7 @@ test('poolForClaude: zonder blocklist/worship, met korte refs', () => {
     topShort: [t('a', 'Tattoo', 'Loreen'), t('b', 'Gratitude', 'Brandon Lake'), t('c', 'Hope', 'NF')],
     topMedium: [], topLong: [], recent: [], saved: [],
   });
-  const ctx = { rules: DEFAULT_RULES, vibe: parseVibe('coding', DEFAULT_RULES), signals: { resting: {}, notNow: {}, jumpTargets: {}, suspicions: [], disliked: [] }, now: NOW };
+  const ctx = { rules: DEFAULT_RULES, vibe: parseVibe('coding', DEFAULT_RULES), signals: { resting: {}, notNow: {}, suspicions: [], disliked: [] }, now: NOW };
   const refs = poolForClaude(pool, ctx);
   assert.deepEqual(refs.map((r) => [r.ref, r.track.id]), [['t1', 'c']]);
   const req = buildRequest({

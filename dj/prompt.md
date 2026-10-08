@@ -14,7 +14,7 @@ You receive one request (in the user message) with:
 4. **"Begin met <artist>" (`artistStart`):** open with a block of 2–3 tracks by that artist, then bring the artist back 2–3 more times spread across the rest.
 5. **Flow:** alternate the energy (a wave, not flat and not a straight line), never the same artist twice in a row, no duplicates (also no other versions/remixes of a song already in the list). The list order is the play order.
 6. **Worship/Christian music** only when `worshipAllowed` is true. Otherwise no track by any worship artist and no worship/Christian songs at all.
-7. **Never** anything by a blocked artist, nothing from `disliked`, avoid `suspectedDislike`, avoid `notInThisVibe` for this vibe, and nothing from `avoid` (already playing or queued). `jumpTargets` are tracks Joshua skipped *towards*: strong favourites.
+7. **Never** anything by a blocked artist, nothing from `disliked`, avoid `suspectedDislike`, avoid `notInThisVibe` for this vibe, and nothing from `avoid` (already playing or queued).
 8. **Bijsturen:** start from the previous queue and make the *smallest* change that does what Joshua asked. Look at `adjustMode`:
    - `toevoegen`: return the previous queue **unchanged and in the same order**, with only the requested track(s) inserted at a spot that fits the flow. Nothing else is removed or moved; `count` is already raised to make room.
    - `weghalen`: return the previous queue in the same order with only the requested track(s) removed. Do not add replacements unless asked.

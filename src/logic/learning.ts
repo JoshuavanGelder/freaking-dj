@@ -1,6 +1,8 @@
 // Leren van skips. De telefoon vangt de Spotify-broadcasts op (nummer gewisseld, afspelen/pauze + positie);
 // daaruit maken we "plays" en daaruit de signalen, van sterk naar zwak:
-// 1. doorspringen  2. te vaak gedraaid  3. geen zin in  4. niet leuk (vermoeden tot jij het bevestigt).
+// 1. te vaak gedraaid  2. geen zin in  3. niet leuk (vermoeden tot jij het bevestigt).
+// Een reeks skips (2+ op rij) is neutraal en skips tijdens Live DJ tellen nooit voor "niet leuk": je weet dan niet wat er komt.
+// Waar je naartoe skipte wordt niet gebruikt: je koos dat nummer niet, het kwam gewoon als volgende.
 import type { Learned, Play, Signals, Suspicion } from './types.ts';
 import { songKey } from './text.ts';
 
@@ -146,24 +148,22 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
   const plays = [...learned.plays].sort((a, b) => a.start - b.start);
   const resting: Record<string, number> = {};
   const notNow: Signals['notNow'] = {};
-  const jumpTargets: Record<string, number> = {};
   const neutral = new Set<Play>();
 
-  // 1. Doorspringen: 2+ skips op rij die eindigen bij een nummer dat je helemaal afluistert.
+  // 1. Doorskippen: 2+ skips op rij zijn neutraal (je zoekt iets, het is geen oordeel over die nummers),
+  // ook als je daarna nog niets helemaal afluistert.
   const sessions = sessionsOf(plays);
   for (const s of sessions) {
     let run: Play[] = [];
-    for (const p of s) {
-      if (p.outcome === 'skip') {
-        run.push(p);
-        continue;
-      }
-      if (run.length >= 2) {
-        jumpTargets[p.id] = (jumpTargets[p.id] ?? 0) + 1;
-        run.forEach((r) => neutral.add(r));
-      }
+    const flush = () => {
+      if (run.length >= 2) run.forEach((r) => neutral.add(r));
       run = [];
+    };
+    for (const p of s) {
+      if (p.outcome === 'skip') run.push(p);
+      else flush();
     }
+    flush();
   }
 
   // 2. Te vaak gedraaid: in de laatste dagen vaak helemaal gehoord -> 2 weken rust.
@@ -205,12 +205,16 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
       const prevSkip = s[i - 1]?.outcome === 'skip' && !neutral.has(s[i - 1]);
       const nextSkip = s[i + 1]?.outcome === 'skip' && !neutral.has(s[i + 1]);
       if (!knownBefore && p.listenedMs < QUICK_SKIP_MS) {
-        const q = quick.get(p.id);
-        if (!q || p.listenedMs < q.listenedMs) quick.set(p.id, p);
+        // Tijdens Live DJ wist je niet wat er kwam: een skip daar maakt het nummer niet "niet leuk".
+        if (!p.live) {
+          const q = quick.get(p.id);
+          if (!q || p.listenedMs < q.listenedMs) quick.set(p.id, p);
+        }
       } else if (knownBefore && !prevSkip && !nextSkip) {
         const d = new Date(p.start);
         (notNow[p.id] ??= []).push({ vibe: p.vibe ?? 'zonder vibe', hour: d.getHours(), at: p.start });
       }
+      if (p.live) return;
       if (!skipSessions.has(p.id)) skipSessions.set(p.id, new Set());
       skipSessions.get(p.id)!.add(si);
     });
@@ -238,7 +242,7 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
     .filter(([, d]) => d === 'bevestigd')
     .map(([id]) => id);
 
-  return { resting, notNow, jumpTargets, suspicions, disliked };
+  return { resting, notNow, suspicions, disliked };
 }
 
 /** Sleutels (titel + artiest) van bevestigd niet-leuke nummers: vangt ook andere versies af. */

@@ -33,5 +33,6 @@ Open op je telefoon de nieuwste [release](../../releases/latest) en tik op het `
   achtergrond bij. Bijsturen ("rustiger", "meer NF") kan ook tussendoor, zonder dat het huidige nummer stopt.
 - **Hele wachtrij**: **toevoegen** zet nummers alleen achteraan. **Vervangen** wacht tot het huidige nummer klaar is. Spotify kan
   de wachtrij niet leegmaken, dus oude nummers worden overgeslagen met het volume heel even op 0.
-- Van je skips leert de app: doorspringen, te vaak gedraaid (2 weken rust), geen zin in (per vibe) en
-  niet leuk (pas definitief als jij het bevestigt). Alles staat in de tab **Geleerd**.
+- Van je skips leert de app: te vaak gedraaid (2 weken rust), geen zin in (per vibe) en niet leuk (pas definitief
+  als jij het bevestigt). Een reeks skips op rij en alles wat je in Live DJ skipt telt niet voor "niet leuk"; waar je
+  naartoe skipte wordt niet gebruikt, want dat nummer koos je niet. Alles staat in de tab **Geleerd**.

@@ -29,7 +29,6 @@ export function renderRequest(r) {
   lines.push(list('Blocked artists (never)', r.blockedArtists));
   lines.push(list('Worship artists (only when worshipAllowed)', r.worshipArtists));
   const l = r.learned ?? {};
-  lines.push(list('Learned: jumpTargets (skipped towards these: strong favourites)', l.jumpTargets));
   lines.push(list('Learned: notInThisVibe (skipped in this vibe, avoid now)', l.notInThisVibe));
   lines.push(list('Learned: suspectedDislike (avoid)', l.suspectedDislike));
   lines.push(list('Learned: disliked (never)', l.disliked));

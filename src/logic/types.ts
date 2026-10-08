@@ -73,6 +73,7 @@ export type Play = {
   outcome: 'full' | 'skip';
   vibe?: string; // vibe van de wachtrij waar het nummer uit kwam
   fromPlanNew?: boolean; // stond als (nieuw) in een voorstel
+  live?: boolean; // gespeeld tijdens Live DJ: je wist niet wat er kwam, dus een skip zegt niets over of je het leuk vindt
 };
 
 /** Je eigen antwoord op een vermoeden. Gaat altijd voor. */
@@ -96,8 +97,6 @@ export type Signals = {
   resting: Record<string, number>;
   /** Geen zin in (per vibe): trackId -> vibes waarin je hem los skipte. */
   notNow: Record<string, { vibe: string; hour: number; at: number }[]>;
-  /** Doorspringen: doelnummers waar je naartoe skipte. */
-  jumpTargets: Record<string, number>;
   /** Vermoedens van "niet leuk" (nog niet bevestigd). */
   suspicions: Suspicion[];
   /** Bevestigd niet leuk: komt nooit meer. */

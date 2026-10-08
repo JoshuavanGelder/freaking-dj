@@ -16,7 +16,7 @@ import type { PlanItem, PoolTrack, Signals, Track } from './types.ts';
 import { songKey } from './text.ts';
 
 const NOW = Date.parse('2026-09-29T12:00:00Z');
-const noSignals = (): Signals => ({ resting: {}, notNow: {}, jumpTargets: {}, suspicions: [], disliked: [] });
+const noSignals = (): Signals => ({ resting: {}, notNow: {}, suspicions: [], disliked: [] });
 
 let n = 0;
 function tr(name: string, artist: string | string[], id?: string): Track {

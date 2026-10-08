@@ -62,7 +62,7 @@ function learned(plays: Play[], over: Partial<Learned> = {}): Learned {
   return { ...EMPTY_LEARNED, plays, ...over };
 }
 
-test('doorspringen: skips op rij zijn neutraal, doel is favoriet', () => {
+test('doorskippen: skips op rij zijn neutraal en het nummer waar je uitkomt is geen wens', () => {
   const plays = [
     play('p1', T0, 'full'),
     play('s1', T0 + 4 * MIN, 'skip', 3000),
@@ -70,8 +70,41 @@ test('doorspringen: skips op rij zijn neutraal, doel is favoriet', () => {
     play('goal', T0 + 4 * MIN + 8000, 'full'),
   ];
   const s = computeSignals(learned(plays), { known: new Set(), now: NOW });
-  assert.equal(s.jumpTargets.goal, 1);
+  assert.equal('jumpTargets' in s, false, 'waar je naartoe skipte bestaat niet meer');
   assert.equal(s.suspicions.length, 0, 'geskipte nummers in een reeks zijn neutraal');
+});
+
+test('doorskippen: een reeks skips is ook neutraal als je daarna niets helemaal afluistert', () => {
+  const plays = [play('p1', T0, 'full'), play('s1', T0 + 4 * MIN, 'skip', 3000), play('s2', T0 + 4 * MIN + 5000, 'skip', 2000)];
+  const s = computeSignals(learned(plays), { known: new Set(['p1']), now: NOW });
+  assert.equal(s.suspicions.length, 0);
+});
+
+test('Live DJ: een snelle skip van een nieuw nummer wordt geen "niet leuk"', () => {
+  const plays = [
+    play('p1', T0, 'full', undefined, { live: true }),
+    play('fire', T0 + 4 * MIN, 'skip', 5000, { name: 'Firestone', live: true }),
+    play('p2', T0 + 4 * MIN + 5000, 'full', undefined, { live: true }),
+  ];
+  const s = computeSignals(learned(plays), { known: new Set(['p1', 'p2']), now: NOW });
+  assert.equal(s.suspicions.length, 0);
+});
+
+test('Live DJ: skips in 3 sessies maken het nummer ook niet "niet leuk"', () => {
+  const day = 86400000;
+  const plays = [0, 1, 2].flatMap((d) => [
+    play('p', T0 + d * day, 'full'),
+    play('meh', T0 + d * day + 4 * MIN, 'skip', 50_000, { live: true }),
+    play('q', T0 + d * day + 5 * MIN, 'full'),
+  ]);
+  const s = computeSignals(learned(plays), { known: new Set(['meh']), now: T0 + 3 * day });
+  assert.equal(s.suspicions.length, 0);
+});
+
+test('Live DJ: een bekende favoriet die je skipt blijft wel "geen zin in" voor die vibe', () => {
+  const plays = [play('p1', T0, 'full'), play('cs', T0 + 4 * MIN, 'skip', 40_000, { vibe: 'coding', live: true }), play('p2', T0 + 5 * MIN, 'full')];
+  const s = computeSignals(learned(plays), { known: new Set(['cs']), now: NOW });
+  assert.equal(s.notNow.cs?.[0].vibe, 'coding');
 });
 
 test('niet leuk: nieuw nummer binnen 30 s geskipt -> vermoeden + vraag', () => {

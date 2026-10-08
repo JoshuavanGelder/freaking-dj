@@ -72,7 +72,6 @@ export type DjRequest = {
   blockedArtists: string[];
   worshipArtists: string[];
   learned: {
-    jumpTargets: string[];
     notInThisVibe: string[];
     suspectedDislike: string[];
     disliked: string[];
@@ -115,11 +114,6 @@ export function buildRequest(args: {
   };
   const vibeKey = norm(vibe.text);
   const refById = new Map(refs.map((r) => [r.track.id, r.ref]));
-  const top = Object.entries(signals.jumpTargets)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 15)
-    .map(([id]) => name(id))
-    .filter((x): x is string => !!x);
   const notInThisVibe = Object.entries(signals.notNow)
     .filter(([, list]) => list.some((s) => norm(s.vibe) === vibeKey))
     .map(([id]) => name(id))
@@ -155,7 +149,6 @@ export function buildRequest(args: {
     blockedArtists: rules.blockedArtists,
     worshipArtists: rules.worshipArtists,
     learned: {
-      jumpTargets: top,
       notInThisVibe,
       suspectedDislike: signals.suspicions.map((s) => `${s.name} – ${s.artist} (${s.reason})`),
       disliked: signals.disliked.map(name).filter((x): x is string => !!x),

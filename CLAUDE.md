@@ -81,9 +81,12 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
 Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) die de Spotify-broadcasts
 `com.spotify.music.metadatachanged` / `playbackstatechanged` opvangt ("Apparaatuitzending" in Spotify aan)
 en als JSON-regels wegschrijft; ook spraakherkenning via `RecognizerIntent` (nl-NL).
-Signalen, sterk → zwak: doorspringen (2+ skips → doel), te vaak gedraaid (≥5× in 4 d → 14 d rust),
+Signalen, sterk → zwak: te vaak gedraaid (≥5× in 4 d → 14 d rust),
 geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sessies geskipt → vermoeden,
 één keer vragen; later helemaal afgespeeld → vervalt; jouw antwoord gaat voor).
+Skips tellen niet voor "niet leuk" als ze in een reeks van 2+ skips op rij zitten of tijdens Live DJ vielen (`Play.live`, gezet in
+`store.addEvents` zolang `state.live` loopt): je wist niet wat er kwam. "Waar je naartoe skipte" (jumpTargets) bestaat niet meer:
+je koos dat nummer niet, dus het is geen wens (ook niet in `pickNext`).
 
 ## Bouwen en controleren (sandbox zonder npm)
 - `npm install` werkt lokaal niet; Google Maven/SDK ook niet. Wel: node 22, `tsc`, python3.
