@@ -52,7 +52,7 @@ export function LearnedScreen() {
 
       <Section title="Vermoedelijk niet leuk">
         <T size={13} color={C.muted}>
-          Een nieuw nummer binnen {QUICK_SKIP_MS / 1000} s geskipt, of in {SKIP_SESSIONS} sessies geskipt. Een reeks skips op rij en alles wat je in Live DJ skipt telt hier niet mee. Blijft een vermoeden tot jij het bevestigt; speel je het later wel helemaal af, dan vervalt het.
+          Een nieuw nummer binnen {QUICK_SKIP_MS / 1000} s geskipt, of in {SKIP_SESSIONS} sessies geskipt. Een reeks skips op rij telt hier niet mee. Blijft een vermoeden tot jij het bevestigt; speel je het later wel helemaal af, dan vervalt het.
         </T>
         {signals.suspicions.length ? (
           signals.suspicions.map((s) => (

@@ -1,7 +1,7 @@
 // Leren van skips. De telefoon vangt de Spotify-broadcasts op (nummer gewisseld, afspelen/pauze + positie);
 // daaruit maken we "plays" en daaruit de signalen, van sterk naar zwak:
 // 1. te vaak gedraaid  2. geen zin in  3. niet leuk (vermoeden tot jij het bevestigt).
-// Een reeks skips (2+ op rij) is neutraal en skips tijdens Live DJ tellen nooit voor "niet leuk": je weet dan niet wat er komt.
+// Een reeks skips (2+ op rij) is neutraal: je zoekt dan iets. Losse skips tellen ook in Live DJ gewoon mee.
 // Waar je naartoe skipte wordt niet gebruikt: je koos dat nummer niet, het kwam gewoon als volgende.
 import type { Learned, Play, Signals, Suspicion } from './types.ts';
 import { songKey } from './text.ts';
@@ -205,16 +205,12 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
       const prevSkip = s[i - 1]?.outcome === 'skip' && !neutral.has(s[i - 1]);
       const nextSkip = s[i + 1]?.outcome === 'skip' && !neutral.has(s[i + 1]);
       if (!knownBefore && p.listenedMs < QUICK_SKIP_MS) {
-        // Tijdens Live DJ wist je niet wat er kwam: een skip daar maakt het nummer niet "niet leuk".
-        if (!p.live) {
-          const q = quick.get(p.id);
-          if (!q || p.listenedMs < q.listenedMs) quick.set(p.id, p);
-        }
+        const q = quick.get(p.id);
+        if (!q || p.listenedMs < q.listenedMs) quick.set(p.id, p);
       } else if (knownBefore && !prevSkip && !nextSkip) {
         const d = new Date(p.start);
         (notNow[p.id] ??= []).push({ vibe: p.vibe ?? 'zonder vibe', hour: d.getHours(), at: p.start });
       }
-      if (p.live) return;
       if (!skipSessions.has(p.id)) skipSessions.set(p.id, new Set());
       skipSessions.get(p.id)!.add(si);
     });

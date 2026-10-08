@@ -73,7 +73,6 @@ export type Play = {
   outcome: 'full' | 'skip';
   vibe?: string; // vibe van de wachtrij waar het nummer uit kwam
   fromPlanNew?: boolean; // stond als (nieuw) in een voorstel
-  live?: boolean; // gespeeld tijdens Live DJ: je wist niet wat er kwam, dus een skip zegt niets over of je het leuk vindt
 };
 
 /** Je eigen antwoord op een vermoeden. Gaat altijd voor. */

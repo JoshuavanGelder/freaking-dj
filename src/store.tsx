@@ -125,9 +125,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         ids: p.items.map((i) => i.track.id),
         newIds: p.items.filter((i) => i.isNew).map((i) => i.track.id),
       }));
-      // Gespeeld tijdens Live DJ: je wist niet wat er kwam, dus skips daar tellen niet voor "niet leuk".
-      const liveSince = s.live ? s.live.startedAt - 1000 : null;
-      const tagged = tagPlays(r.plays, plans).map((p) => (liveSince !== null && p.start >= liveSince ? { ...p, live: true } : p));
+      const tagged = tagPlays(r.plays, plans);
       const meta = { ...s.learned.meta };
       for (const p of tagged) meta[p.id] = { name: p.name, artist: p.artist };
       return {
