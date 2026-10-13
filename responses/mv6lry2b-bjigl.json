@@ -1,0 +1,178 @@
+{
+ "id": "mv6lry2b-bjigl",
+ "finishedAt": "2026-10-13T11:34:09.359Z",
+ "durationMs": 12436,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Meer Eurovisie, zelfde energie",
+  "note": "Je krijgt meer Eurovisie-inzendingen tussen de nummers die je helemaal luisterde, zonder skips en herhalingen.",
+  "items": [
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Cha Cha Cha",
+    "artist": "Käärijä",
+    "style": "Eurovisie-pop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Titanium (feat. Sia)",
+    "artist": "David Guetta",
+    "style": "EDM",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Whiskey Glasses",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t28",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.068508,
+ "model": "sonnet"
+}
