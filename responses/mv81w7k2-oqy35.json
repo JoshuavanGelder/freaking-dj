@@ -1,0 +1,178 @@
+{
+ "id": "mv81w7k2-oqy35",
+ "finishedAt": "2026-10-14T11:53:12.491Z",
+ "durationMs": 15662,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Live-sessie: this dream of you",
+  "note": "Je krijgt eerst This Dream of You, daarna meer NF, Flo Rida-pop en EDM, zonder herhaalde of geskipte nummers.",
+  "items": [
+   {
+    "ref": "",
+    "title": "This Dream of You",
+    "artist": "Bob Dylan",
+    "style": "Folk",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t138",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t185",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t153",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t142",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t76",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Love Somebody",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t135",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t123",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t146",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t114",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t124",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t133",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t177",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t161",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t70",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.056767500000000005,
+ "model": "sonnet"
+}
