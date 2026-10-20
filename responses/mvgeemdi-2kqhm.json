@@ -1,0 +1,378 @@
+{
+ "id": "mvgeemdi-2kqhm",
+ "finishedAt": "2026-10-20T08:05:38.768Z",
+ "durationMs": 17747,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t81",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t47",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t93",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Greedy",
+    "artist": "Tate McRae",
+    "style": "Dance",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t179",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Stick Season",
+    "artist": "Noah Kahan",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Shut Up and Dance",
+    "artist": "WALK THE MOON",
+    "style": "Pop-rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t124",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "note": "Je favorieten uit coding en energie, met een paar oudere nummers en nieuwe tracks in dezelfde sfeer, zonder worship.",
+  "spares": [
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t204",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t166",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "title": "Standaard mix voor dinsdag"
+ },
+ "costUsd": 0.071058,
+ "model": "sonnet"
+}
