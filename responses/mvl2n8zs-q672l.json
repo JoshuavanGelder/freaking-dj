@@ -1,0 +1,178 @@
+{
+ "id": "mvl2n8zs-q672l",
+ "finishedAt": "2026-10-23T14:35:09.320Z",
+ "durationMs": 10672,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Worship: meer Josiah Queen",
+  "note": "Je luisterde Josiah Queen helemaal uit, dus daar komt meer van, en de geskipte Hillsong-, Kari Jobe-, Casting Crowns- en Brandon Lake-nummers blijven weg.",
+  "items": [
+   {
+    "ref": "t69",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t61",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t62",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Chain Breaker",
+    "artist": "Zach Williams",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t68",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t67",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t70",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t72",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Holy Water",
+    "artist": "We The Kingdom",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t63",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t119",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t65",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Holy Forever",
+    "artist": "Chris Tomlin",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t85",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t118",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   }
+  ]
+ },
+ "costUsd": 0.0563375,
+ "model": "sonnet"
+}
