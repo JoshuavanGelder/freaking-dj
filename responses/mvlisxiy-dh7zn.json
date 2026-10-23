@@ -1,0 +1,178 @@
+{
+ "id": "mvlisxiy-dh7zn",
+ "finishedAt": "2026-10-23T22:07:28.218Z",
+ "durationMs": 11141,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Bijgestuurd: minder Wallen",
+  "note": "Je skipte Morgan Wallen, dus ik hou het bij pop, EDM, rock en NF zonder country.",
+  "items": [
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Cruel Summer",
+    "artist": "Taylor Swift",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Dance The Night",
+    "artist": "Dua Lipa",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   }
+  ]
+ },
+ "costUsd": 0.0530415,
+ "model": "sonnet"
+}
