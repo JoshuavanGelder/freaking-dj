@@ -1,0 +1,178 @@
+{
+ "id": "mvl1z8wy-0wmsi",
+ "finishedAt": "2026-10-23T14:16:33.073Z",
+ "durationMs": 14025,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Worship: rustig en groots",
+  "note": "Je hoort geen herhalingen meer en meer Hillsong-achtige nummers, zonder Elevation of eerder gespeelde tracks.",
+  "items": [
+   {
+    "ref": "t99",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t94",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t100",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "What a Beautiful Name",
+    "artist": "Hillsong Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t101",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t68",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t103",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t112",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Holy Water",
+    "artist": "We The Kingdom",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t116",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t123",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Great Things",
+    "artist": "Phil Wickham",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t115",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t119",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0600235,
+ "model": "sonnet"
+}
