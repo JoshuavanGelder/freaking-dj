@@ -1,0 +1,386 @@
+{
+ "id": "mvsepiyb-thcwx",
+ "finishedAt": "2026-10-28T17:47:22.175Z",
+ "durationMs": 18323,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t130",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t79",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Lose Yourself",
+    "artist": "Eminem",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t93",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t158",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Can't Hold Us",
+    "artist": "Macklemore & Ryan Lewis",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t133",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Seven Nation Army",
+    "artist": "The White Stripes",
+    "style": "Rock",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t159",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t124",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Turn Down for What",
+    "artist": "DJ Snake",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t153",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stronger",
+    "artist": "Kanye West",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t155",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "SICKO MODE",
+    "artist": "Travis Scott",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t207",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "note": "Je krijgt vooral energieke bekende nummers uit hiphop, rock en EDM, met nieuwe gymklassiekers ertussen.",
+  "spares": [
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t131",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Eye of the Tiger",
+    "artist": "Survivor",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Remember the Name",
+    "artist": "Fort Minor",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   }
+  ],
+  "title": "Gym power"
+ },
+ "costUsd": 0.069316,
+ "model": "sonnet"
+}
