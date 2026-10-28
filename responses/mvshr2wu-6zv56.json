@@ -1,0 +1,178 @@
+{
+ "id": "mvshr2wu-6zv56",
+ "finishedAt": "2026-10-28T19:12:38.354Z",
+ "durationMs": 12917,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym: meer dance-pop",
+  "note": "Je kreeg meer feestelijke dance-pop zoals wat je helemaal luisterde, en geen nummers die lijken op je skips of al gespeeld zijn.",
+  "items": [
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t112",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t66",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Dynamite",
+    "artist": "Taio Cruz",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t71",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Party Rock Anthem",
+    "artist": "LMFAO",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Wild Ones (feat. Sia)",
+    "artist": "Flo Rida",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t57",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t139",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t84",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t179",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t177",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Can't Stop the Feeling!",
+    "artist": "Justin Timberlake",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.068046,
+ "model": "sonnet"
+}
