@@ -1,0 +1,178 @@
+{
+ "id": "mvsfanq7-ueazu",
+ "finishedAt": "2026-10-28T18:03:44.278Z",
+ "durationMs": 15113,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t170",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t145",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Don't You Worry Child",
+    "artist": "Swedish House Mafia",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t120",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Shut Up and Dance",
+    "artist": "WALK THE MOON",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t175",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Where Have You Been",
+    "artist": "Rihanna",
+    "style": "Dance",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t96",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "note": "Je skipt rock en hiphop, dus ik ga voor dansbare pop en dance zonder herhalingen.",
+  "spares": [
+   {
+    "ref": "t113",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t163",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t197",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t191",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "title": "Gym: dansbaar en fris"
+ },
+ "costUsd": 0.057343500000000006,
+ "model": "sonnet"
+}
