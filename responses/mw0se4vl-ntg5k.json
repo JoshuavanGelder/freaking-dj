@@ -1,0 +1,378 @@
+{
+ "id": "mw0se4vl-ntg5k",
+ "finishedAt": "2026-11-03T14:32:44.386Z",
+ "durationMs": 19526,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Standaard mix",
+  "note": "Je favorieten uit country, NF, EDM en pop, met af en toe een nieuw nummer en een paar oudere herontdekkingen.",
+  "items": [
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I Had Some Help",
+    "artist": "Post Malone",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t56",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Franse chanson",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Houdini",
+    "artist": "Dua Lipa",
+    "style": "Dance",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Franse chanson",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "style": "Pop-punk",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Sapphire",
+    "artist": "Ed Sheeran",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t84",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t98",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t63",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t82",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Lovin On Me",
+    "artist": "Jack Harlow",
+    "style": "Dance",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t42",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t177",
+    "title": "",
+    "artist": "",
+    "style": "Pop-punk",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I'm the Problem",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t86",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t130",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t200",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.073126,
+ "model": "sonnet"
+}
