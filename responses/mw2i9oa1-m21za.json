@@ -1,0 +1,378 @@
+{
+ "id": "mw2i9oa1-m21za",
+ "finishedAt": "2026-11-04T19:24:58.567Z",
+ "durationMs": 20595,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym Powerlijst",
+  "note": "Je krijgt vooral je eigen energieke favorieten (NF, Morgan Wallen, Guetta, Fall Out Boy) met af en toe een nieuw gym-nummer.",
+  "items": [
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Country-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Stronger",
+    "artist": "Kanye West",
+    "style": "Hiphop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lose Yourself",
+    "artist": "Eminem",
+    "style": "Hiphop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t79",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Eye of the Tiger",
+    "artist": "Survivor",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t26",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Country-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t123",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Sandstorm",
+    "artist": "Darude",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t117",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t88",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Country-pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Pump It",
+    "artist": "Black Eyed Peas",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t76",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t140",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t146",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t109",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Animals",
+    "artist": "Martin Garrix",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t149",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "style": "Rock",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t171",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t195",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t199",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t129",
+    "title": "",
+    "artist": "",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t170",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t130",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0343872,
+ "model": "sonnet"
+}
