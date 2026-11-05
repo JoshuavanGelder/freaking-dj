@@ -1,7 +1,7 @@
 // De kandidaten uit je luistergeschiedenis en het verzoek dat naar Claude gaat.
 import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { norm, normTitle, songKey } from './text.ts';
-import { rejectReason, type EnforceContext } from './rules.ts';
+import { FRESH_START, rejectReason, type EnforceContext } from './rules.ts';
 import { PROFILE_NOTES, newEveryFor, sameVibe, type VibeStat } from './profiles.ts';
 import { notNowActive } from './learning.ts';
 
@@ -68,7 +68,7 @@ export type DjRequest = {
   count: number;
   spares: number;
   newEvery: number;
-  maxRepeats: number; // hooguit zoveel nummers met "heard today"
+  freshStart: number; // zoveel nummers bovenaan zonder "heard today"
   profile: 'standaard' | 'gym' | 'worship' | 'overig';
   profileNotes: string[];
   artistStart: string | null;
@@ -129,9 +129,8 @@ export function buildRequest(args: {
   model: string;
   /** Per nummer: helemaal gehoord / geskipt bij deze vibe (of hetzelfde profiel). */
   stats?: Map<string, VibeStat>;
-  /** In de laatste 12 uur al gehoord: in de pool gemarkeerd, Claude neemt er hooguit `maxRepeats` van. */
+  /** In de laatste 12 uur al gehoord: in de pool gemarkeerd, mag erin maar niet bovenaan. */
   heardRecently?: Set<string>;
-  maxRepeats?: number;
 }): DjRequest {
   const { vibe, rules, signals, learned, refs } = args;
   const name = (id: string) => {
@@ -166,7 +165,7 @@ export function buildRequest(args: {
     count: rules.count,
     spares: 5,
     newEvery: newEveryFor(profile, rules.newEvery),
-    maxRepeats: args.maxRepeats ?? 99,
+    freshStart: FRESH_START,
     profile,
     profileNotes: PROFILE_NOTES[profile],
     artistStart: vibe.artistStart,

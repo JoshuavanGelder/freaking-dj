@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { profileOf, sameVibe, vibeStats, provenIds, newEveryFor, PROFILE_NOTES } from './profiles.ts';
-import { DEFAULT_RULES, enforce, parseVibe, rejectReason } from './rules.ts';
+import { DEFAULT_RULES, delayRepeats, enforce, parseVibe, rejectReason } from './rules.ts';
 import { buildPool, buildRequest, poolForClaude } from './pool.ts';
 import { EMPTY_LEARNED, tagPlays } from './learning.ts';
 import { renderRequest } from '../../dj/lib.mjs';
@@ -161,20 +161,41 @@ test('geen zin in: wissen, toevoegen, verplaatsen en alles wissen', () => {
   assert.deepEqual(notNowGroups(sig(), NOW), []);
 });
 
-test('enforce: na herstarten hooguit een paar nummers van vandaag, aangevuld met verse reserves', () => {
-  const item = (id: string, artist: string): PlanItem => ({ track: t(id, id, artist), style: 'Pop', isNew: false, energy: 4 });
-  const rules = { ...DEFAULT_RULES, count: 4 };
-  const ctx = { rules, vibe: parseVibe('Standaard', rules), signals: NO_SIGNALS, now: NOW, heardRecently: new Set(['h1', 'h2', 'h3', 'h4']), maxRepeats: 2 };
-  const r = enforce([item('h1', 'A'), item('h2', 'B'), item('h3', 'C'), item('f1', 'D')], [item('h4', 'E'), item('f2', 'F')], ctx);
-  assert.deepEqual(r.items.map((i) => i.track.id).sort(), ['f1', 'f2', 'h1', 'h2']);
-  assert.deepEqual(r.removed.map((x) => x.reason), ['vandaag al gehoord']);
+test('enforce: na herstarten mogen nummers van vandaag blijven, maar niet bovenaan', () => {
+  const item = (id: string): PlanItem => ({ track: t(id, id, `Artiest ${id}`), style: 'Pop', isNew: false, energy: 4 });
+  const ids = Array.from({ length: 12 }, (_, i) => `n${i}`);
+  const rules = { ...DEFAULT_RULES, count: 14 };
+  const heard = new Set(['h1', 'h2']);
+  const ctx = { rules, vibe: parseVibe('Standaard', rules), signals: NO_SIGNALS, now: NOW, heardRecently: heard };
+  const r = enforce([item('h1'), item('h2'), ...ids.map(item)], [], ctx);
+  const order = r.items.map((i) => i.track.id);
+  assert.equal(order.length, 14, 'niets weggehaald');
+  assert.deepEqual(r.removed, []);
+  assert.ok(order.slice(0, 8).every((id) => !heard.has(id)), `eerste 8 vers: ${order.join(',')}`);
+  assert.ok(order.indexOf('h1') < order.indexOf('h2'));
 });
 
-test('buildRequest: "heard today" gemarkeerd en maxRepeats meegegeven', () => {
+test('delayRepeats: artiestenblokje blijft, te weinig verse nummers = herhalingen zo vroeg als nodig', () => {
+  const item = (id: string): PlanItem => ({ track: t(id, id, id), style: 'Pop', isNew: false, energy: 4 });
+  const heard = new Set(['h1', 'h2']);
+  const out = delayRepeats([item('h1'), item('a'), item('h2'), item('b')], heard, 1);
+  assert.deepEqual(out.map((i) => i.track.id), ['h1', 'a', 'b', 'h2']);
+});
+
+test('buildRequest: "heard today" gemarkeerd en freshStart meegegeven', () => {
   const pool = buildPool({ topShort: [t('h', 'Again', 'A'), t('n', 'Fresh', 'B')], topMedium: [], topLong: [], recent: [], saved: [] });
   const vibe = parseVibe('Standaard', DEFAULT_RULES);
   const refs = poolForClaude(pool, { rules: DEFAULT_RULES, vibe, signals: NO_SIGNALS, now: NOW });
-  const req = buildRequest({ id: 'r', vibe, refs, rules: DEFAULT_RULES, signals: NO_SIGNALS, learned: EMPTY_LEARNED, avoid: [], now: new Date(NOW), model: 'sonnet', heardRecently: new Set(['h']), maxRepeats: 4 });
+  const req = buildRequest({ id: 'r', vibe, refs, rules: DEFAULT_RULES, signals: NO_SIGNALS, learned: EMPTY_LEARNED, avoid: [], now: new Date(NOW), model: 'sonnet', heardRecently: new Set(['h']) });
   assert.equal(req.pool, 't1|Again|A|nu|heard today\nt2|Fresh|B|nu');
-  assert.match(renderRequest(req), /maxRepeats: at most 4/);
+  assert.match(renderRequest(req), /freshStart: no "heard today" track in the first 8 positions/);
+});
+
+test('Standaard: leert van alles behalve worship', () => {
+  const learned: Learned = {
+    ...EMPTY_LEARNED,
+    plays: [play('g', 'Gym', 'full'), play('c', 'Coding', 'full'), play('w', 'Worship', 'full'), play('s', 'Standaard', 'full')],
+  };
+  assert.deepEqual([...provenIds(vibeStats(learned, 'Standaard'))].sort(), ['c', 'g', 's']);
+  assert.deepEqual([...provenIds(vibeStats(learned, 'Gym'))], ['g']);
 });

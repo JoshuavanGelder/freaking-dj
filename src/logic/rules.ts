@@ -91,14 +91,33 @@ export type EnforceContext = {
   dislikedKeys?: Set<string>;
   /** Nummers die je bij deze vibe (of hetzelfde profiel) al helemaal afluisterde. */
   proven?: Set<string>;
-  /** In de laatste 12 uur al gehoord (ook geskipt): hooguit `maxRepeats` daarvan in een nieuw voorstel. */
+  /** In de laatste 12 uur al gehoord (ook geskipt): mag erin, maar niet vooraan. */
   heardRecently?: Set<string>;
-  maxRepeats?: number;
 };
 
-/** Hoeveel nummers uit de laatste 12 uur er terug mogen in een voorstel van `count` nummers. */
-export function repeatsAllowed(count: number): number {
-  return Math.max(2, Math.round(count / 6));
+/** Zoveel nummers bovenaan een voorstel zijn altijd vers (niet vandaag al gehoord), als dat kan. */
+export const FRESH_START = 8;
+
+/**
+ * Nummers die je vandaag al hoorde mogen blijven, maar niet bovenaan: de eerste `fresh` plekken zijn voor
+ * andere nummers, de herhalingen komen verspreid daarna. Het artiestenblokje (`protect`) blijft staan.
+ */
+export function delayRepeats(items: PlanItem[], heard: Set<string>, protect = 0, fresh = FRESH_START, keep: (it: PlanItem) => boolean = () => false): PlanItem[] {
+  const head = items.slice(0, protect);
+  const body = items.slice(protect);
+  const isRepeat = (it: PlanItem) => heard.has(it.track.id) && !keep(it);
+  const repeats = body.filter(isRepeat);
+  if (!repeats.length) return items;
+  const others = body.filter((it) => !isRepeat(it));
+  const start = Math.min(Math.max(0, fresh - protect), others.length);
+  const out = [...others];
+  // Gelijkmatig verdelen over het stuk na de verse start.
+  const tail = others.length - start;
+  repeats.forEach((it, k) => {
+    const pos = start + Math.round(((k + 1) * tail) / (repeats.length + 1)) + k;
+    out.splice(Math.min(pos, out.length), 0, it);
+  });
+  return [...head, ...out];
 }
 
 /** Gym: is dit nummer hard genoeg? Bewezen gym-nummers mogen altijd. */
@@ -163,25 +182,6 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
   let items = keep(proposed, true);
   let spares = keep(proposedSpares, false);
 
-  // Net al gehoord (bv. Live DJ dezelfde dag opnieuw gestart): hooguit een paar daarvan, de rest eruit en aanvullen.
-  if (ctx.heardRecently?.size) {
-    const max = ctx.maxRepeats ?? repeatsAllowed(ctx.rules.count);
-    let kept = 0;
-    items = items.filter((it) => {
-      if (!ctx.heardRecently!.has(it.track.id) || isFavorite(it.track, ctx.rules)) return true;
-      if (kept < max) {
-        kept++;
-        return true;
-      }
-      removed.push({ title: it.track.name, artist: it.track.artists.join(', '), reason: 'vandaag al gehoord' });
-      return false;
-    });
-    const fresh = spares.filter((it) => !ctx.heardRecently!.has(it.track.id));
-    const old = spares.filter((it) => ctx.heardRecently!.has(it.track.id));
-    while (items.length < ctx.rules.count && fresh.length) items.push(fresh.shift()!);
-    spares = [...fresh, ...old];
-  }
-
   // Gym: alles onder de energie-ondergrens eruit (tenzij al bewezen in de gym), aanvullen uit de reserves.
   if (ctx.vibe.profile === 'gym') {
     const soft = items.filter((it) => !gymOk(it, ctx));
@@ -219,6 +219,8 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
       items.splice(Math.min(Math.max(2, protect), items.length), 0, fav);
     }
   }
+  // Net al gehoord (bv. opnieuw gestart): mag blijven, maar niet bovenaan.
+  if (ctx.heardRecently?.size) items = delayRepeats(items, ctx.heardRecently, protect, FRESH_START, (it) => isFavorite(it.track, ctx.rules));
   items = spreadArtists(items, protect);
   return { items, spares, removed };
 }

@@ -19,7 +19,7 @@ export function renderRequest(r) {
   lines.push(`- count: ${r.count}`);
   lines.push(`- spares: ${r.spares}`);
   lines.push(`- newEvery: 1 new track per ${Math.max(2, r.newEvery - 1)}–${r.newEvery} known tracks`);
-  if (Number.isFinite(r.maxRepeats) && r.maxRepeats < 99) lines.push(`- maxRepeats: at most ${r.maxRepeats} pool tracks marked "heard today"`);
+  if (Number.isFinite(r.freshStart)) lines.push(`- freshStart: no "heard today" track in the first ${r.freshStart} positions`);
   lines.push(`- profile: ${r.profile || 'overig'}`);
   lines.push(`- artistStart: ${r.artistStart ?? 'none'}`);
   lines.push(`- worshipAllowed: ${r.worshipAllowed ? 'true' : 'false'}`);

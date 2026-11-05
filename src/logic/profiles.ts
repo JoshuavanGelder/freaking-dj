@@ -48,9 +48,9 @@ export function sameVibe(a: string | undefined | null, b: string | undefined | n
 /** Uitleg per profiel voor Claude (Engels, net als de systeemprompt). */
 export const PROFILE_NOTES: Record<VibeProfile, string[]> = {
   standaard: [
-    'Profile STANDAARD: Joshua\'s everyday music, like his own "on repeat". This is what he listens to most right now.',
-    'Build it mostly from `nu` pool tracks, weighted by recent plays and by tracks marked `here` (fully played in earlier Standaard sessions). Keep his usual genre mix.',
-    'Few surprises: new tracks only from artists or sounds that are clearly already in his current rotation. No worship.',
+    'Profile STANDAARD: all the music Joshua likes, except worship. Not one genre or mood: his whole taste in one mix (current favourites, older favourites, and the genres he plays in other vibes, gym bangers included).',
+    'Build it from the whole pool, weighted towards `nu` tracks, recent plays and tracks marked `here` (fully played before in any non-worship vibe). Mix his genres and styles across the queue.',
+    'New tracks: popular songs that fit one of his genres. No worship / Christian music at all.',
   ],
   gym: [
     'Profile GYM: Joshua lifts hard to this and is VERY picky. It must NOT feel like his everyday mix with a few loud songs added.',
@@ -71,7 +71,6 @@ export const PROFILE_NOTES: Record<VibeProfile, string[]> = {
 /** Hoeveel bekende nummers per nieuw nummer, per profiel. */
 export function newEveryFor(profile: VibeProfile, base: number): number {
   if (profile === 'gym') return Math.max(base, 6);
-  if (profile === 'standaard') return Math.max(base, 5);
   return base;
 }
 
@@ -81,13 +80,16 @@ export const GYM_MIN_ENERGY = 4;
 export type VibeStat = { full: number; skips: number };
 
 /**
- * Per nummer: hoe vaak helemaal gehoord en hoe vaak geskipt bij deze vibe (of hetzelfde profiel).
+ * Per nummer: hoe vaak helemaal gehoord en hoe vaak geskipt bij deze vibe (of hetzelfde profiel; bij Standaard alles behalve worship).
  * Alleen plays van de laatste 60 dagen staan nog in `learned.plays`.
  */
 export function vibeStats(learned: Learned, vibeText: string): Map<string, VibeStat> {
   const out = new Map<string, VibeStat>();
+  // Standaard = alles wat je leuk vindt behalve worship: daar telt wat je bij elke andere vibe helemaal afluisterde.
+  const everything = profileOf(vibeText) === 'standaard';
   for (const p of learned.plays) {
-    if (!p.vibe || !sameVibe(p.vibe, vibeText)) continue;
+    if (!p.vibe) continue;
+    if (everything ? profileOf(p.vibe) === 'worship' : !sameVibe(p.vibe, vibeText)) continue;
     const s = out.get(p.id) ?? { full: 0, skips: 0 };
     if (p.outcome === 'full') s.full++;
     else s.skips++;

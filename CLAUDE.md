@@ -85,7 +85,9 @@ en **Worship**; ~5% is iets anders (`overig`, werkt zoals altijd). `profileOf` h
   nummers die bij deze vibe vaker helemaal gehoord dan geskipt zijn staan vooraan in de pool met `|here Nx`; bewezen nummers die
   niet in de pool staan gaan als `provenExtra` mee (en tellen niet als "nieuw").
 - Gym: minder nieuw (`newEveryFor`: 1 per 6), en `enforce` haalt alles onder energie 4 weg ("te rustig voor de gym"),
-  behalve bewezen gym-nummers; aangevuld uit de reserves. Standaard: 1 nieuw per 5.
+  behalve bewezen gym-nummers; aangevuld uit de reserves.
+- **Standaard = alle muziek die Joshua leuk vindt behalve worship** (niet alleen "on repeat"): hele pool, alle genres; `vibeStats`
+  telt bij Standaard plays uit elke vibe behalve worship.
 - Live DJ-plays (ook reserves) krijgen de Live-vibe via `tagPlays(…, live)`, zodat de gym-sessies echt meetellen.
 
 ## Leren van skips (`src/logic/learning.ts`)
@@ -100,8 +102,8 @@ gewoon mee (vermoeden "niet leuk", "geen zin in" per vibe, en `pickNext` past zi
 bestaat niet meer: je koos dat nummer niet, dus het is geen wens (ook niet in `pickNext`).
 **Herhaling**: een skip van een nummer dat je in de 12 uur ervoor al hoorde (app-plays of Spotify recently-played) is neutraal
 (`REPEAT_WINDOW_MS`): meestal Live DJ opnieuw gestart met bijna dezelfde wachtrij. Om dat te voorkomen krijgt `makePlan` `heardRecently`
-(laatste 12 u) mee: in de pool `|heard today`, en `enforce` laat er hooguit `repeatsAllowed(count)` (25 → 4) van staan ("vandaag al gehoord"),
-aangevuld met verse reserves. Niet bij bijsturen.
+(laatste 12 u) mee: in de pool `|heard today`. Ze mogen blijven (Joshua vindt ze leuk), maar `delayRepeats` zet ze na de eerste
+`FRESH_START` (8) plekken, verspreid; het artiestenblokje blijft staan. Niet bij bijsturen.
 **"Geen zin in" zelf beheren** (Geleerd-scherm, `NotNowSection`): per vibe-groep (`vibeGroup`: profiel of vibe-tekst) wissen, alles wissen
 (tweemaal tikken), naar een andere vibe verplaatsen en zelf toevoegen (zoeken in pool + meta). Opslag: `learned.notNowCleared`
 (`${id}|${groep}` → skips tot dan tellen niet) en `learned.notNowManual` (verloopt niet). Logica: `removeNotNow`/`addNotNow`/`moveNotNow`/
