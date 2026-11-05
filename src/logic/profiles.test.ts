@@ -112,3 +112,69 @@ test('tagPlays: Live DJ-nummers (ook reserves) krijgen de Live-vibe', () => {
   const before = tagPlays([{ ...p, start: NOW - 3600000 }], [], { vibe: 'Gym', startedAt: NOW, ids: ['sp'], newIds: [] });
   assert.equal(before[0].vibe, undefined);
 });
+
+// ---------- herhaling en "geen zin in" zelf beheren ----------
+import { addNotNow, clearNotNowGroup, computeSignals, moveNotNow, notNowGroups, removeNotNow } from './learning.ts';
+
+const H = 3600_000;
+const pl = (id: string, start: number, outcome: 'full' | 'skip', vibe = 'Gym'): Play => ({
+  id, name: id, artist: 'X', lengthMs: 200_000, start, listenedMs: outcome === 'full' ? 200_000 : 40_000, outcome, vibe,
+});
+
+test('herhaling: skip van een nummer dat je die dag al hoorde telt niet als "geen zin in"', () => {
+  const plays = [pl('fav', NOW - 5 * H, 'full'), pl('a', NOW - 5 * H + 300_000, 'full'), pl('fav', NOW - H, 'skip'), pl('b', NOW - H + 60_000, 'full')];
+  const s = computeSignals({ ...EMPTY_LEARNED, plays }, { known: new Set(['fav', 'a', 'b']), now: NOW });
+  assert.equal(s.notNow.fav, undefined);
+  // Zonder eerdere keer die dag telt dezelfde skip wel.
+  const s2 = computeSignals({ ...EMPTY_LEARNED, plays: plays.slice(1) }, { known: new Set(['fav', 'a', 'b']), now: NOW });
+  assert.equal(s2.notNow.fav?.length, 1);
+  // Ook als Spotify (bv. je pc) het eerder die dag speelde.
+  const s3 = computeSignals({ ...EMPTY_LEARNED, plays: plays.slice(1) }, { known: new Set(['fav', 'a', 'b']), now: NOW, recentPlays: [{ id: 'fav', at: NOW - 3 * H }] });
+  assert.equal(s3.notNow.fav, undefined);
+});
+
+test('geen zin in: wissen, toevoegen, verplaatsen en alles wissen', () => {
+  const plays = [pl('a', NOW - 10 * H, 'full'), pl('fav', NOW - 9 * H, 'skip', 'Legday'), pl('b', NOW - 9 * H + 60_000, 'full')];
+  let l: Learned = { ...EMPTY_LEARNED, plays };
+  const sig = () => computeSignals(l, { known: new Set(['a', 'b', 'fav']), now: NOW });
+  assert.equal(notNowGroups(sig(), NOW)[0].group, 'gym');
+
+  // Wissen bij Gym (geskipt bij Legday = zelfde groep).
+  l = removeNotNow(l, 'fav', 'Gym', NOW);
+  assert.equal(sig().notNow.fav, undefined);
+
+  // Zelf toevoegen bij Coding, verloopt niet.
+  l = addNotNow(l, 'x', 'Coding', NOW - 30 * 86400000, { name: 'Song', artist: 'Y' });
+  const g = notNowGroups(sig(), NOW);
+  assert.deepEqual(g.map((x) => [x.group, x.lines[0].id, x.lines[0].manual]), [['coding', 'x', true]]);
+  assert.equal(l.meta.x.name, 'Song');
+  const ctx = { rules: DEFAULT_RULES, vibe: parseVibe('coding', DEFAULT_RULES), signals: sig(), now: NOW };
+  assert.equal(rejectReason(t('x', 'Song', 'Y'), ctx), 'geen zin in bij deze vibe');
+
+  // Verplaatsen naar Gym.
+  l = moveNotNow(l, 'x', 'Coding', 'Gym', NOW);
+  assert.deepEqual(notNowGroups(sig(), NOW).map((x) => x.group), ['gym']);
+  assert.equal(rejectReason(t('x', 'Song', 'Y'), ctx.signals === sig() ? ctx : { ...ctx, signals: sig() }), null);
+
+  // Alles wissen bij Gym.
+  l = clearNotNowGroup(l, notNowGroups(sig(), NOW)[0], NOW);
+  assert.deepEqual(notNowGroups(sig(), NOW), []);
+});
+
+test('enforce: na herstarten hooguit een paar nummers van vandaag, aangevuld met verse reserves', () => {
+  const item = (id: string, artist: string): PlanItem => ({ track: t(id, id, artist), style: 'Pop', isNew: false, energy: 4 });
+  const rules = { ...DEFAULT_RULES, count: 4 };
+  const ctx = { rules, vibe: parseVibe('Standaard', rules), signals: NO_SIGNALS, now: NOW, heardRecently: new Set(['h1', 'h2', 'h3', 'h4']), maxRepeats: 2 };
+  const r = enforce([item('h1', 'A'), item('h2', 'B'), item('h3', 'C'), item('f1', 'D')], [item('h4', 'E'), item('f2', 'F')], ctx);
+  assert.deepEqual(r.items.map((i) => i.track.id).sort(), ['f1', 'f2', 'h1', 'h2']);
+  assert.deepEqual(r.removed.map((x) => x.reason), ['vandaag al gehoord']);
+});
+
+test('buildRequest: "heard today" gemarkeerd en maxRepeats meegegeven', () => {
+  const pool = buildPool({ topShort: [t('h', 'Again', 'A'), t('n', 'Fresh', 'B')], topMedium: [], topLong: [], recent: [], saved: [] });
+  const vibe = parseVibe('Standaard', DEFAULT_RULES);
+  const refs = poolForClaude(pool, { rules: DEFAULT_RULES, vibe, signals: NO_SIGNALS, now: NOW });
+  const req = buildRequest({ id: 'r', vibe, refs, rules: DEFAULT_RULES, signals: NO_SIGNALS, learned: EMPTY_LEARNED, avoid: [], now: new Date(NOW), model: 'sonnet', heardRecently: new Set(['h']), maxRepeats: 4 });
+  assert.equal(req.pool, 't1|Again|A|nu|heard today\nt2|Fresh|B|nu');
+  assert.match(renderRequest(req), /maxRepeats: at most 4/);
+});

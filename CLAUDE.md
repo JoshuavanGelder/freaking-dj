@@ -98,6 +98,14 @@ geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sess
 Skips tellen niet voor "niet leuk" als ze in een reeks van 2+ skips op rij zitten (je zoekt iets). Losse skips tellen ook in Live DJ
 gewoon mee (vermoeden "niet leuk", "geen zin in" per vibe, en `pickNext` past zich aan). "Waar je naartoe skipte" (jumpTargets)
 bestaat niet meer: je koos dat nummer niet, dus het is geen wens (ook niet in `pickNext`).
+**Herhaling**: een skip van een nummer dat je in de 12 uur ervoor al hoorde (app-plays of Spotify recently-played) is neutraal
+(`REPEAT_WINDOW_MS`): meestal Live DJ opnieuw gestart met bijna dezelfde wachtrij. Om dat te voorkomen krijgt `makePlan` `heardRecently`
+(laatste 12 u) mee: in de pool `|heard today`, en `enforce` laat er hooguit `repeatsAllowed(count)` (25 → 4) van staan ("vandaag al gehoord"),
+aangevuld met verse reserves. Niet bij bijsturen.
+**"Geen zin in" zelf beheren** (Geleerd-scherm, `NotNowSection`): per vibe-groep (`vibeGroup`: profiel of vibe-tekst) wissen, alles wissen
+(tweemaal tikken), naar een andere vibe verplaatsen en zelf toevoegen (zoeken in pool + meta). Opslag: `learned.notNowCleared`
+(`${id}|${groep}` → skips tot dan tellen niet) en `learned.notNowManual` (verloopt niet). Logica: `removeNotNow`/`addNotNow`/`moveNotNow`/
+`clearNotNowGroup`/`notNowGroups`; `notNowActive` (uit skips 7 d, zelf toegevoegd altijd).
 
 ## Bouwen en controleren (sandbox zonder npm)
 - `npm install` werkt lokaal niet; Google Maven/SDK ook niet. Wel: node 22, `tsc`, python3.

@@ -3,8 +3,8 @@
 import * as sp from './spotify';
 import * as gh from './github';
 import { buildPool, buildRequest, bestMatch, parseAnswer, poolForClaude, type ClaudeItem, type ClaudeRef, type DjResponse } from '../logic/pool';
-import { computeSignals, dislikedKeys } from '../logic/learning';
-import { enforce, isFavorite, parseVibe, type EnforceContext } from '../logic/rules';
+import { REPEAT_WINDOW_MS, computeSignals, dislikedKeys } from '../logic/learning';
+import { enforce, isFavorite, parseVibe, repeatsAllowed, type EnforceContext } from '../logic/rules';
 import { adjustKind, describeChange, mergeAdjusted, type AdjustKind } from '../logic/adjust';
 import { songKey } from '../logic/text';
 import { provenIds, vibeStats } from '../logic/profiles';
@@ -158,8 +158,15 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   // Wat je bij deze vibe (of hetzelfde profiel, bv. Legday = Gym) al helemaal afluisterde.
   const stats = vibeStats(learned, vibe.text);
   const proven = provenIds(stats);
+  // Wat je de laatste 12 uur al hoorde (app + Spotify): daar hooguit een paar van, zodat opnieuw starten niet bijna dezelfde wachtrij geeft.
+  // Niet bij bijsturen: dan blijft de bestaande lijst gewoon staan.
+  const heardRecently = new Set<string>(input.adjust ? [] : [
+    ...learned.plays.filter((p) => now - p.start < REPEAT_WINDOW_MS).map((p) => p.id),
+    ...history.recent.filter((r) => now - r.at < REPEAT_WINDOW_MS).map((r) => r.id),
+  ]);
+  const maxRepeats = repeatsAllowed(rules.count);
   const used = input.excludeUsed ? { ids: new Set(avoid.map((t) => t.id)), keys: new Set(avoid.map((t) => songKey(t.name, t.artists))) } : null;
-  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), proven, ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
+  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), proven, heardRecently, maxRepeats, ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
   const refs: ClaudeRef[] = poolForClaude(history.pool, ctx);
   const id = newId();
   const request = buildRequest({
@@ -176,6 +183,8 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     now: new Date(now),
     model: input.model,
     stats,
+    heardRecently,
+    maxRepeats,
   });
 
   onStatus('Verzoek naar GitHub sturen');

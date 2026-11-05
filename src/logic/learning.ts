@@ -3,7 +3,8 @@
 // 1. te vaak gedraaid  2. geen zin in  3. niet leuk (vermoeden tot jij het bevestigt).
 // Een reeks skips (2+ op rij) is neutraal: je zoekt dan iets. Losse skips tellen ook in Live DJ gewoon mee.
 // Waar je naartoe skipte wordt niet gebruikt: je koos dat nummer niet, het kwam gewoon als volgende.
-import type { Learned, Play, Signals, Suspicion } from './types.ts';
+import type { Learned, NotNowEntry, Play, Signals, Suspicion } from './types.ts';
+import { vibeGroup } from './profiles.ts';
 import { songKey } from './text.ts';
 
 /** Ruwe gebeurtenis zoals de native module die wegschrijft. */
@@ -124,6 +125,18 @@ export const REST_MIN_PLAYS = 5; // zo vaak helemaal gehoord = te vaak
 export const REST_DAYS = 14; // ongeveer 2 weken rust
 export const QUICK_SKIP_MS = 30_000; // nieuw nummer binnen 30 s geskipt
 export const SKIP_SESSIONS = 3; // in zoveel sessies geskipt = vermoeden
+export const REPEAT_WINDOW_MS = 12 * 3600 * 1000; // net al gehoord: een skip dan is "had ik net al", geen oordeel
+export const NOT_NOW_DAYS = 7; // zo lang telt een "geen zin in" uit skips
+
+/** Telt deze "geen zin in" nog? Zelf toegevoegd blijft staan; uit skips verloopt na een week. */
+export function notNowActive(e: NotNowEntry, now: number): boolean {
+  return !!e.manual || now - e.at < NOT_NOW_DAYS * 86400000;
+}
+
+/** Sleutel voor wissen per nummer en vibe(groep). */
+export function notNowKey(id: string, vibe: string): string {
+  return `${id}|${vibeGroup(vibe)}`;
+}
 
 export type SignalInput = {
   /** Track-ids uit je luistergeschiedenis (Spotify): die ken je al. */
@@ -170,6 +183,17 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
       else flush();
     }
     flush();
+  }
+
+  // Herhaling: een skip van een nummer dat je in de 12 uur ervoor al hoorde (bv. Live DJ opnieuw gestart en
+  // bijna dezelfde wachtrij) zegt niets over het nummer zelf. Telt niet voor "geen zin in" en niet voor "niet leuk".
+  const heardAt = new Map<string, number[]>();
+  for (const p of plays) heardAt.set(p.id, [...(heardAt.get(p.id) ?? []), p.start]);
+  for (const r of input.recentPlays ?? []) heardAt.set(r.id, [...(heardAt.get(r.id) ?? []), r.at]);
+  for (const p of plays) {
+    if (p.outcome !== 'skip') continue;
+    const before = (heardAt.get(p.id) ?? []).some((t) => t < p.start - 1000 && p.start - t < REPEAT_WINDOW_MS);
+    if (before) neutral.add(p);
   }
 
   // 2. Te vaak gedraaid: in de laatste dagen vaak helemaal gehoord -> 2 weken rust.
@@ -240,6 +264,18 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
     }
   }
 
+  // Zelf gewist: skips tot dat moment tellen niet meer. Zelf toegevoegd: komt erbij en verloopt niet.
+  const cleared = learned.notNowCleared ?? {};
+  for (const id of Object.keys(notNow)) {
+    notNow[id] = notNow[id].filter((e) => !((cleared[notNowKey(id, e.vibe)] ?? 0) >= e.at));
+    if (!notNow[id].length) delete notNow[id];
+  }
+  for (const [id, list] of Object.entries(learned.notNowManual ?? {})) {
+    for (const m of list) {
+      (notNow[id] ??= []).push({ vibe: m.vibe, hour: new Date(m.at).getHours(), at: m.at, manual: true });
+    }
+  }
+
   const disliked = Object.entries(learned.decisions)
     .filter(([, d]) => d === 'bevestigd')
     .map(([id]) => id);
@@ -269,3 +305,59 @@ export function prunePlays(plays: Play[], now: number): Play[] {
 }
 
 export const EMPTY_LEARNED: Learned = { plays: [], decisions: {}, asked: {}, meta: {}, manualRest: {} };
+
+// ---------- "geen zin in" zelf beheren ----------
+
+export type NotNowLine = { id: string; vibe: string; at: number; manual: boolean };
+export type NotNowGroup = { group: string; vibe: string; lines: NotNowLine[] };
+
+/** Actieve "geen zin in" per vibe(groep), nieuwste eerst. `vibe` = een vibe-tekst uit die groep (om mee te bewerken). */
+export function notNowGroups(signals: Signals, now: number): NotNowGroup[] {
+  const groups = new Map<string, NotNowGroup>();
+  for (const [id, list] of Object.entries(signals.notNow)) {
+    const seen = new Set<string>();
+    for (const e of [...list].sort((a, b) => b.at - a.at)) {
+      if (!notNowActive(e, now)) continue;
+      const g = vibeGroup(e.vibe);
+      if (seen.has(g)) continue; // één regel per nummer per groep
+      seen.add(g);
+      if (!groups.has(g)) groups.set(g, { group: g, vibe: e.vibe, lines: [] });
+      groups.get(g)!.lines.push({ id, vibe: e.vibe, at: e.at, manual: !!e.manual });
+    }
+  }
+  const out = [...groups.values()];
+  for (const g of out) g.lines.sort((a, b) => b.at - a.at);
+  return out.sort((a, b) => b.lines.length - a.lines.length || a.group.localeCompare(b.group));
+}
+
+/** Wist "geen zin in" voor dit nummer bij deze vibe(groep): skips tot nu tellen niet meer, zelf toegevoegd gaat weg. */
+export function removeNotNow(learned: Learned, id: string, vibe: string, now: number): Learned {
+  const key = notNowKey(id, vibe);
+  const group = vibeGroup(vibe);
+  const manual = { ...(learned.notNowManual ?? {}) };
+  const rest = (manual[id] ?? []).filter((m) => vibeGroup(m.vibe) !== group);
+  if (rest.length) manual[id] = rest;
+  else delete manual[id];
+  return { ...learned, notNowManual: manual, notNowCleared: { ...(learned.notNowCleared ?? {}), [key]: now } };
+}
+
+/** Zelf toevoegen: dit nummer niet bij deze vibe(groep), tot je het weer weghaalt. */
+export function addNotNow(learned: Learned, id: string, vibe: string, now: number, meta?: { name: string; artist: string }): Learned {
+  const v = vibe.trim();
+  if (!v) return learned;
+  const group = vibeGroup(v);
+  const manual = { ...(learned.notNowManual ?? {}) };
+  manual[id] = [...(manual[id] ?? []).filter((m) => vibeGroup(m.vibe) !== group), { vibe: v, at: now }];
+  return { ...learned, notNowManual: manual, meta: meta ? { ...learned.meta, [id]: meta } : learned.meta };
+}
+
+/** Naar een andere vibe verplaatsen (= bij de oude wissen, bij de nieuwe toevoegen). */
+export function moveNotNow(learned: Learned, id: string, from: string, to: string, now: number): Learned {
+  if (vibeGroup(from) === vibeGroup(to)) return learned;
+  return addNotNow(removeNotNow(learned, id, from, now), id, to, now);
+}
+
+/** Alles bij één vibe(groep) wissen. */
+export function clearNotNowGroup(learned: Learned, group: NotNowGroup, now: number): Learned {
+  return group.lines.reduce((l, line) => removeNotNow(l, line.id, line.vibe, now), learned);
+}

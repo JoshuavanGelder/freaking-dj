@@ -4,6 +4,7 @@
 import type { PlanItem, PoolTrack, Removed, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { artistIn, norm, shareArtist, songKey } from './text.ts';
 import { GYM_MIN_ENERGY, profileOf, sameVibe } from './profiles.ts';
+import { notNowActive } from './learning.ts';
 
 export const DEFAULT_RULES: Rules = {
   blockedArtists: ['Loreen'],
@@ -90,7 +91,15 @@ export type EnforceContext = {
   dislikedKeys?: Set<string>;
   /** Nummers die je bij deze vibe (of hetzelfde profiel) al helemaal afluisterde. */
   proven?: Set<string>;
+  /** In de laatste 12 uur al gehoord (ook geskipt): hooguit `maxRepeats` daarvan in een nieuw voorstel. */
+  heardRecently?: Set<string>;
+  maxRepeats?: number;
 };
+
+/** Hoeveel nummers uit de laatste 12 uur er terug mogen in een voorstel van `count` nummers. */
+export function repeatsAllowed(count: number): number {
+  return Math.max(2, Math.round(count / 6));
+}
 
 /** Gym: is dit nummer hard genoeg? Bewezen gym-nummers mogen altijd. */
 export function gymOk(it: PlanItem, ctx: EnforceContext): boolean {
@@ -98,7 +107,6 @@ export function gymOk(it: PlanItem, ctx: EnforceContext): boolean {
   return it.energy >= GYM_MIN_ENERGY || !!ctx.proven?.has(it.track.id);
 }
 
-const NOT_NOW_DAYS = 7;
 
 /** Waarom mag dit nummer er niet in? null = mag wel. */
 export function rejectReason(track: Track, ctx: EnforceContext): string | null {
@@ -114,7 +122,7 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     const rest = signals.resting[track.id];
     if (rest && rest > now) return 'rust (te vaak gedraaid)';
     const skips = signals.notNow[track.id] ?? [];
-    if (skips.some((s) => sameVibe(s.vibe, vibe.text) && now - s.at < NOT_NOW_DAYS * 86400000)) return 'geen zin in bij deze vibe';
+    if (skips.some((s) => sameVibe(s.vibe, vibe.text) && notNowActive(s, now))) return 'geen zin in bij deze vibe';
   }
   return null;
 }
@@ -154,6 +162,25 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
   };
   let items = keep(proposed, true);
   let spares = keep(proposedSpares, false);
+
+  // Net al gehoord (bv. Live DJ dezelfde dag opnieuw gestart): hooguit een paar daarvan, de rest eruit en aanvullen.
+  if (ctx.heardRecently?.size) {
+    const max = ctx.maxRepeats ?? repeatsAllowed(ctx.rules.count);
+    let kept = 0;
+    items = items.filter((it) => {
+      if (!ctx.heardRecently!.has(it.track.id) || isFavorite(it.track, ctx.rules)) return true;
+      if (kept < max) {
+        kept++;
+        return true;
+      }
+      removed.push({ title: it.track.name, artist: it.track.artists.join(', '), reason: 'vandaag al gehoord' });
+      return false;
+    });
+    const fresh = spares.filter((it) => !ctx.heardRecently!.has(it.track.id));
+    const old = spares.filter((it) => ctx.heardRecently!.has(it.track.id));
+    while (items.length < ctx.rules.count && fresh.length) items.push(fresh.shift()!);
+    spares = [...fresh, ...old];
+  }
 
   // Gym: alles onder de energie-ondergrens eruit (tenzij al bewezen in de gym), aanvullen uit de reserves.
   if (ctx.vibe.profile === 'gym') {

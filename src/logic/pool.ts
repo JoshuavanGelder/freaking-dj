@@ -3,6 +3,7 @@ import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track, VibeInf
 import { norm, normTitle, songKey } from './text.ts';
 import { rejectReason, type EnforceContext } from './rules.ts';
 import { PROFILE_NOTES, newEveryFor, sameVibe, type VibeStat } from './profiles.ts';
+import { notNowActive } from './learning.ts';
 
 export type HistoryInput = {
   topShort: Track[]; // laatste ~4 weken
@@ -67,6 +68,7 @@ export type DjRequest = {
   count: number;
   spares: number;
   newEvery: number;
+  maxRepeats: number; // hooguit zoveel nummers met "heard today"
   profile: 'standaard' | 'gym' | 'worship' | 'overig';
   profileNotes: string[];
   artistStart: string | null;
@@ -127,6 +129,9 @@ export function buildRequest(args: {
   model: string;
   /** Per nummer: helemaal gehoord / geskipt bij deze vibe (of hetzelfde profiel). */
   stats?: Map<string, VibeStat>;
+  /** In de laatste 12 uur al gehoord: in de pool gemarkeerd, Claude neemt er hooguit `maxRepeats` van. */
+  heardRecently?: Set<string>;
+  maxRepeats?: number;
 }): DjRequest {
   const { vibe, rules, signals, learned, refs } = args;
   const name = (id: string) => {
@@ -136,7 +141,7 @@ export function buildRequest(args: {
   const profile = vibe.profile ?? 'overig';
   const refById = new Map(refs.map((r) => [r.track.id, r.ref]));
   const notInThisVibe = Object.entries(signals.notNow)
-    .filter(([, list]) => list.some((s) => sameVibe(s.vibe, vibe.text)))
+    .filter(([, list]) => list.some((s) => sameVibe(s.vibe, vibe.text) && notNowActive(s, args.now.getTime())))
     .map(([id]) => name(id))
     .filter((x): x is string => !!x);
   const resting = Object.entries(signals.resting)
@@ -161,6 +166,7 @@ export function buildRequest(args: {
     count: rules.count,
     spares: 5,
     newEvery: newEveryFor(profile, rules.newEvery),
+    maxRepeats: args.maxRepeats ?? 99,
     profile,
     profileNotes: PROFILE_NOTES[profile],
     artistStart: vibe.artistStart,
@@ -186,7 +192,8 @@ export function buildRequest(args: {
         const clean = (s: string) => s.replace(/[|\n]/g, ' ');
         const st = args.stats?.get(t.id);
         const here = st && st.full > st.skips ? `|here ${st.full}x` : '';
-        return `${r.ref}|${clean(t.name)}|${clean(t.artists.join(', '))}|${t.tier}${t.plays ? `|${t.plays}x recent` : ''}${here}`;
+        const today = args.heardRecently?.has(t.id) ? '|heard today' : '';
+        return `${r.ref}|${clean(t.name)}|${clean(t.artists.join(', '))}|${t.tier}${t.plays ? `|${t.plays}x recent` : ''}${here}${today}`;
       })
       .join('\n'),
     model: args.model,

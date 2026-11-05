@@ -19,6 +19,7 @@ export function renderRequest(r) {
   lines.push(`- count: ${r.count}`);
   lines.push(`- spares: ${r.spares}`);
   lines.push(`- newEvery: 1 new track per ${Math.max(2, r.newEvery - 1)}–${r.newEvery} known tracks`);
+  if (Number.isFinite(r.maxRepeats) && r.maxRepeats < 99) lines.push(`- maxRepeats: at most ${r.maxRepeats} pool tracks marked "heard today"`);
   lines.push(`- profile: ${r.profile || 'overig'}`);
   lines.push(`- artistStart: ${r.artistStart ?? 'none'}`);
   lines.push(`- worshipAllowed: ${r.worshipAllowed ? 'true' : 'false'}`);
@@ -42,7 +43,7 @@ export function renderRequest(r) {
     r.previous.forEach((p, i) => lines.push(`${i + 1}. ${p.ref ? `[${p.ref}] ` : ''}${p.title} – ${p.artist} (${p.style}${p.isNew ? ', new' : ''})`));
     lines.push('');
   }
-  lines.push('### Pool (ref|title|artists|tier|plays|here = fully played in this vibe before)');
+  lines.push('### Pool (ref|title|artists|tier|plays|here = fully played in this vibe before|heard today = already heard in the last 12 hours)');
   lines.push(r.pool || '(empty)');
   return lines.filter((x) => x !== '').join('\n');
 }

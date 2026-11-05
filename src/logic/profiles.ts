@@ -22,6 +22,20 @@ export function profileOf(text: string | undefined | null): VibeProfile {
   return 'overig';
 }
 
+/** Groep voor het leren: het vaste profiel, of de vibe-tekst zelf bij overige vibes. */
+export function vibeGroup(text: string | undefined | null): string {
+  const p = profileOf(text);
+  if (p !== 'overig') return p;
+  return norm(text ?? '') || 'zonder vibe';
+}
+
+const GROUP_LABELS: Record<string, string> = { standaard: 'Standaard', gym: 'Gym', worship: 'Worship' };
+
+/** Leesbare naam van een groep ("gym" -> "Gym", "coding" -> "Coding"). */
+export function vibeGroupLabel(group: string): string {
+  return GROUP_LABELS[group] ?? group.charAt(0).toUpperCase() + group.slice(1);
+}
+
 /** Horen twee vibes bij elkaar voor het leren? Zelfde tekst, of hetzelfde vaste profiel. */
 export function sameVibe(a: string | undefined | null, b: string | undefined | null): boolean {
   const na = norm(a ?? '');

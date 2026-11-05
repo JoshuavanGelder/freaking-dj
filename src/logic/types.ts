@@ -91,15 +91,22 @@ export type Learned = {
   meta: Record<string, TrackMeta>; // namen bij track-ids (voor het overzicht)
   manualRest: Record<string, number>; // trackId -> rust tot (zelf ingesteld)
   unrest?: Record<string, number>; // trackId -> wanneer je de rust opgeheven hebt
+  /** "Geen zin in" zelf gewist: `${trackId}|${vibeGroup}` -> tot wanneer skips niet meer tellen. */
+  notNowCleared?: Record<string, number>;
+  /** "Geen zin in" zelf toegevoegd: trackId -> vibes (blijft staan tot je het weghaalt). */
+  notNowManual?: Record<string, { vibe: string; at: number }[]>;
 };
 
 export type Suspicion = { id: string; name: string; artist: string; reason: string; question: string };
+
+/** Eén "geen zin in": bij welke vibe, wanneer, en of je hem zelf toevoegde (dan verloopt hij niet). */
+export type NotNowEntry = { vibe: string; hour: number; at: number; manual?: boolean };
 
 export type Signals = {
   /** Te vaak gedraaid: trackId -> rust tot. */
   resting: Record<string, number>;
   /** Geen zin in (per vibe): trackId -> vibes waarin je hem los skipte. */
-  notNow: Record<string, { vibe: string; hour: number; at: number }[]>;
+  notNow: Record<string, NotNowEntry[]>;
   /** Vermoedens van "niet leuk" (nog niet bevestigd). */
   suspicions: Suspicion[];
   /** Bevestigd niet leuk: komt nooit meer. */
