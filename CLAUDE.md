@@ -77,6 +77,17 @@ Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgend
   onthoudt dat apparaat (`restrictedDev`), probeert het niet steeds opnieuw en toont uitleg; bij een ander apparaat
   gaat het vanzelf weer door. Overzetten doen we nooit zelf.
 
+## Vibe-profielen (`src/logic/profiles.ts`)
+Joshua gebruikt vooral 3 vibes: **Standaard** (zijn dagelijkse muziek), **Gym** (heel kieskeurig, alleen echte workout-bangers)
+en **Worship**; ~5% is iets anders (`overig`, werkt zoals altijd). `profileOf` herkent ze (Legday/sportschool/workout = gym).
+- Claude krijgt `profile` + `profileNotes` (`PROFILE_NOTES`) mee; `dj/prompt.md` zegt dat die vóór de algemene smaak gaan.
+- Leren per profiel: `sameVibe` (Legday = Gym) voor "geen zin in" (`rejectReason`, `notInThisVibe`). `vibeStats`/`provenIds`:
+  nummers die bij deze vibe vaker helemaal gehoord dan geskipt zijn staan vooraan in de pool met `|here Nx`; bewezen nummers die
+  niet in de pool staan gaan als `provenExtra` mee (en tellen niet als "nieuw").
+- Gym: minder nieuw (`newEveryFor`: 1 per 6), en `enforce` haalt alles onder energie 4 weg ("te rustig voor de gym"),
+  behalve bewezen gym-nummers; aangevuld uit de reserves. Standaard: 1 nieuw per 5.
+- Live DJ-plays (ook reserves) krijgen de Live-vibe via `tagPlays(…, live)`, zodat de gym-sessies echt meetellen.
+
 ## Leren van skips (`src/logic/learning.ts`)
 Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) die de Spotify-broadcasts
 `com.spotify.music.metadatachanged` / `playbackstatechanged` opvangt ("Apparaatuitzending" in Spotify aan)

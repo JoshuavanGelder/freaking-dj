@@ -2,6 +2,7 @@
 import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { norm, normTitle, songKey } from './text.ts';
 import { rejectReason, type EnforceContext } from './rules.ts';
+import { PROFILE_NOTES, newEveryFor, sameVibe, type VibeStat } from './profiles.ts';
 
 export type HistoryInput = {
   topShort: Track[]; // laatste ~4 weken
@@ -41,14 +42,17 @@ export type ClaudeRef = { ref: string; track: PoolTrack };
 
 /** Pool voor Claude: alleen wat mag, met korte verwijzingen (t1, t2 ...), zodat Claude geen id's hoeft te verzinnen. */
 export function poolForClaude(pool: PoolTrack[], ctx: EnforceContext, max = { nu: 220, ouder: 160 }): ClaudeRef[] {
+  // Nummers die je bij deze vibe al helemaal afluisterde komen eerst (en tellen niet mee voor het maximum).
+  const here: PoolTrack[] = [];
   const nu: PoolTrack[] = [];
   const ouder: PoolTrack[] = [];
   for (const t of pool) {
     if (rejectReason(t, ctx)) continue;
-    if (t.tier === 'nu' && nu.length < max.nu) nu.push(t);
+    if (ctx.proven?.has(t.id)) here.push(t);
+    else if (t.tier === 'nu' && nu.length < max.nu) nu.push(t);
     else if (t.tier === 'ouder' && ouder.length < max.ouder) ouder.push(t);
   }
-  return [...nu, ...ouder].map((track, i) => ({ ref: `t${i + 1}`, track }));
+  return [...here, ...nu, ...ouder].map((track, i) => ({ ref: `t${i + 1}`, track }));
 }
 
 /** Wat de app aan de workflow geeft (wordt als JSON in de repo gezet). */
@@ -63,6 +67,8 @@ export type DjRequest = {
   count: number;
   spares: number;
   newEvery: number;
+  profile: 'standaard' | 'gym' | 'worship' | 'overig';
+  profileNotes: string[];
   artistStart: string | null;
   worshipAllowed: boolean;
   eurovision: boolean;
@@ -71,6 +77,8 @@ export type DjRequest = {
   taste: string[];
   blockedArtists: string[];
   worshipArtists: string[];
+  /** Bewezen bij deze vibe maar niet in de pool (bv. eerder nieuw): "Titel – Artiest". */
+  provenExtra: string[];
   learned: {
     notInThisVibe: string[];
     suspectedDislike: string[];
@@ -79,12 +87,23 @@ export type DjRequest = {
   };
   avoid: string[]; // speelt nu / staat al in de wachtrij
   previous: { ref: string; title: string; artist: string; style: string; isNew: boolean }[];
-  pool: string; // regels "t1|Titel|Artiest|nu|3"
+  pool: string; // regels "t1|Titel|Artiest|nu|3x recent|here 4x"
   model: string;
 };
 
 export function trackLabel(t: { name: string; artists: string[] } | { title: string; artist: string }): string {
   return 'name' in t ? `${t.name} – ${t.artists.join(', ')}` : `${t.title} – ${t.artist}`;
+}
+
+/** Bewezen nummers (vaker helemaal gehoord dan geskipt) die niet in de pool staan, beste eerst. */
+function provenExtra(stats: Map<string, VibeStat> | undefined, refs: ClaudeRef[], learned: Learned, max = 40): string[] {
+  if (!stats) return [];
+  const inPool = new Set(refs.map((r) => r.track.id));
+  return [...stats.entries()]
+    .filter(([id, st]) => st.full > st.skips && !inPool.has(id) && learned.meta[id] && !learned.decisions[id])
+    .sort((a, b) => b[1].full - a[1].full)
+    .slice(0, max)
+    .map(([id]) => `${learned.meta[id].name} – ${learned.meta[id].artist}`);
 }
 
 const DAYS = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
@@ -106,16 +125,18 @@ export function buildRequest(args: {
   avoid: Track[];
   now: Date;
   model: string;
+  /** Per nummer: helemaal gehoord / geskipt bij deze vibe (of hetzelfde profiel). */
+  stats?: Map<string, VibeStat>;
 }): DjRequest {
   const { vibe, rules, signals, learned, refs } = args;
   const name = (id: string) => {
     const m = learned.meta[id];
     return m ? `${m.name} – ${m.artist}` : null;
   };
-  const vibeKey = norm(vibe.text);
+  const profile = vibe.profile ?? 'overig';
   const refById = new Map(refs.map((r) => [r.track.id, r.ref]));
   const notInThisVibe = Object.entries(signals.notNow)
-    .filter(([, list]) => list.some((s) => norm(s.vibe) === vibeKey))
+    .filter(([, list]) => list.some((s) => sameVibe(s.vibe, vibe.text)))
     .map(([id]) => name(id))
     .filter((x): x is string => !!x);
   const resting = Object.entries(signals.resting)
@@ -139,7 +160,9 @@ export function buildRequest(args: {
     now: nowLabel(args.now),
     count: rules.count,
     spares: 5,
-    newEvery: rules.newEvery,
+    newEvery: newEveryFor(profile, rules.newEvery),
+    profile,
+    profileNotes: PROFILE_NOTES[profile],
     artistStart: vibe.artistStart,
     worshipAllowed: vibe.worship,
     eurovision: vibe.eurovision,
@@ -148,6 +171,7 @@ export function buildRequest(args: {
     taste: rules.taste,
     blockedArtists: rules.blockedArtists,
     worshipArtists: rules.worshipArtists,
+    provenExtra: provenExtra(args.stats, refs, learned),
     learned: {
       notInThisVibe,
       suspectedDislike: signals.suspicions.map((s) => `${s.name} – ${s.artist} (${s.reason})`),
@@ -160,7 +184,9 @@ export function buildRequest(args: {
       .map((r) => {
         const t = r.track;
         const clean = (s: string) => s.replace(/[|\n]/g, ' ');
-        return `${r.ref}|${clean(t.name)}|${clean(t.artists.join(', '))}|${t.tier}${t.plays ? `|${t.plays}x recent` : ''}`;
+        const st = args.stats?.get(t.id);
+        const here = st && st.full > st.skips ? `|here ${st.full}x` : '';
+        return `${r.ref}|${clean(t.name)}|${clean(t.artists.join(', '))}|${t.tier}${t.plays ? `|${t.plays}x recent` : ''}${here}`;
       })
       .join('\n'),
     model: args.model,

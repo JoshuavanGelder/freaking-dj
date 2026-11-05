@@ -19,11 +19,13 @@ export function renderRequest(r) {
   lines.push(`- count: ${r.count}`);
   lines.push(`- spares: ${r.spares}`);
   lines.push(`- newEvery: 1 new track per ${Math.max(2, r.newEvery - 1)}–${r.newEvery} known tracks`);
+  lines.push(`- profile: ${r.profile || 'overig'}`);
   lines.push(`- artistStart: ${r.artistStart ?? 'none'}`);
   lines.push(`- worshipAllowed: ${r.worshipAllowed ? 'true' : 'false'}`);
   lines.push(`- eurovision: ${r.eurovision ? 'true' : 'false'}`);
   lines.push(`- Eurovision favourite (always in a Eurovision queue): ${r.eurovisionFavorite}`);
   lines.push('');
+  lines.push(list('Profile instructions (follow these strictly; they go before the general taste notes)', r.profileNotes));
   lines.push(list("Joshua's rules (Dutch)", r.rules));
   lines.push(list('Taste notes (starting point, Dutch)', r.taste));
   lines.push(list('Blocked artists (never)', r.blockedArtists));
@@ -33,13 +35,14 @@ export function renderRequest(r) {
   lines.push(list('Learned: suspectedDislike (avoid)', l.suspectedDislike));
   lines.push(list('Learned: disliked (never)', l.disliked));
   lines.push(list('Learned: resting (played too often lately, already left out of the pool)', l.resting));
+  lines.push(list('Proven in this vibe but not in the pool (fully played here before; use as ref "" with title+artist, they are not new to him)', r.provenExtra));
   lines.push(list('Avoid (playing now or already queued)', r.avoid));
   if (r.previous && r.previous.length) {
     lines.push('### Previous queue (play order)');
     r.previous.forEach((p, i) => lines.push(`${i + 1}. ${p.ref ? `[${p.ref}] ` : ''}${p.title} – ${p.artist} (${p.style}${p.isNew ? ', new' : ''})`));
     lines.push('');
   }
-  lines.push('### Pool (ref|title|artists|tier|plays)');
+  lines.push('### Pool (ref|title|artists|tier|plays|here = fully played in this vibe before)');
   lines.push(r.pool || '(empty)');
   return lines.filter((x) => x !== '').join('\n');
 }

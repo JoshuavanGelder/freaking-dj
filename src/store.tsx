@@ -122,10 +122,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const plans = s.plans.map((p) => ({
         vibe: p.vibe,
         createdAt: p.createdAt,
-        ids: p.items.map((i) => i.track.id),
-        newIds: p.items.filter((i) => i.isNew).map((i) => i.track.id),
+        ids: [...p.items, ...(p.spares ?? [])].map((i) => i.track.id),
+        newIds: [...p.items, ...(p.spares ?? [])].filter((i) => i.isNew).map((i) => i.track.id),
       }));
-      const tagged = tagPlays(r.plays, plans);
+      const L = s.live;
+      const live = L
+        ? {
+            vibe: L.vibe,
+            startedAt: L.startedAt,
+            ids: [...(L.served ?? []).map((t) => t.id), ...L.played.map((p) => p.track.id), ...L.upcoming.map((i) => i.track.id)],
+            newIds: [...L.played.filter((p) => p.isNew).map((p) => p.track.id), ...L.upcoming.filter((i) => i.isNew).map((i) => i.track.id)],
+          }
+        : null;
+      const tagged = tagPlays(r.plays, plans, live);
       const meta = { ...s.learned.meta };
       for (const p of tagged) meta[p.id] = { name: p.name, artist: p.artist };
       return {

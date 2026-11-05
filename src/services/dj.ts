@@ -7,6 +7,7 @@ import { computeSignals, dislikedKeys } from '../logic/learning';
 import { enforce, isFavorite, parseVibe, type EnforceContext } from '../logic/rules';
 import { adjustKind, describeChange, mergeAdjusted, type AdjustKind } from '../logic/adjust';
 import { songKey } from '../logic/text';
+import { provenIds, vibeStats } from '../logic/profiles';
 import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track } from '../logic/types';
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -93,7 +94,7 @@ async function resolveNew(item: ClaudeItem): Promise<Track | null> {
   return bestMatch(loose, item.title, item.artist);
 }
 
-async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unresolved: string[]): Promise<PlanItem[]> {
+async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unresolved: string[], knownKeys = new Set<string>()): Promise<PlanItem[]> {
   // Nieuwe nummers tegelijk opzoeken (max. 4 tegelijk), de volgorde blijft zoals Claude hem gaf.
   const slots: (PlanItem | null)[] = new Array(list.length).fill(null);
   const toFind: number[] = [];
@@ -112,7 +113,8 @@ async function toPlanItems(list: ClaudeItem[], refs: Map<string, PoolTrack>, unr
       const i = toFind[next++];
       const it = list[i];
       const track = await resolveNew(it);
-      if (track) slots[i] = { track, style: it.style, isNew: it.new || !it.ref, energy: it.energy };
+      // Eerder bij deze vibe helemaal gehoord (niet in de pool): dat is niet nieuw voor je.
+      if (track) slots[i] = { track, style: it.style, isNew: (it.new || !it.ref) && !knownKeys.has(songKey(track.name, track.artists)), energy: it.energy };
       else unresolved.push(`${it.title} – ${it.artist}`);
     }
   };
@@ -153,8 +155,11 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   }
 
   avoid.push(...(input.extraAvoid ?? []));
+  // Wat je bij deze vibe (of hetzelfde profiel, bv. Legday = Gym) al helemaal afluisterde.
+  const stats = vibeStats(learned, vibe.text);
+  const proven = provenIds(stats);
   const used = input.excludeUsed ? { ids: new Set(avoid.map((t) => t.id)), keys: new Set(avoid.map((t) => songKey(t.name, t.artists))) } : null;
-  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
+  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), proven, ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
   const refs: ClaudeRef[] = poolForClaude(history.pool, ctx);
   const id = newId();
   const request = buildRequest({
@@ -170,6 +175,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     avoid: avoid.slice(0, 80), // de weigering hierboven (ctx) geldt voor alles; Claude hoeft maar de meest recente te lezen
     now: new Date(now),
     model: input.model,
+    stats,
   });
 
   onStatus('Verzoek naar GitHub sturen');
@@ -236,9 +242,10 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   onStatus('Nummers opzoeken in Spotify');
   const refMap = new Map(refs.map((r) => [r.ref, r.track]));
   const unresolved: string[] = [];
+  const knownKeys = new Set([...proven].map((pid) => learned.meta[pid]).filter(Boolean).map((m) => songKey(m.name, [m.artist.split(',')[0].trim()])));
   const [items, spares, favorite] = await Promise.all([
-    toPlanItems(answer.items, refMap, unresolved),
-    toPlanItems(answer.spares, refMap, []),
+    toPlanItems(answer.items, refMap, unresolved, knownKeys),
+    toPlanItems(answer.spares, refMap, [], knownKeys),
     vibe.eurovision ? resolveFavorite(rules, input.favorite) : Promise.resolve(input.favorite),
   ]);
   const favInItems = items.some((it) => isFavorite(it.track, rules));

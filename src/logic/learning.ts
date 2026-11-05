@@ -101,13 +101,19 @@ export function ingest(open: OpenSeg | null, events: RawEvent[]): { plays: Play[
 export function tagPlays(
   plays: Play[],
   plans: { vibe: string; createdAt: number; ids: string[]; newIds: string[] }[],
+  live?: { vibe: string; startedAt: number; ids: string[]; newIds: string[] } | null,
 ): Play[] {
   return plays.map((p) => {
     if (p.vibe) return p;
     const plan = [...plans]
       .filter((pl) => pl.createdAt <= p.start && p.start - pl.createdAt < 6 * 3600 * 1000 && pl.ids.includes(p.id))
       .sort((a, b) => b.createdAt - a.createdAt)[0];
-    return plan ? { ...p, vibe: plan.vibe, fromPlanNew: plan.newIds.includes(p.id) } : p;
+    if (plan) return { ...p, vibe: plan.vibe, fromPlanNew: plan.newIds.includes(p.id) };
+    // Live DJ: alles wat de DJ in deze sessie klaarzette (ook reserves) hoort bij de Live-vibe.
+    if (live && p.start >= live.startedAt - 60_000 && live.ids.includes(p.id)) {
+      return { ...p, vibe: live.vibe, fromPlanNew: live.newIds.includes(p.id) };
+    }
+    return p;
   });
 }
 

@@ -3,6 +3,7 @@
 // dezelfde artiest achter elkaar, "begin met X" en je Eurovisie-favoriet.
 import type { PlanItem, PoolTrack, Removed, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { artistIn, norm, shareArtist, songKey } from './text.ts';
+import { GYM_MIN_ENERGY, profileOf, sameVibe } from './profiles.ts';
 
 export const DEFAULT_RULES: Rules = {
   blockedArtists: ['Loreen'],
@@ -62,10 +63,12 @@ export function parseVibe(text: string, rules: Rules): VibeInfo {
     const k = norm(w);
     return k.length > 2 && n.includes(k);
   });
+  const profile = profileOf(t);
   return {
     text: t,
+    profile,
     artistStart: artistStart || null,
-    worship: WORSHIP_RE.test(t) || mentionsWorshipArtist,
+    worship: profile === 'worship' || WORSHIP_RE.test(t) || mentionsWorshipArtist,
     eurovision: EUROVISION_RE.test(t),
   };
 }
@@ -85,7 +88,15 @@ export type EnforceContext = {
   favorite?: Track | null;
   /** Titel+artiest van bevestigd niet-leuke nummers (vangt andere versies af). */
   dislikedKeys?: Set<string>;
+  /** Nummers die je bij deze vibe (of hetzelfde profiel) al helemaal afluisterde. */
+  proven?: Set<string>;
 };
+
+/** Gym: is dit nummer hard genoeg? Bewezen gym-nummers mogen altijd. */
+export function gymOk(it: PlanItem, ctx: EnforceContext): boolean {
+  if (ctx.vibe.profile !== 'gym') return true;
+  return it.energy >= GYM_MIN_ENERGY || !!ctx.proven?.has(it.track.id);
+}
 
 const NOT_NOW_DAYS = 7;
 
@@ -103,8 +114,7 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     const rest = signals.resting[track.id];
     if (rest && rest > now) return 'rust (te vaak gedraaid)';
     const skips = signals.notNow[track.id] ?? [];
-    const v = norm(vibe.text);
-    if (skips.some((s) => norm(s.vibe) === v && now - s.at < NOT_NOW_DAYS * 86400000)) return 'geen zin in bij deze vibe';
+    if (skips.some((s) => sameVibe(s.vibe, vibe.text) && now - s.at < NOT_NOW_DAYS * 86400000)) return 'geen zin in bij deze vibe';
   }
   return null;
 }
@@ -144,6 +154,15 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
   };
   let items = keep(proposed, true);
   let spares = keep(proposedSpares, false);
+
+  // Gym: alles onder de energie-ondergrens eruit (tenzij al bewezen in de gym), aanvullen uit de reserves.
+  if (ctx.vibe.profile === 'gym') {
+    const soft = items.filter((it) => !gymOk(it, ctx));
+    for (const it of soft) removed.push({ title: it.track.name, artist: it.track.artists.join(', '), reason: 'te rustig voor de gym' });
+    items = items.filter((it) => gymOk(it, ctx));
+    spares = spares.filter((it) => gymOk(it, ctx));
+    while (items.length < ctx.rules.count && spares.length) items.push(spares.shift()!);
+  }
 
   // Eurovisie: je favoriet zit er altijd in.
   if (ctx.vibe.eurovision && ctx.favorite && !items.some((it) => isFavorite(it.track, ctx.rules))) {

@@ -38,9 +38,13 @@ export type Plan = {
   addedIds?: string[]; // bij bijsturen: welke nummers er nieuw bij kwamen
 };
 
+/** Vaste profielen: Standaard, Gym en Worship. Alles daarbuiten is "overig" (vrije vibe). */
+export type VibeProfile = 'standaard' | 'gym' | 'worship' | 'overig';
+
 /** Wat de app over de vibe begrijpt. */
 export type VibeInfo = {
   text: string;
+  profile?: VibeProfile; // ontbreekt = overig
   artistStart: string | null; // "begin met Morgan Wallen" -> "Morgan Wallen"
   worship: boolean; // om worship gevraagd
   eurovision: boolean;
