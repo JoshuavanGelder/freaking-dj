@@ -11,26 +11,26 @@
   },
   "dependencies": {
     "@expo-google-fonts/figtree": "*",
-    "@react-native-async-storage/async-storage": "*",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~57.0.0",
-    "expo-auth-session": "*",
-    "expo-clipboard": "*",
-    "expo-constants": "*",
-    "expo-crypto": "*",
-    "expo-font": "*",
-    "expo-image": "*",
-    "expo-linking": "*",
-    "expo-secure-store": "*",
-    "expo-status-bar": "*",
-    "expo-web-browser": "*",
+    "expo-auth-session": "~57.0.16",
+    "expo-clipboard": "~57.0.2",
+    "expo-constants": "~57.0.22",
+    "expo-crypto": "~57.0.4",
+    "expo-font": "~57.0.4",
+    "expo-image": "~57.0.5",
+    "expo-linking": "~57.0.13",
+    "expo-secure-store": "~57.0.4",
+    "expo-status-bar": "~57.0.1",
+    "expo-web-browser": "~57.0.3",
     "react": "19.2.3",
     "react-native": "~0.86.0",
-    "react-native-safe-area-context": "*",
-    "react-native-svg": "*",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-svg": "15.15.4",
     "spotify-watcher": "file:./modules/spotify-watcher"
   },
   "devDependencies": {
-    "@types/react": "*",
-    "typescript": "*"
+    "@types/react": "~19.2.4",
+    "typescript": "~6.0.3"
   }
 }
