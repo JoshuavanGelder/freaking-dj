@@ -1,0 +1,378 @@
+{
+ "id": "mw5h7boy-gwaws",
+ "finishedAt": "2026-11-06T21:18:23.973Z",
+ "durationMs": 18036,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Worship vrijdagavond",
+  "note": "Je vaste worship-favorieten in een rustige golf, met om de vier nummers een bekende nieuwe lofsong.",
+  "items": [
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 1
+   },
+   {
+    "ref": "",
+    "title": "Goodness of God",
+    "artist": "Bethel Music",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t75",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t82",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "What a Beautiful Name",
+    "artist": "Hillsong Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t94",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Jireh",
+    "artist": "Elevation Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Gratitude",
+    "artist": "Brandon Lake",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t84",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 1
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t91",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "The Battle Belongs",
+    "artist": "Phil Wickham",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t83",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t103",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t112",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t66",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Same God",
+    "artist": "Elevation Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t76",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t67",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t118",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Firm Foundation (He Won't)",
+    "artist": "Cody Carnes",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t116",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t93",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t105",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t114",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t115",
+    "title": "",
+    "artist": "",
+    "style": "Rustige worship",
+    "new": false,
+    "energy": 2
+   }
+  ]
+ },
+ "costUsd": 0.07885400000000001,
+ "model": "sonnet"
+}
