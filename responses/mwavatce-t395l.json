@@ -1,0 +1,178 @@
+{
+ "id": "mwavatce-t395l",
+ "finishedAt": "2026-11-10T15:52:00.209Z",
+ "durationMs": 25655,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t75",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lose Control",
+    "artist": "Teddy Swims",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t98",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Been By Now",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "The Code",
+    "artist": "Nemo",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t74",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Mockingbird",
+    "artist": "Eminem",
+    "style": "NF-rap",
+    "new": true,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "title": "Live-sessie aangevuld",
+  "note": "Ik heb meer dance, NF-rap, Eurovisie en pop toegevoegd en alles vermeden wat je skipte of al speelde."
+ },
+ "costUsd": 0.072318,
+ "model": "sonnet"
+}
