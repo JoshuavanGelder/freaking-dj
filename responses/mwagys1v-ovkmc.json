@@ -1,0 +1,386 @@
+{
+ "id": "mwagys1v-ovkmc",
+ "finishedAt": "2026-11-10T09:10:39.208Z",
+ "durationMs": 16656,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Joshua's Standaard Mix",
+  "note": "Je favorieten uit country, NF, pop en dance, met een paar nieuwe tracks ertussen en geen worship.",
+  "items": [
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Whiskey Glasses",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t31",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Dance Monkey",
+    "artist": "Tones and I",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t28",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Frans",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sailor Song",
+    "artist": "Gigi Perez",
+    "style": "Pop",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t85",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t32",
+    "title": "",
+    "artist": "",
+    "style": "Frans",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stargazing",
+    "artist": "Myles Smith",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t37",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Die With A Smile",
+    "artist": "Lady Gaga",
+    "style": "Pop",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t17",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Texas Blue",
+    "artist": "Parker McCollum",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t30",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "NF-rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t55",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.025225100000000004,
+ "model": "sonnet"
+}
