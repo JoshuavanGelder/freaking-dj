@@ -1,0 +1,109 @@
+{
+ "id": "mwagys1v-ovkmc",
+ "createdAt": "2026-11-10T09:10:03.033Z",
+ "mode": "nieuw",
+ "vibe": "Standaard",
+ "adjust": null,
+ "adjustMode": null,
+ "now": "dinsdag 10:10",
+ "count": 40,
+ "spares": 5,
+ "newEvery": 4,
+ "freshStart": 8,
+ "profile": "standaard",
+ "profileNotes": [
+  "Profile STANDAARD: all the music Joshua likes, except worship. Not one genre or mood: his whole taste in one mix (current favourites, older favourites, and the genres he plays in other vibes, gym bangers included).",
+  "Build it from the whole pool, weighted towards `nu` tracks, recent plays and tracks marked `here` (fully played before in any non-worship vibe). Mix his genres and styles across the queue.",
+  "New tracks: popular songs that fit one of his genres. No worship / Christian music at all."
+ ],
+ "artistStart": null,
+ "worshipAllowed": false,
+ "eurovision": false,
+ "eurovisionFavorite": "Viva, Moldova! – Satoshi",
+ "rules": [
+  "Vooral nummers die ik ken uit mijn luistergeschiedenis: vooral mijn huidige favorieten plus een paar oudere om te herontdekken.",
+  "Per 3 à 4 bekende nummers ongeveer 1 populair nieuw nummer uit hetzelfde genre of dezelfde vibe.",
+  "De energie wisselt af, niet twee keer dezelfde artiest achter elkaar, geen dubbelen.",
+  "Een genre-vibe betekent nummers uit dat genre. Bij Eurovisie alleen echte Eurovisie-inzendingen (het inzendingsnummer zelf). Een artiest die ooit meedeed of presenteerde telt niet met zijn andere nummers.",
+  "Worship/christelijke muziek luister ik veel, maar alleen als ik erom vraag.",
+  "Mijn favoriete Eurovisie 2026-nummer is \"Viva, Moldova!\" (Satoshi, Moldavië). Dat zit altijd in een Eurovisie-wachtrij."
+ ],
+ "taste": [
+  "Coding/energie: Morgan Wallen, NF, Fall Out Boy, Avicii, Alan Walker, Egzod, LUM!X / Gabry Ponte, Imagine Dragons, Alex Warren, Flo Rida, Black Eyed Peas, AC/DC, Green Day, Sean Paul, YUNGBLUD, OneRepublic, Panic! At The Disco.",
+  "Eurovisie: Viva, Moldova!, Liekinheitin, Per sempre sì, Arcade, Heroes, Rim Tim Tagi Dim, Fuego, SHUM, Zitti e buoni, Voilà, Ferto, My System.",
+  "Frans/overig: Indila, Barbara Pravi, Shakira, KPop Demon Hunters (Golden, How It's Done)."
+ ],
+ "blockedArtists": [
+  "Loreen"
+ ],
+ "worshipArtists": [
+  "Josiah Queen",
+  "Hillsong",
+  "Elevation Worship",
+  "Lauren Daigle",
+  "Casting Crowns",
+  "Brandon Lake",
+  "Rend Collective",
+  "Bijbel Beukers"
+ ],
+ "provenExtra": [
+  "I Ain't Worried – OneRepublic",
+  "The Nights – Avicii",
+  "Wasted Love – JJ",
+  "Rim Tim Tagi Dim – Baby Lasagna",
+  "Cha Cha Cha – Käärijä",
+  "Fuego – Eleni Foureira",
+  "ZITTI E BUONI – Måneskin",
+  "I Had Some Help (Feat. Morgan Wallen) – Post Malone",
+  "I'm The Problem – Morgan Wallen",
+  "ONLY THING LEFT – Alex Warren",
+  "GIRL LIKE ME – Black Eyed Peas",
+  "Titanium (feat. Sia) – David Guetta",
+  "Play Hard (feat. Ne-Yo & Akon) – David Guetta, Ne-Yo, Akon",
+  "Heroes – Måns Zelmerlöw",
+  "The Code – Nemo",
+  "My System – FELICIA",
+  "Stefania (Kalush Orchestra) – KALUSH",
+  "Toy – Netta",
+  "SPACE MAN – Sam Ryder",
+  "Rise Like A Phoenix – Conchita Wurst",
+  "Tout l'univers – Gjon's Tears",
+  "ZARI – Marina Satti",
+  "Last Thing You Need (from GTAVI: The Album) – Morgan Wallen, Grand Theft Auto VI",
+  "Fast Car – Luke Combs",
+  "Carry You Home – Alex Warren",
+  "Lose Control - Piano Version – Teddy Swims",
+  "Heroes – Måns Zelmerlöw",
+  "Lose Control - Live – Teddy Swims, Freak Freely",
+  "Levels - Radio Edit – Avicii",
+  "Choosin' Texas – Ella Langley",
+  "Don't You Worry Child (feat. John Martin) - Radio Edit – Swedish House Mafia, John Martin",
+  "Break Your Heart – Taio Cruz"
+ ],
+ "learned": {
+  "notInThisVibe": [
+   "Thunder – Gabry Ponte",
+   "My Songs Know What You Did In The Dark (Light Em Up) – Fall Out Boy",
+   "Titanium (feat. Sia) – David Guetta",
+   "I Was Made For Lovin’ You - from The Fall Guy – YUNGBLUD"
+  ],
+  "suspectedDislike": [],
+  "disliked": [
+   "Hard Rock Hallelujah – Lordi",
+   "TEXAS HOLD 'EM – Beyoncé",
+   "Beautiful Crazy – Luke Combs",
+   "Need A Favor – Jelly Roll",
+   "Faded – Alan Walker",
+   "Hey Brother – Avicii",
+   "Lonely Boy – The Black Keys",
+   "Sugar, We're Goin Down – Fall Out Boy",
+   "Immortals – Fall Out Boy",
+   "House of The Lord – Phil Wickham"
+  ],
+  "resting": []
+ },
+ "avoid": [],
+ "previous": [],
+ "pool": "t1|A Bar Song (Tipsy)|Shaboozey|nu|1x recent|here 6x\nt2|Temperature|Sean Paul|nu|2x recent|here 6x\nt3|MOTTO|NF|nu|1x recent|here 9x\nt4|Arcade|Duncan Laurence|nu|here 2x\nt5|Ordinary|Alex Warren|nu|1x recent|here 8x\nt6|Been By Now|Morgan Wallen|nu|here 10x\nt7|Last Night|Morgan Wallen|nu|1x recent|here 8x\nt8|Centuries|Fall Out Boy|nu|1x recent|here 4x\nt9|You Can't Stop This|Alex Warren|nu|1x recent|here 6x\nt10|LOST|NF, Hopsin|nu|here 5x\nt11|Burning Down|Alex Warren|nu|2x recent|here 7x\nt12|What I Want (feat. Tate McRae)|Morgan Wallen, Tate McRae|nu|1x recent|here 6x\nt13|Play Hard (feat. Ne-Yo & Akon)|David Guetta, Ne-Yo, Akon|nu|here 1x\nt14|Beautiful Things|Benson Boone|nu|1x recent|here 3x\nt15|Shut Up and Dance|WALK THE MOON|nu|here 3x\nt16|Cowgirls|Morgan Wallen, ERNEST|nu|here 5x\nt17|Let You Down|NF|nu|here 4x\nt18|Hangover|Taio Cruz, Flo Rida|nu|2x recent|here 2x\nt19|Self Aware|LUM!X|nu|1x recent|here 4x\nt20|Voilà|Barbara Pravi|nu|1x recent|here 3x\nt21|Good Luck, Babe!|Chappell Roan|nu|here 2x\nt22|Ferto|Akylas|nu|1x recent|here 2x\nt23|Bloodline|Alex Warren, Jelly Roll|nu|1x recent|here 3x\nt24|I Had Some Help (Feat. Morgan Wallen)|Post Malone, Morgan Wallen|nu|here 1x\nt25|Blinding Lights|The Weeknd|nu|here 1x\nt26|Liekinheitin|Linda Lampenius, Pete Parkkonen|nu|here 1x\nt27|On Top Of The World|Imagine Dragons|nu|1x recent|here 1x\nt28|Club Can't Handle Me (feat. David Guetta)|Flo Rida, David Guetta|nu|1x recent|here 4x\nt29|Sandstorm|Darude|nu|1x recent|here 1x\nt30|Lose Yourself|Eminem|nu|1x recent|here 1x\nt31|HOPE|NF|nu|1x recent|here 6x\nt32|Ainsi bas la vida|Indila|nu|1x recent|here 1x\nt33|Viva, Moldova!|Satoshi|nu|1x recent|here 4x\nt34|Per sempre sì|Sal Da Vinci|ouder|here 2x\nt35|Bangaranga|DARA|ouder|here 1x\nt36|The Phoenix|Fall Out Boy|ouder|here 2x\nt37|JUST LIKE YOU|NF|ouder|here 6x\nt38|CLOUDS|NF|ouder|here 7x\nt39|Levitating (feat. DaBaby)|Dua Lipa, DaBaby|ouder|here 1x\nt40|Fairytale|Alexander Rybak|ouder|here 1x\nt41|WHY|NF|ouder|here 1x\nt42|Grindin'|NF, Marty|ouder|here 1x\nt43|Demons|Imagine Dragons|ouder|here 1x\nt44|Sucker for Pain (with Wiz Khalifa, Imagine Dragons, Logic & Ty Dolla $ign feat. X Ambassadors)|Lil Wayne, Wiz Khalifa, Imagine Dragons, X Ambassadors, Logic, Ty Dolla $ign|ouder|here 1x\nt45|Crazy|Gnarls Barkley, CeeLo Green, Danger Mouse|nu\nt46|Hotel California - 2013 Remaster|Eagles|nu\nt47|No Money|Galantis|nu\nt48|Feel It Still|Portugal. The Man|nu\nt49|Paradise by the Dashboard Light - Radio Edit|Meat Loaf|nu\nt50|Sucker|Jonas Brothers|nu\nt51|GIRL LIKE ME|Black Eyed Peas, Shakira|nu\nt52|Still Waters (Psalm 23)|Leanna Crawford|nu|1x recent\nt53|Good Feeling|Flo Rida|nu|1x recent\nt54|Over & Over|ELEVATION RHYTHM|nu|1x recent\nt55|Whatever It Takes|Imagine Dragons|nu\nt56|Dai Dai|Shakira, Burna Boy|nu\nt57|Break Your Heart|Taio Cruz, Ludacris|nu\nt58|Revelation Song|Kari Jobe Carnes|nu|1x recent\nt59|Goodness of God|Bethel Music, Jenn Johnson|nu|1x recent\nt60|Houdini|Dua Lipa|nu|1x recent\nt61|RUNNING HOME (PSALM 51)|LOST & FOUND|nu\nt62|GOODBYE YESTERDAY|ELEVATION RHYTHM, Gracie Binion|nu\nt63|Counting My Blessings|Seph Schlueter|nu\nt64|Great Are You Lord - Live|All Sons & Daughters, David Leonard|nu\nt65|This I Believe (The Creed) - Live|Newsong|ouder\nt66|No Longer Slaves|Bethel Music, Jonathan David Helser, Melissa Helser|ouder\nt67|REGARDE !|Monroe, Violin Phonix|ouder\nt68|My System|FELICIA|ouder\nt69|This Is Amazing Grace|Phil Wickham|ouder\nt70|Run To The Father|Cody Carnes|ouder\nt71|Our God|Chris Tomlin|ouder\nt72|Espresso|Sabrina Carpenter|ouder\nt73|Way Maker - Live|Leeland|ouder\nt74|A Thousand Hallelujahs - Live|Brooke Ligertwood|ouder\nt75|We Believe|Newsboys|ouder\nt76|Here's My Heart|I AM THEY|ouder\nt77|Start Over (feat. NF)|FLAME, NF|ouder\nt78|Raise a Hallelujah (Live)|Bethel Music, Jonathan David Helser, Melissa Helser|ouder\nt79|I Thank God (feat. Dante Bowe, Maryanne Joshua George & Aaron Moses)|Maverick City Music, UPPERROOM, Housefires, Dante Bowe, Maryanne J. George, Aaron Moses|ouder\nt80|I Speak Jesus|Here Be Lions, Darlene Zschech|ouder\nt81|THAT'S A JOKE|NF|ouder\nt82|Good Good Father|Chris Tomlin|ouder\nt83|Let's Get It Started - Spike Mix|Black Eyed Peas|ouder\nt84|Kickstart My Heart|Mötley Crüe|ouder\nt85|Thunderstruck|AC/DC|ouder\nt86|Surfin' U.S.A.|The Beach Boys|ouder\nt87|Danza Kuduro|Don Omar, Lucenzo|ouder\nt88|Cold Heart - PNAU Remix|Elton John, Dua Lipa, PNAU|ouder\nt89|I’m So Sorry|Imagine Dragons|ouder\nt90|Check It Out|Oh The Larceny|ouder\nt91|STAY (with Justin Bieber)|The Kid LAROI, Justin Bieber|ouder\nt92|Thnks fr th Mmrs|Fall Out Boy|ouder\nt93|I Ain't Worried|OneRepublic|ouder\nt94|Don't Worry (with Ray Dalton) - Radio Edit|Madcon, Ray Dalton|ouder\nt95|Give Me Everything (feat. Nayer)|Pitbull, AFROJACK, Ne-Yo, Nayer|ouder\nt96|My House|Flo Rida|ouder\nt97|Alors on danse - Radio Edit|Stromae|ouder\nt98|Formidable|Stromae|ouder\nt99|Hotel Walls|Smith & Thell|ouder\nt100|Dernière danse|Indila|ouder\nt101|My Type|Saint Motel|ouder\nt102|Sugar (feat. Francesco Yates)|Robin Schulz, Francesco Yates|ouder\nt103|Adventure of a Lifetime|Coldplay|ouder\nt104|Everybody Talks|Neon Trees|ouder\nt105|Heat Waves|Glass Animals|ouder\nt106|Love Me Again|John Newman|ouder\nt107|Rather Be (feat. Jess Glynne)|Clean Bandit, Jess Glynne|ouder\nt108|Hymn for the Weekend|Coldplay|ouder\nt109|World's Smallest Violin|AJR|ouder\nt110|Proud Mary|Creedence Clearwater Revival|ouder\nt111|If I Can't Have You|Shawn Mendes|ouder\nt112|Shotgun|George Ezra|ouder\nt113|American Pie|Don McLean|ouder\nt114|Ho Hey|The Lumineers|ouder\nt115|In My Blood|Shawn Mendes|ouder\nt116|Without You (feat. Sandro Cavazza)|Avicii, Sandro Cavazza|ouder\nt117|Mercy|Shawn Mendes|ouder\nt118|Me And My Broken Heart|Rixton|ouder\nt119|Blood // Water|grandson|ouder\nt120|Gimme! Gimme! Gimme! (A Man After Midnight)|ABBA|ouder\nt121|Little Lion Man|Mumford & Sons|ouder\nt122|Bones|Imagine Dragons|ouder\nt123|Hate Myself|NF|ouder\nt124|Cooler Than Me - Single Mix|Mike Posner, Gigamesh|ouder\nt125|HAPPY|NF|ouder\nt126|Troublemaker (feat. Flo Rida)|Olly Murs, Flo Rida|ouder\nt127|Up Around The Bend|Creedence Clearwater Revival|ouder\nt128|Till I Collapse|Eminem, Nate Dogg|ouder\nt129|Change|NF|ouder\nt130|The Real Slim Shady|Eminem|ouder\nt131|good 4 u|Olivia Rodrigo|ouder\nt132|Fireflies|Owl City|ouder\nt133|Feel This Moment (feat. Christina Aguilera)|Pitbull, Christina Aguilera|ouder\nt134|Another One Bites The Dust - Remastered 2011|Queen|ouder\nt135|Mansion|NF, Fleurie|ouder\nt136|Electric Love|BØRNS|ouder\nt137|All I Have|NF|ouder\nt138|The Search|NF|ouder\nt139|505|Arctic Monkeys|ouder\nt140|Feel So Close - Radio Edit|Calvin Harris|ouder\nt141|Ophelia|The Lumineers|ouder\nt142|A Sky Full of Stars|Coldplay|ouder\nt143|As It Was|Harry Styles|ouder\nt144|Time of Our Lives|Pitbull, Ne-Yo|ouder\nt145|House of Memories|Panic! At The Disco|ouder\nt146|Am I Wrong|Nico & Vinz|ouder\nt147|Happy - From \"Despicable Me 2\"|Pharrell Williams|ouder\nt148|Without Me|Eminem|ouder\nt149|I Wanna Be Yours|Arctic Monkeys|ouder\nt150|It's Time|Imagine Dragons|ouder\nt151|Down On The Corner|Creedence Clearwater Revival|ouder\nt152|Travelin' Band|Creedence Clearwater Revival|ouder\nt153|Paralyzed|NF|ouder\nt154|Lookin' Out My Back Door|Creedence Clearwater Revival|ouder\nt155|Sunny|Bobby Hebb|ouder\nt156|Bad Moon Rising|Creedence Clearwater Revival|ouder\nt157|Here Comes The Sun - Remastered 2009|The Beatles|ouder\nt158|Happier|Marshmello, Bastille|ouder\nt159|Sweater Weather|The Neighbourhood|ouder\nt160|Bad Liar|Imagine Dragons|ouder\nt161|Treat You Better|Shawn Mendes|ouder\nt162|Fortunate Son|Creedence Clearwater Revival|ouder\nt163|Best Day Of My Life|American Authors|ouder\nt164|Yellow|Coldplay|ouder\nt165|The Last Of The Real Ones|Fall Out Boy|ouder\nt166|Maps|Maroon 5|ouder\nt167|Safe And Sound|Capital Cities|ouder\nt168|Stitches|Shawn Mendes|ouder\nt169|Locked out of Heaven|Bruno Mars|ouder\nt170|There's Nothing Holdin' Me Back|Shawn Mendes|ouder\nt171|Hey Ya!|Outkast|ouder\nt172|I Found|Amber Run|ouder\nt173|In the End|Linkin Park|ouder\nt174|High Hopes|Panic! At The Disco|ouder\nt175|Love Runs Out|OneRepublic|ouder\nt176|Home|Edward Sharpe & The Magnetic Zeros|ouder\nt177|More Than You Know|Axwell /\\ Ingrosso, Axwell, Sebastian Ingrosso|ouder\nt178|Holding Out for a Hero - From \"Footloose\" Soundtrack|Bonnie Tyler|ouder\nt179|My Ordinary Life|The Living Tombstone|ouder\nt180|I GUESS I'M IN LOVE|Clinton Kane|ouder\nt181|Fat Bottomed Girls - 2011 Remaster|Queen|ouder\nt182|Blame It on Me|George Ezra|ouder\nt183|Dirty Deeds Done Dirt Cheap|AC/DC|ouder\nt184|Hold On|Chord Overstreet|ouder\nt185|Wanted Dead Or Alive|Bon Jovi|ouder\nt186|Smooth (feat. Rob Thomas)|Santana, Rob Thomas|ouder\nt187|Glitter & Gold|Barns Courtney|ouder\nt188|Bad Romance|Lady Gaga|ouder\nt189|In the Summertime|Mungo Jerry|ouder\nt190|The Night We Met|Lord Huron|ouder\nt191|Mambo No. 5 (a Little Bit of...)|Lou Bega|ouder\nt192|Hit the Road Jack|Ray Charles|ouder\nt193|Dancing in the Moonlight|Toploader|ouder\nt194|It's a Long Way to the Top (If You Wanna Rock 'N' Roll)|AC/DC|ouder\nt195|Somebody To Love - Remastered 2011|Queen|ouder\nt196|Viva La Vida|Coldplay|ouder\nt197|Hold My Girl|George Ezra|ouder\nt198|U Can't Touch This|MC Hammer|ouder\nt199|Accidentally In Love - From \"Shrek 2\" Soundtrack|Counting Crows|ouder\nt200|Paradise|Coldplay|ouder\nt201|Things We Lost In The Fire|Bastille|ouder\nt202|What A Wonderful World|Louis Armstrong|ouder\nt203|Blue (Da Ba Dee) - Gabry Ponte Ice Pop Radio|Eiffel 65, Gabry Ponte|ouder\nt204|Take Me To Church|Hozier|ouder\nt205|Heathens|Twenty One Pilots|ouder\nt206|Power Over Me|Dermot Kennedy|ouder\nt207|Classic|MKTO|ouder\nt208|Build Me Up Buttercup|The Foundations|ouder\nt209|Honey, I'm Good.|Andy Grammer|ouder\nt210|Unstoppable|The Score|ouder\nt211|Seven Nation Army|The White Stripes|ouder\nt212|Black Betty|Ram Jam|ouder\nt213|It's My Life|Bon Jovi|ouder\nt214|Budapest|George Ezra|ouder\nt215|Geronimo|Sheppard|ouder\nt216|Don't Bring Me Down|Electric Light Orchestra|ouder\nt217|For Those About to Rock (We Salute You)|AC/DC|ouder\nt218|Let's Groove|Earth, Wind & Fire|ouder\nt219|Forget You|CeeLo Green|ouder\nt220|Hall of Fame (feat. will.i.am)|The Script, will.i.am|ouder\nt221|You Shook Me All Night Long|AC/DC|ouder\nt222|T.N.T.|AC/DC|ouder\nt223|Kung Fu Fighting|Carl Douglas|ouder\nt224|Wrecked|Imagine Dragons|ouder",
+ "model": "sonnet"
+}
