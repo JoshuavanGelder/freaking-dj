@@ -1,0 +1,386 @@
+{
+ "id": "mwhy8401-6ean3",
+ "finishedAt": "2026-11-15T14:48:01.451Z",
+ "durationMs": 19194,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Worship: anthems en rust",
+  "note": "Vooral je eigen worshipfavorieten, met af en toe een bekende nieuwe lofzang erdoorheen.",
+  "items": [
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Gratitude",
+    "artist": "Brandon Lake",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t88",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 1
+   },
+   {
+    "ref": "t91",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Jireh",
+    "artist": "Elevation Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t93",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t106",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Holy Forever",
+    "artist": "Chris Tomlin",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t94",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t107",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Battle Belongs",
+    "artist": "Phil Wickham",
+    "style": "Worship",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t89",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t75",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t99",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Goodness of God",
+    "artist": "CeCe Winans",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t124",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "Same God",
+    "artist": "Elevation Worship",
+    "style": "Worship",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t122",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t126",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t78",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Man of Your Word",
+    "artist": "Maverick City Music",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t95",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t115",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t81",
+    "title": "",
+    "artist": "",
+    "style": "Christelijke pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t101",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Firm Foundation (He Won't)",
+    "artist": "Cody Carnes",
+    "style": "Worship",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t103",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t104",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t129",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t97",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t118",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t96",
+    "title": "",
+    "artist": "",
+    "style": "Worship",
+    "new": false,
+    "energy": 1
+   }
+  ]
+ },
+ "costUsd": 0.081062,
+ "model": "sonnet"
+}
