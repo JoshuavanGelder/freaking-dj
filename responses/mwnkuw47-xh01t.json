@@ -1,0 +1,178 @@
+{
+ "id": "mwnkuw47-xh01t",
+ "finishedAt": "2026-11-19T13:20:25.853Z",
+ "durationMs": 12890,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Live-sessie aangevuld",
+  "note": "Je hield van pop, dance, NF, Frans en Eurovisie, dus daar zit meer van in; rock en de geskipte nummers laat ik weg.",
+  "items": [
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t62",
+    "title": "",
+    "artist": "",
+    "style": "Frans",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Houdini",
+    "artist": "Dua Lipa",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t59",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t60",
+    "title": "",
+    "artist": "",
+    "style": "Frans",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Stefania",
+    "artist": "Kalush Orchestra",
+    "style": "Eurovisie",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t57",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t39",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t101",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Rap",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t131",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t162",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.07116,
+ "model": "sonnet"
+}
