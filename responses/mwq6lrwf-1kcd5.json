@@ -1,0 +1,378 @@
+{
+ "id": "mwq6lrwf-1kcd5",
+ "finishedAt": "2026-11-21T09:04:44.729Z",
+ "durationMs": 19715,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym: volle kracht",
+  "note": "Je bewezen gymnummers staan voorop, aangevuld met harde NF, Eminem, rock en een paar zekere nieuwe bangers.",
+  "items": [
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t216",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Sandstorm",
+    "artist": "Darude",
+    "style": "EDM",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t25",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t51",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t70",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t58",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Don't You Worry Child (feat. John Martin) - Radio Edit",
+    "artist": "Swedish House Mafia",
+    "style": "EDM",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t134",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t60",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t98",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t66",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Shut Up and Dance",
+    "artist": "WALK THE MOON",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t153",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t23",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t214",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Rap God",
+    "artist": "Eminem",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t63",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t129",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t224",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t135",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t228",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t158",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t174",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t53",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Not Afraid",
+    "artist": "Eminem",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t221",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t20",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Levels",
+    "artist": "Avicii",
+    "style": "EDM",
+    "new": true,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t232",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t155",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t215",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t11",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.082414,
+ "model": "sonnet"
+}
