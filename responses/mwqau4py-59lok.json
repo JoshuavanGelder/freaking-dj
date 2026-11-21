@@ -1,0 +1,178 @@
+{
+ "id": "mwqau4py-59lok",
+ "finishedAt": "2026-11-21T11:03:15.983Z",
+ "durationMs": 12961,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym: harder gaan",
+  "note": "Je hebt veel Eminem, NF en stevige rock helemaal gehoord, dus ik vul aan met dezelfde energie en laat geskipte nummers weg.",
+  "items": [
+   {
+    "ref": "t182",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t125",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t194",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t152",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t200",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t21",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t103",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t176",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t202",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Remember the Name",
+    "artist": "Fort Minor",
+    "style": "Hip-hop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t143",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t169",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t73",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t183",
+    "title": "",
+    "artist": "",
+    "style": "Hardrock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t181",
+    "title": "",
+    "artist": "",
+    "style": "Rock-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.075172,
+ "model": "sonnet"
+}
