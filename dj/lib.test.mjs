@@ -57,12 +57,16 @@ test('renderRequest bevat vibe, regels en pool', () => {
     mode: 'nieuw', vibe: 'coding', now: 'dinsdag 14:00', count: 25, spares: 8, newEvery: 4,
     artistStart: null, worshipAllowed: false, eurovision: false, eurovisionFavorite: 'Viva, Moldova! – Satoshi',
     rules: ['r1'], taste: ['t1'], blockedArtists: ['Loreen'], worshipArtists: ['Hillsong'],
-    learned: { notInThisVibe: [], suspectedDislike: ['Firestone – Kygo'], disliked: [], resting: [] },
+    learned: { notInThisVibe: [], lessOften: ['Firestone – Kygo (nieuw, 1× geskipt)'], disliked: [], resting: [], avoidArtists: ['Imagine Dragons'], lessArtists: ['Avicii'] },
     avoid: [], previous: [], pool: 't1|Ordinary|Alex Warren|nu',
   });
   assert.match(t, /vibe: coding/);
   assert.match(t, /Loreen/);
-  assert.match(t, /Firestone/);
+  assert.match(t, /lessOften[^\n]*\n- Firestone/);
+  assert.match(t, /avoidArtists[^\n]*\n- Imagine Dragons/);
+  assert.match(t, /lessArtists[^\n]*\n- Avicii/);
+  // Oudere app-versie stuurt nog suspectedDislike.
+  assert.match(renderRequest({ mode: 'nieuw', learned: { suspectedDislike: ['Oud – X'] }, pool: '' }), /Oud – X/);
   assert.match(t, /t1\|Ordinary/);
   assert.match(t, /3–4 known/);
 });

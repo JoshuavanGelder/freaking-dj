@@ -5,12 +5,13 @@ import { C } from '../theme';
 import { Button, Card, Chip, Field, H1, Row, Screen, Section, Sheet, T } from '../ui';
 import {
   NOT_NOW_DAYS,
+  PATTERN,
   REST_DAYS,
   REST_MIN_PLAYS,
   REST_WINDOW_DAYS,
-  QUICK_SKIP_MS,
-  SKIP_SESSIONS,
   addNotNow,
+  approveArtist,
+  unapproveArtist,
   clearNotNowGroup,
   moveNotNow,
   notNowGroups,
@@ -19,6 +20,7 @@ import {
   type NotNowLine,
 } from '../logic/learning';
 import { vibeGroup, vibeGroupLabel } from '../logic/profiles';
+import type { Pattern } from '../logic/types';
 import { norm } from '../logic/text';
 import { isWatching, lastEventAt } from '../services/watcher';
 
@@ -40,6 +42,9 @@ export function LearnedScreen() {
   const skips = week.filter((p) => p.outcome === 'skip').length;
   const resting = Object.entries(signals.resting).filter(([, until]) => until > now);
   const rejected = Object.entries(L.decisions).filter(([, d]) => d === 'afgewezen');
+  const okArtists = Object.entries(L.artistOk ?? {});
+  const gone = signals.patterns.filter((p) => p.level === 'weg');
+  const less = signals.patterns.filter((p) => p.level === 'minder');
   const last = lastEventAt();
 
   const liftRest = (id: string) =>
@@ -49,6 +54,20 @@ export function LearnedScreen() {
       return { ...s, learned: { ...s.learned, manualRest, unrest: { ...(s.learned.unrest ?? {}), [id]: Date.now() } } };
     });
 
+  /** Toch leuk: skips tot nu tellen niet meer. */
+  const okay = (p: Pattern) => {
+    if (p.kind === 'song') decide(p.key, 'afgewezen');
+    else update((s) => ({ ...s, learned: approveArtist(s.learned, p, Date.now()) }));
+  };
+  /** Nooit meer: nummer op "nooit meer", artiest op de blocklist (in Regels weer weg te halen). */
+  const never = (p: Pattern) => {
+    if (p.kind === 'song') decide(p.key, 'bevestigd');
+    else
+      update((s) =>
+        s.rules.blockedArtists.some((a) => norm(a) === p.key) ? s : { ...s, rules: { ...s.rules, blockedArtists: [...s.rules.blockedArtists, p.name] } },
+      );
+  };
+
   return (
     <Screen>
       <H1>Geleerd</H1>
@@ -57,7 +76,7 @@ export function LearnedScreen() {
         <Row style={{ justifyContent: 'space-between' }}>
           <Stat label="Afgespeeld (7 d)" value={week.length} />
           <Stat label="Geskipt (7 d)" value={skips} />
-          <Stat label="Niet leuk" value={signals.disliked.length} />
+          <Stat label="Weggelaten" value={signals.disliked.length + gone.length} />
         </Row>
         <T size={12} color={C.dim}>
           {isWatching() ? 'Meeluisteren staat aan' : 'Meeluisteren staat uit'}
@@ -65,37 +84,27 @@ export function LearnedScreen() {
         </T>
       </Card>
 
-      <Section title="Vermoedelijk niet leuk">
+      <Section title="Waarschijnlijk niet meer leuk">
         <T size={13} color={C.muted}>
-          Een nieuw nummer binnen {QUICK_SKIP_MS / 1000} s geskipt, of in {SKIP_SESSIONS} sessies geskipt. Een reeks skips op rij telt hier niet mee. Blijft een vermoeden tot jij het bevestigt; speel je het later wel helemaal af, dan vervalt het.
+          De DJ zoekt zelf patronen in je skips; je hoeft niets te beantwoorden. Eén skip zegt niks. Skip je hetzelfde nummer steeds, of steeds nummers van dezelfde artiest, dan hoor je het eerst minder vaak en daarna niet meer. Luister je het later toch helemaal af, dan begint de telling opnieuw.
         </T>
-        {signals.suspicions.length ? (
-          signals.suspicions.map((s) => (
-            <Card key={s.id} style={{ gap: 8 }}>
-              <T weight="semibold">{s.name}</T>
-              <T size={13} color={C.muted}>
-                {s.artist} · {s.reason}
-              </T>
-              <Row style={{ gap: 8 }}>
-                <Button label="Klopt, nooit meer" small onPress={() => decide(s.id, 'bevestigd')} />
-                <Button label="Nee, prima" small variant="outline" onPress={() => decide(s.id, 'afgewezen')} />
-              </Row>
-            </Card>
-          ))
-        ) : (
-          <Empty text="Geen vermoedens." />
-        )}
+        {gone.length ? gone.map((p) => <PatternCard key={`${p.kind}${p.key}`} p={p} onOk={() => okay(p)} onNever={() => never(p)} />) : <Empty text="Niets." />}
       </Section>
 
-      <Section title="Niet leuk (bevestigd)">
-        {signals.disliked.length ? (
-          signals.disliked.map((id) => (
-            <Line key={id} text={name(id)} action="Toch wel leuk" onPress={() => decide(id, 'afgewezen')} />
-          ))
-        ) : (
-          <Empty text="Nog niets." />
-        )}
+      <Section title="Even minder vaak">
+        <T size={13} color={C.muted}>
+          Bekend nummer {PATTERN.knownLess}× geskipt (weg bij {PATTERN.knownGone}×). Nieuw nummer {PATTERN.newLess}× geskipt: niet opnieuw voorgesteld (weg bij {PATTERN.newGone}×). Artiest: {PATTERN.artistLessSongs} verschillende nummers geskipt in meer dan één sessie (weg bij {PATTERN.artistGoneSongs}). Een reeks skips op rij telt niet, en hetzelfde nummer telt hooguit één keer per halve dag.
+        </T>
+        {less.length ? less.map((p) => <PatternCard key={`${p.kind}${p.key}`} p={p} onOk={() => okay(p)} />) : <Empty text="Niets." />}
       </Section>
+
+      {signals.disliked.length ? (
+        <Section title="Nooit meer (door jou)">
+          {signals.disliked.map((id) => (
+            <Line key={id} text={name(id)} action="Toch wel leuk" onPress={() => decide(id, 'afgewezen')} />
+          ))}
+        </Section>
+      ) : null}
 
       <Section title="Even rust (te vaak gedraaid)">
         <T size={13} color={C.muted}>
@@ -110,14 +119,41 @@ export function LearnedScreen() {
 
       <NotNowSection />
 
-      {rejected.length ? (
+      {rejected.length || okArtists.length ? (
         <Section title="Door jou goedgekeurd">
+          <T size={13} color={C.muted}>
+            Skips van vóór je goedkeuring tellen niet meer. Skip je het daarna weer steeds, dan merkt de DJ dat opnieuw.
+          </T>
           {rejected.map(([id]) => (
             <Line key={id} text={name(id)} action="Wissen" onPress={() => decide(id, null)} />
+          ))}
+          {okArtists.map(([key, a]) => (
+            <Line key={key} text={`Artiest: ${a.name}`} action="Wissen" onPress={() => update((s) => ({ ...s, learned: unapproveArtist(s.learned, key) }))} />
           ))}
         </Section>
       ) : null}
     </Screen>
+  );
+}
+
+/** Eén patroon: wat, waarom, en (eventueel) bij welke vibe. */
+function PatternCard({ p, onOk, onNever }: { p: Pattern; onOk: () => void; onNever?: () => void }) {
+  const where = p.vibe ? ` · alleen bij ${vibeGroupLabel(p.vibe)}` : '';
+  return (
+    <Card style={{ gap: 8 }}>
+      <T weight="semibold" numberOfLines={2}>
+        {p.kind === 'artist' ? `Artiest: ${p.name}` : p.name}
+      </T>
+      <T size={13} color={C.muted}>
+        {p.kind === 'song' ? `${p.artist} · ` : ''}
+        {p.reason}
+        {where}
+      </T>
+      <Row style={{ gap: 8 }}>
+        <Button label="Toch leuk" small variant="outline" onPress={onOk} />
+        {onNever ? <Button label="Nooit meer" small variant="dark" onPress={onNever} /> : null}
+      </Row>
+    </Card>
   );
 }
 

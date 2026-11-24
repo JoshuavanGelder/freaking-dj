@@ -9,7 +9,7 @@ import type { Learned, Play, PlanItem, Signals, Track } from './types.ts';
 
 const t = (id: string, name: string, artist: string): Track => ({ id, name, artists: [artist], durationMs: 180_000 });
 const NOW = Date.parse('2026-11-05T09:00:00Z');
-const NO_SIGNALS: Signals = { resting: {}, notNow: {}, suspicions: [], disliked: [] };
+const NO_SIGNALS: Signals = { resting: {}, notNow: {}, patterns: [], disliked: [] };
 const play = (id: string, vibe: string, outcome: 'full' | 'skip', start = NOW - 86400000): Play => ({
   id, name: id, artist: 'X', lengthMs: 180_000, start, listenedMs: outcome === 'full' ? 180_000 : 20_000, outcome, vibe,
 });

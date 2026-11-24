@@ -12,11 +12,11 @@ import {
   spreadArtists,
   type EnforceContext,
 } from './rules.ts';
-import type { PlanItem, PoolTrack, Signals, Track } from './types.ts';
+import type { Pattern, PlanItem, PoolTrack, Signals, Track } from './types.ts';
 import { songKey } from './text.ts';
 
 const NOW = Date.parse('2026-09-29T12:00:00Z');
-const noSignals = (): Signals => ({ resting: {}, notNow: {}, suspicions: [], disliked: [] });
+const noSignals = (): Signals => ({ resting: {}, notNow: {}, patterns: [], disliked: [] });
 
 let n = 0;
 function tr(name: string, artist: string | string[], id?: string): Track {
@@ -62,9 +62,44 @@ test('rust en niet leuk', () => {
   s.resting.ord = NOW + 86400000;
   assert.equal(rejectReason(a, ctx('coding', { signals: s })), 'rust (te vaak gedraaid)');
   s.disliked.push('fire');
-  assert.equal(rejectReason(tr('Firestone', 'Kygo', 'fire'), ctx('coding', { signals: s })), 'niet leuk (bevestigd)');
+  assert.equal(rejectReason(tr('Firestone', 'Kygo', 'fire'), ctx('coding', { signals: s })), 'niet leuk (door jou)');
   const keys = new Set(['firestone|kygo']);
-  assert.equal(rejectReason(tr('Firestone - Radio Edit', 'Kygo', 'fire2'), ctx('coding', { dislikedKeys: keys })), 'niet leuk (bevestigd)');
+  assert.equal(rejectReason(tr('Firestone - Radio Edit', 'Kygo', 'fire2'), ctx('coding', { dislikedKeys: keys })), 'niet leuk');
+});
+
+function pat(over: Partial<Pattern>): Pattern {
+  return { kind: 'song', key: 'x', name: 'X', artist: 'Y', level: 'weg', skips: 4, songs: 1, isNew: false, vibe: null, first: NOW, last: NOW, reason: 'r', ...over };
+}
+
+test('patronen: weg wordt geweigerd (nummer en artiest), alleen bij de vibe waar het speelt', () => {
+  const s = noSignals();
+  s.patterns.push(pat({ key: 'meh' }), pat({ kind: 'artist', key: 'kygo', name: 'Kygo', artist: 'Kygo', songs: 3 }), pat({ key: 'soft', vibe: 'gym' }));
+  assert.equal(rejectReason(tr('Meh', 'Iemand', 'meh'), ctx('coding', { signals: s })), 'waarschijnlijk niet meer leuk');
+  assert.equal(rejectReason(tr('Stole the Show', 'Kygo', 'sts'), ctx('coding', { signals: s })), 'Kygo steeds geskipt');
+  assert.equal(rejectReason(tr('Iets', ['Ander', 'Kygo'], 'feat'), ctx('coding', { signals: s })), null, 'alleen de hoofdartiest telt');
+  assert.equal(rejectReason(tr('Zacht', 'Z', 'soft'), ctx('Legday', { signals: s })), 'waarschijnlijk niet meer leuk');
+  assert.equal(rejectReason(tr('Zacht', 'Z', 'soft'), ctx('coding', { signals: s })), null, 'buiten de gym gewoon goed');
+  // Minder = niet geweigerd.
+  const m = noSignals();
+  m.patterns.push(pat({ key: 'meh', level: 'minder' }));
+  assert.equal(rejectReason(tr('Meh', 'Iemand', 'meh'), ctx('coding', { signals: m })), null);
+});
+
+test('patronen: minder komt niet bovenaan, hooguit 2 van een artiest die je vaak skipt', () => {
+  const s = noSignals();
+  const items = Array.from({ length: 12 }, (_, i) => it(`N${i}`, `A${i}`));
+  const meh = it('Meh', 'Iemand');
+  const k = [it('K1', 'Kygo'), it('K2', 'Kygo'), it('K3', 'Kygo')];
+  s.patterns.push(pat({ key: meh.track.id, level: 'minder' }), pat({ kind: 'artist', key: 'kygo', name: 'Kygo', level: 'minder', songs: 2 }));
+  const proposed = [meh, k[0], ...items.slice(0, 4), k[1], ...items.slice(4, 8), k[2], ...items.slice(8)];
+  const spare = it('Reserve', 'R');
+  const r = enforce(proposed, [spare, it('K4', 'Kygo')], ctx('coding', { signals: s, rules: { ...DEFAULT_RULES, count: 16 } }));
+  const names = r.items.map((x) => x.track.name);
+  assert.equal(names.filter((x) => x.startsWith('K')).length, 2, 'hooguit 2 Kygo');
+  assert.ok(r.removed.some((x) => x.title === 'K3' && /minder Kygo/.test(x.reason)));
+  assert.ok(names.includes('Reserve'), 'aangevuld uit de reserves');
+  assert.ok(!names.includes('K4'), 'geen extra Kygo uit de reserves');
+  assert.ok(names.indexOf('Meh') >= 8 && names.indexOf('K1') >= 8, 'minder-nummers niet bij de eerste 8');
 });
 
 test('geen zin in geldt alleen voor dezelfde vibe', () => {

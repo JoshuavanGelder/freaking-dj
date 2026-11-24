@@ -33,8 +33,11 @@ export function renderRequest(r) {
   lines.push(list('Worship artists (only when worshipAllowed)', r.worshipArtists));
   const l = r.learned ?? {};
   lines.push(list('Learned: notInThisVibe (skipped in this vibe, avoid now)', l.notInThisVibe));
-  lines.push(list('Learned: suspectedDislike (avoid)', l.suspectedDislike));
+  lines.push(list('Learned: lessOften (skipped repeatedly lately: never suggest these as new again; known ones at most 1–2, not in the first positions)', l.lessOften));
+  lines.push(list('Learned: suspectedDislike (avoid)', l.suspectedDislike)); // oudere app-versies
   lines.push(list('Learned: disliked (never)', l.disliked));
+  lines.push(list('Learned: avoidArtists (he skips everything by them lately: no tracks by these artists)', l.avoidArtists));
+  lines.push(list('Learned: lessArtists (often skipped lately: at most 1–2 tracks by each)', l.lessArtists));
   lines.push(list('Learned: resting (played too often lately, already left out of the pool)', l.resting));
   lines.push(list('Proven in this vibe but not in the pool (fully played here before; use as ref "" with title+artist, they are not new to him)', r.provenExtra));
   lines.push(list('Avoid (playing now or already queued)', r.avoid));
@@ -43,7 +46,7 @@ export function renderRequest(r) {
     r.previous.forEach((p, i) => lines.push(`${i + 1}. ${p.ref ? `[${p.ref}] ` : ''}${p.title} – ${p.artist} (${p.style}${p.isNew ? ', new' : ''})`));
     lines.push('');
   }
-  lines.push('### Pool (ref|title|artists|tier|plays|here = fully played in this vibe before|heard today = already heard in the last 12 hours)');
+  lines.push('### Pool (ref|title|artists|tier|plays|here = fully played in this vibe before|heard today = already heard in the last 12 hours|skipped lately = see lessOften/lessArtists)');
   lines.push(r.pool || '(empty)');
   return lines.filter((x) => x !== '').join('\n');
 }

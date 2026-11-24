@@ -95,9 +95,28 @@ export type Learned = {
   notNowCleared?: Record<string, number>;
   /** "Geen zin in" zelf toegevoegd: trackId -> vibes (blijft staan tot je het weghaalt). */
   notNowManual?: Record<string, { vibe: string; at: number }[]>;
+  /** Artiest "toch leuk": artiest-sleutel (norm) -> naam + wanneer. Skips van daarvoor tellen niet meer mee. */
+  artistOk?: Record<string, { name: string; at: number }>;
 };
 
-export type Suspicion = { id: string; name: string; artist: string; reason: string; question: string };
+/**
+ * Een patroon in je skips, door de app zelf gevonden (geen vraag aan jou).
+ * minder = verdacht: minder vaak en niet vooraan. weg = waarschijnlijk niet (meer) leuk: komt niet meer.
+ */
+export type Pattern = {
+  kind: 'song' | 'artist';
+  key: string; // track-id, of artiest-sleutel (norm)
+  name: string; // titel of artiestnaam
+  artist: string; // bij een nummer: de artiest
+  level: 'minder' | 'weg';
+  skips: number; // telende skips sinds je het (of iets van die artiest) laatst helemaal afluisterde
+  songs: number; // bij een artiest: zoveel verschillende nummers geskipt
+  isNew: boolean; // nummer dat je nog niet kende
+  vibe: string | null; // vibe-groep als het alleen daar speelt (bv. "gym"), null = overal
+  first: number; // eerste telende skip
+  last: number; // laatste telende skip
+  reason: string; // korte uitleg, bv. "4× geskipt sinds 12-11"
+};
 
 /** Eén "geen zin in": bij welke vibe, wanneer, en of je hem zelf toevoegde (dan verloopt hij niet). */
 export type NotNowEntry = { vibe: string; hour: number; at: number; manual?: boolean };
@@ -107,8 +126,8 @@ export type Signals = {
   resting: Record<string, number>;
   /** Geen zin in (per vibe): trackId -> vibes waarin je hem los skipte. */
   notNow: Record<string, NotNowEntry[]>;
-  /** Vermoedens van "niet leuk" (nog niet bevestigd). */
-  suspicions: Suspicion[];
-  /** Bevestigd niet leuk: komt nooit meer. */
+  /** Patronen in je skips (per nummer en per artiest), door de app zelf gevonden. */
+  patterns: Pattern[];
+  /** Door jou op "nooit meer" gezet: komt nooit meer. */
   disliked: string[];
 };

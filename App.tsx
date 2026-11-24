@@ -198,9 +198,7 @@ function MiniPlayer({ overTabs }: { overTabs: boolean }) {
 
 function TabBar() {
   const { tab, setTab } = useNav();
-  const { signals, state } = useApp();
   const insets = useSafeAreaInsets();
-  const questions = signals.suspicions.filter((s) => !state.learned.asked[s.id]).length;
   const item = (t: Tab, icon: IconName, label: string, badge = 0) => {
     const on = tab === t;
     return (
@@ -227,7 +225,7 @@ function TabBar() {
     <View style={{ flexDirection: 'row', paddingTop: 6, paddingBottom: 6 + insets.bottom, backgroundColor: '#000000E6' }}>
       {item('dj', 'dj', 'DJ')}
       {item('regels', 'rules', 'Regels')}
-      {item('geleerd', 'learned', 'Geleerd', questions)}
+      {item('geleerd', 'learned', 'Geleerd')}
       {item('instellingen', 'settings', 'Instellingen')}
     </View>
   );

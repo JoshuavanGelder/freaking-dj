@@ -10,7 +10,6 @@ import { Banner, Button, Card, Chip, H1, Row, Screen, Section, T } from '../ui';
 import * as sp from '../services/spotify';
 import * as gh from '../services/github';
 import { listen, speechAvailable } from '../services/watcher';
-import { openQuestions } from '../logic/learning';
 import { totalMinutes } from '../logic/rules';
 import { fixTranscript, speechHints } from '../logic/speech';
 
@@ -32,7 +31,7 @@ function ago(ts: number): string {
 }
 
 export function DjScreen() {
-  const { state, signals, decide } = useApp();
+  const { state } = useApp();
   const { job, error, clearError, health, requestPlan, cancel, warm } = useJob();
   const nav = useNav();
   const { live } = useLive();
@@ -85,7 +84,6 @@ export function DjScreen() {
     }
   };
 
-  const question = openQuestions(signals, state.learned)[0];
   const tiles = state.rules.quickVibes;
 
   return (
@@ -185,24 +183,6 @@ export function DjScreen() {
             <Chip key={v} label={v} onPress={() => go(v)} />
           ))}
         </View>
-      ) : null}
-
-      {question ? (
-        <Card style={{ backgroundColor: C.cardHi }}>
-          <Row style={{ gap: 8 }}>
-            <Icon name="learned" size={18} color={C.accent} />
-            <T size={12} weight="bold" color={C.accent}>
-              EVEN CHECKEN
-            </T>
-          </Row>
-          <T weight="bold" size={16}>
-            {question.question}
-          </T>
-          <Row style={{ gap: 8 }}>
-            <Button label="Ja, nooit meer" small onPress={() => decide(question.id, 'bevestigd')} />
-            <Button label="Nee, prima" small variant="outline" onPress={() => decide(question.id, 'afgewezen')} />
-          </Row>
-        </Card>
       ) : null}
 
       <Section title="Snel starten">

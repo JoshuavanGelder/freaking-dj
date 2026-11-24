@@ -95,10 +95,20 @@ Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) d
 `com.spotify.music.metadatachanged` / `playbackstatechanged` opvangt ("Apparaatuitzending" in Spotify aan)
 en als JSON-regels wegschrijft; ook spraakherkenning via `RecognizerIntent` (nl-NL).
 Signalen, sterk → zwak: te vaak gedraaid (≥5× in 4 d → 14 d rust),
-geen zin in (bekende los geskipt, per vibe), niet leuk (nieuw <30 s of in 3 sessies geskipt → vermoeden,
-één keer vragen; later helemaal afgespeeld → vervalt; jouw antwoord gaat voor).
-Skips tellen niet voor "niet leuk" als ze in een reeks van 2+ skips op rij zitten (je zoekt iets). Losse skips tellen ook in Live DJ
-gewoon mee (vermoeden "niet leuk", "geen zin in" per vibe, en `pickNext` past zich aan). "Waar je naartoe skipte" (jumpTargets)
+geen zin in (bekende los geskipt, per vibe), **patronen** (`findPatterns`, `Signals.patterns`).
+**Patronen (sinds 24-11, vervangt "vermoedelijk niet leuk" + de vraagkaart; de app vraagt niets meer):** Joshua vond het vragen storend
+en een snelle skip mag niets meteen "niet leuk" maken. Telende skip = losse skip (niet in een reeks, niet binnen 12 u na een eerdere play
+van hetzelfde nummer, niet zelf gewist bij "geen zin in"), dus hooguit één per nummer per halve dag. Teller = telende skips sinds het
+laatst helemaal afgeluisterd (en sinds "Toch leuk": `decisions[id]='afgewezen'` met tijd in `asked[id]`; artiest: `learned.artistOk`).
+Drempels in `PATTERN`: bekend nummer 2 → `minder`, 4 → `weg`; nieuw nummer 1 → `minder`, 2 → `weg`; artiest (hoofdartiest, `artistKey`)
+2 verschillende nummers in 2+ sessies → `minder`, 3 → `weg`. Alle skips in één vibe-groep (niet Standaard/zonder vibe) → patroon geldt
+alleen daar (`vibe`). Effect: `weg` → `rejectReason` ("waarschijnlijk niet meer leuk" / "<artiest> steeds geskipt"), overal-weg nummers
+ook in `dislikedKeys`; `minder` → `enforce` zet ze niet in de eerste `FRESH_START` plekken (`delayRepeats`) en hooguit `LESS_ARTIST_MAX`
+(2) per minder-artiest. Claude krijgt `lessOften`, `avoidArtists`, `lessArtists` (en `disliked` incl. weg-nummers), pool-marker
+`|skipped lately`; `dj/lib.mjs` rendert ook nog `suspectedDislike` van oudere app-versies. Plays worden na 60 d gesnoeid, dus `weg`
+verloopt ~2 maanden na de laatste skip. Geleerd-scherm: "Toch leuk" en "Nooit meer" (nummer → `bevestigd`, artiest → blocklist).
+Skips tellen niet als ze in een reeks van 2+ skips op rij zitten (je zoekt iets). Losse skips tellen ook in Live DJ
+gewoon mee (patronen, "geen zin in" per vibe, en `pickNext` past zich aan). "Waar je naartoe skipte" (jumpTargets)
 bestaat niet meer: je koos dat nummer niet, dus het is geen wens (ook niet in `pickNext`).
 **Herhaling**: een skip van een nummer dat je in de 12 uur ervoor al hoorde (app-plays of Spotify recently-played) is neutraal
 (`REPEAT_WINDOW_MS`): meestal Live DJ opnieuw gestart met bijna dezelfde wachtrij. Om dat te voorkomen krijgt `makePlan` `heardRecently`

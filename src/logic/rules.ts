@@ -1,10 +1,10 @@
 // De harde regels. Claude stelt voor, maar de app controleert altijd zelf:
 // blocklist, niet-leuk, rust, worship alleen op verzoek, geen dubbelen, niet twee keer
 // dezelfde artiest achter elkaar, "begin met X" en je Eurovisie-favoriet.
-import type { PlanItem, PoolTrack, Removed, Rules, Signals, Track, VibeInfo } from './types.ts';
+import type { Pattern, PlanItem, PoolTrack, Removed, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { artistIn, norm, shareArtist, songKey } from './text.ts';
 import { GYM_MIN_ENERGY, profileOf, sameVibe } from './profiles.ts';
-import { notNowActive } from './learning.ts';
+import { notNowActive, patternFor } from './learning.ts';
 
 export const DEFAULT_RULES: Rules = {
   blockedArtists: ['Loreen'],
@@ -132,9 +132,8 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
   const { rules, signals, vibe, now } = ctx;
   const fav = isFavorite(track, rules);
   if (artistIn(track.artists, rules.blockedArtists)) return 'blocklist';
-  if (signals.disliked.includes(track.id) || ctx.dislikedKeys?.has(songKey(track.name, track.artists))) {
-    return 'niet leuk (bevestigd)';
-  }
+  if (signals.disliked.includes(track.id)) return 'niet leuk (door jou)';
+  if (!fav && ctx.dislikedKeys?.has(songKey(track.name, track.artists))) return 'niet leuk';
   if (!vibe.worship && isWorshipArtist(track.artists, rules.worshipArtists)) return 'worship alleen op verzoek';
   if (ctx.alreadyQueued?.has(track.id) || ctx.alreadyKeys?.has(songKey(track.name, track.artists))) return 'staat al in je wachtrij';
   if (!fav) {
@@ -142,8 +141,21 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     if (rest && rest > now) return 'rust (te vaak gedraaid)';
     const skips = signals.notNow[track.id] ?? [];
     if (skips.some((s) => sameVibe(s.vibe, vibe.text) && notNowActive(s, now))) return 'geen zin in bij deze vibe';
+    // Patroon in je skips: steeds dit nummer, of steeds nummers van deze artiest.
+    const pat = patternFor(signals, track, vibe.text);
+    if (pat?.level === 'weg') return pat.kind === 'artist' ? `${pat.name} steeds geskipt` : 'waarschijnlijk niet meer leuk';
   }
   return null;
+}
+
+/** Hooguit zoveel nummers van een artiest die je de laatste tijd vaak skipt. */
+export const LESS_ARTIST_MAX = 2;
+
+/** Patroon "minder" bij deze vibe: zelf vaak geskipt, of van een artiest die je vaak skipt. */
+export function lessOften(track: Track, ctx: EnforceContext): Pattern | null {
+  if (isFavorite(track, ctx.rules)) return null;
+  const pat = patternFor(ctx.signals, track, ctx.vibe.text);
+  return pat?.level === 'minder' ? pat : null;
 }
 
 export function isFavorite(track: Track, rules: Rules): boolean {
@@ -197,6 +209,37 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
     if (!(ctx.alreadyQueued?.has(ctx.favorite.id))) items.splice(Math.min(2, items.length), 0, favItem);
   }
 
+  // Artiest die je de laatste tijd vaak skipt: hooguit 2 nummers, aangevuld uit de reserves.
+  const capLess = (list: PlanItem[], log: boolean): PlanItem[] => {
+    const per = new Map<string, number>();
+    return list.filter((it) => {
+      const pat = lessOften(it.track, ctx);
+      if (pat?.kind !== 'artist') return true;
+      const n = (per.get(pat.key) ?? 0) + 1;
+      per.set(pat.key, n);
+      if (n <= LESS_ARTIST_MAX) return true;
+      if (log) removed.push({ title: it.track.name, artist: it.track.artists.join(', '), reason: `minder ${pat.name} (vaak geskipt)` });
+      return false;
+    });
+  };
+  const before = items.length;
+  items = capLess(items, true);
+  if (items.length < before) {
+    const used = new Map<string, number>();
+    for (const it of items) {
+      const pat = lessOften(it.track, ctx);
+      if (pat?.kind === 'artist') used.set(pat.key, (used.get(pat.key) ?? 0) + 1);
+    }
+    spares = spares.filter((it) => {
+      const pat = lessOften(it.track, ctx);
+      if (pat?.kind !== 'artist') return true;
+      const n = (used.get(pat.key) ?? 0) + 1;
+      used.set(pat.key, n);
+      return n <= LESS_ARTIST_MAX;
+    });
+    while (items.length < Math.min(before, ctx.rules.count) && spares.length) items.push(spares.shift()!);
+  }
+
   // Te veel? De rest wordt reserve.
   let protect = 0;
   if (ctx.vibe.artistStart) {
@@ -219,8 +262,10 @@ export function enforce(proposed: PlanItem[], proposedSpares: PlanItem[], ctx: E
       items.splice(Math.min(Math.max(2, protect), items.length), 0, fav);
     }
   }
-  // Net al gehoord (bv. opnieuw gestart): mag blijven, maar niet bovenaan.
-  if (ctx.heardRecently?.size) items = delayRepeats(items, ctx.heardRecently, protect, FRESH_START, (it) => isFavorite(it.track, ctx.rules));
+  // Net al gehoord (bv. opnieuw gestart), of de laatste tijd vaak geskipt: mag blijven, maar niet bovenaan.
+  const later = new Set(ctx.heardRecently ?? []);
+  for (const it of items) if (lessOften(it.track, ctx)) later.add(it.track.id);
+  if (later.size) items = delayRepeats(items, later, protect, FRESH_START, (it) => isFavorite(it.track, ctx.rules));
   items = spreadArtists(items, protect);
   return { items, spares, removed };
 }
