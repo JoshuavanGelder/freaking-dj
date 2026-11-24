@@ -77,6 +77,8 @@ export type Play = {
   outcome: 'full' | 'skip';
   vibe?: string; // vibe van de wachtrij waar het nummer uit kwam
   fromPlanNew?: boolean; // stond als (nieuw) in een voorstel
+  style?: string; // stijllabel van Claude in die wachtrij (voor stijl-hints)
+  live?: boolean; // kwam uit Live DJ (daar weet je niet wat er komt, dus je skipt sneller)
 };
 
 /** Je eigen antwoord op een vermoeden. Gaat altijd voor. */
@@ -97,6 +99,30 @@ export type Learned = {
   notNowManual?: Record<string, { vibe: string; at: number }[]>;
   /** Artiest "toch leuk": artiest-sleutel (norm) -> naam + wanneer. Skips van daarvoor tellen niet meer mee. */
   artistOk?: Record<string, { name: string; at: number }>;
+  /** Nummer "toch leuk" (alle versies): countKey -> naam + wanneer. Skips van daarvoor tellen niet meer mee. */
+  songOk?: Record<string, { name: string; artist: string; at: number }>;
+  /** Vastgelegde oordelen ("weg" of "pauze") met datum, zodat ze niet stil verdwijnen als oude plays worden opgeschoond. */
+  verdicts?: Record<string, Verdict>;
+  /** Laatste keer dat je de melding "Nieuw geleerd" wegtikte (hooguit één per dag). */
+  noticeSeenAt?: number;
+};
+
+/** Leergroep: Gym en Worship apart, al het andere (Standaard en vrije vibes) samen. */
+export type LearnGroup = 'standaard' | 'gym' | 'worship';
+
+/** Een vastgelegd oordeel per nummer of artiest en per leergroep. */
+export type Verdict = {
+  kind: 'song' | 'artist';
+  key: string; // countKey (nummer, alle versies) of artiest-sleutel
+  group: LearnGroup;
+  level: 'weg' | 'pauze';
+  name: string;
+  artist: string;
+  id?: string; // laatste track-id (nummer)
+  since: number; // sinds wanneer
+  until: number; // tot wanneer; daarna bij "weg" één keer als test terug, bij "pauze" gewoon weer
+  round: number; // 1 = eerste keer, 2+ = na een mislukte test (dan langer weg)
+  reason: string;
 };
 
 /**
@@ -105,18 +131,24 @@ export type Learned = {
  */
 export type Pattern = {
   kind: 'song' | 'artist';
-  key: string; // track-id, of artiest-sleutel (norm)
+  key: string; // countKey (nummer, alle versies samen), of artiest-sleutel (norm)
+  id: string; // nummer: laatste track-id; artiest: gelijk aan key
   name: string; // titel of artiestnaam
   artist: string; // bij een nummer: de artiest
-  level: 'minder' | 'weg';
+  level: 'minder' | 'pauze' | 'weg';
+  phase: 'nu' | 'test'; // test = was weg, mag één keer terugkomen
   skips: number; // telende skips sinds je het (of iets van die artiest) laatst helemaal afluisterde
   songs: number; // bij een artiest: zoveel verschillende nummers geskipt
   isNew: boolean; // nummer dat je nog niet kende
-  vibe: string | null; // vibe-groep als het alleen daar speelt (bv. "gym"), null = overal
+  vibe: LearnGroup | null; // leergroep waar het geldt, null = overal
   first: number; // eerste telende skip
   last: number; // laatste telende skip
-  reason: string; // korte uitleg, bv. "4× geskipt sinds 12-11"
+  until?: number; // weg/pauze: tot wanneer
+  reason: string; // korte uitleg, bv. "4× geskipt op 3 dagen"
 };
+
+/** Zachte hint aan Claude: in deze leergroep skip je deze stijl de laatste tijd vaak. De app dwingt niets af. */
+export type StyleHint = { group: LearnGroup; style: string; artists: number; skips: number; fulls: number };
 
 /** Eén "geen zin in": bij welke vibe, wanneer, en of je hem zelf toevoegde (dan verloopt hij niet). */
 export type NotNowEntry = { vibe: string; hour: number; at: number; manual?: boolean };
@@ -128,6 +160,10 @@ export type Signals = {
   notNow: Record<string, NotNowEntry[]>;
   /** Patronen in je skips (per nummer en per artiest), door de app zelf gevonden. */
   patterns: Pattern[];
+  /** Stijlen die je in een leergroep vaak skipt (alleen een hint aan Claude). */
+  styles?: StyleHint[];
+  /** De oordelen na deze berekening (de app slaat ze op als ze veranderd zijn). */
+  verdicts?: Record<string, Verdict>;
   /** Door jou op "nooit meer" gezet: komt nooit meer. */
   disliked: string[];
 };

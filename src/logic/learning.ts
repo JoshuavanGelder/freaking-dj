@@ -1,13 +1,15 @@
 // Leren van skips. De telefoon vangt de Spotify-broadcasts op (nummer gewisseld, afspelen/pauze + positie);
 // daaruit maken we "plays" en daaruit de signalen:
 // 1. te vaak gedraaid  2. geen zin in (één losse skip van een bekend nummer, per vibe)
-// 3. patronen: steeds hetzelfde nummer of steeds nummers van dezelfde artiest geskipt -> eerst minder, daarna weg.
-// Eén (snelle) skip maakt iets nooit "niet leuk"; de app vraagt niets, hij kijkt naar herhaling.
+// 3. patronen (patterns.ts): steeds hetzelfde nummer of steeds nummers van dezelfde artiest geskipt -> eerst minder,
+// daarna weg (of pauze als je het eerder juist vaak hoorde). Eén (snelle) skip maakt iets nooit "niet leuk"; de app vraagt niets.
 // Een reeks skips (2+ op rij) is neutraal: je zoekt dan iets. Losse skips tellen ook in Live DJ gewoon mee.
 // Waar je naartoe skipte wordt niet gebruikt: je koos dat nummer niet, het kwam gewoon als volgende.
-import type { Learned, NotNowEntry, Pattern, Play, Signals } from './types.ts';
+import type { Learned, NotNowEntry, Play, Signals } from './types.ts';
 import { vibeGroup } from './profiles.ts';
-import { norm, songKey } from './text.ts';
+import { songKey } from './text.ts';
+import { evaluatePatterns } from './patterns.ts';
+export { PATTERN, approvePattern, artistKey, countKey, learnGroup, neverPattern, patternApplies, patternFor, primaryArtist, unapproveArtist, unapproveSong } from './patterns.ts';
 
 /** Ruwe gebeurtenis zoals de native module die wegschrijft. */
 export type RawEvent =
@@ -100,21 +102,25 @@ export function ingest(open: OpenSeg | null, events: RawEvent[]): { plays: Play[
   return { plays, open: cur };
 }
 
-/** Koppelt plays aan de vibe van de wachtrij waar ze uit kwamen (voorstel van max. 6 uur oud). */
+/** Koppelt plays aan de vibe (en stijl) van de wachtrij waar ze uit kwamen (voorstel van max. 6 uur oud). */
 export function tagPlays(
   plays: Play[],
-  plans: { vibe: string; createdAt: number; ids: string[]; newIds: string[] }[],
-  live?: { vibe: string; startedAt: number; ids: string[]; newIds: string[] } | null,
+  plans: { vibe: string; createdAt: number; ids: string[]; newIds: string[]; styles?: Record<string, string> }[],
+  live?: { vibe: string; startedAt: number; ids: string[]; newIds: string[]; styles?: Record<string, string> } | null,
 ): Play[] {
   return plays.map((p) => {
     if (p.vibe) return p;
+    // Live DJ eerst: alles wat de DJ in deze sessie klaarzette (ook reserves) hoort bij de Live-vibe.
+    if (live && p.start >= live.startedAt - 60_000 && live.ids.includes(p.id)) {
+      const style = live.styles?.[p.id];
+      return { ...p, vibe: live.vibe, fromPlanNew: live.newIds.includes(p.id), live: true, ...(style ? { style } : {}) };
+    }
     const plan = [...plans]
       .filter((pl) => pl.createdAt <= p.start && p.start - pl.createdAt < 6 * 3600 * 1000 && pl.ids.includes(p.id))
       .sort((a, b) => b.createdAt - a.createdAt)[0];
-    if (plan) return { ...p, vibe: plan.vibe, fromPlanNew: plan.newIds.includes(p.id) };
-    // Live DJ: alles wat de DJ in deze sessie klaarzette (ook reserves) hoort bij de Live-vibe.
-    if (live && p.start >= live.startedAt - 60_000 && live.ids.includes(p.id)) {
-      return { ...p, vibe: live.vibe, fromPlanNew: live.newIds.includes(p.id) };
+    if (plan) {
+      const style = plan.styles?.[p.id];
+      return { ...p, vibe: plan.vibe, fromPlanNew: plan.newIds.includes(p.id), ...(style ? { style } : {}) };
     }
     return p;
   });
@@ -125,19 +131,6 @@ export function tagPlays(
 export const REST_WINDOW_DAYS = 4; // "de laatste dagen"
 export const REST_MIN_PLAYS = 5; // zo vaak helemaal gehoord = te vaak
 export const REST_DAYS = 14; // ongeveer 2 weken rust
-/**
- * Patronen. Een telende skip = een losse skip (niet in een reeks, niet "had ik vandaag al gehoord").
- * Door de 12-uursregel telt hetzelfde nummer hooguit één skip per halve dag. Helemaal afluisteren zet de teller op 0.
- */
-export const PATTERN = {
-  knownLess: 2, // bekend nummer 2× geskipt -> minder vaak
-  knownGone: 4, // 4× -> waarschijnlijk niet meer leuk
-  newLess: 1, // nieuw nummer 1× geskipt -> niet opnieuw voorstellen, nog niet "niet leuk"
-  newGone: 2, // nieuw nummer 2× geskipt -> weg
-  artistLessSongs: 2, // 2 verschillende nummers van één artiest geskipt (in 2+ sessies) -> minder van die artiest
-  artistGoneSongs: 3, // 3 verschillende nummers -> artiest weg
-  artistSessions: 2,
-};
 export const REPEAT_WINDOW_MS = 12 * 3600 * 1000; // net al gehoord: een skip dan is "had ik net al", geen oordeel
 export const NOT_NOW_DAYS = 7; // zo lang telt een "geen zin in" uit skips
 
@@ -154,8 +147,12 @@ export function notNowKey(id: string, vibe: string): string {
 export type SignalInput = {
   /** Track-ids uit je luistergeschiedenis (Spotify): die ken je al. */
   known: Set<string>;
+  /** Titel+artiest (countKey) uit je luistergeschiedenis: vangt een andere uitgave van een bekend nummer. */
+  knownKeys?: Set<string>;
   /** Recent afgespeeld volgens Spotify (ook van je pc): voor "te vaak gedraaid". */
   recentPlays?: { id: string; at: number }[];
+  /** Artiesten op de blocklist: daar zoeken we geen patronen meer voor. */
+  blockedArtists?: string[];
   now: number;
 };
 
@@ -181,14 +178,16 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
   const resting: Record<string, number> = {};
   const notNow: Signals['notNow'] = {};
   const neutral = new Set<Play>();
+  const inRun = new Set<Play>();
+  const repeat = new Set<Play>();
 
   // 1. Doorskippen: 2+ skips op rij zijn neutraal (je zoekt iets, het is geen oordeel over die nummers),
-  // ook als je daarna nog niets helemaal afluistert.
+  // ook als je daarna nog niets helemaal afluistert. (Uitzondering in patterns.ts: staat het al op "minder", dan telt het half.)
   const sessions = sessionsOf(plays);
   for (const s of sessions) {
     let run: Play[] = [];
     const flush = () => {
-      if (run.length >= 2) run.forEach((r) => neutral.add(r));
+      if (run.length >= 2) run.forEach((r) => (neutral.add(r), inRun.add(r)));
       run = [];
     };
     for (const p of s) {
@@ -206,7 +205,10 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
   for (const p of plays) {
     if (p.outcome !== 'skip') continue;
     const before = (heardAt.get(p.id) ?? []).some((t) => t < p.start - 1000 && p.start - t < REPEAT_WINDOW_MS);
-    if (before) neutral.add(p);
+    if (before) {
+      neutral.add(p);
+      repeat.add(p);
+    }
   }
 
   // 2. Te vaak gedraaid: in de laatste dagen vaak helemaal gehoord -> 2 weken rust.
@@ -244,8 +246,18 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
     }
   }
 
-  // 4. Patronen: steeds hetzelfde nummer, of steeds nummers van één artiest.
-  const patterns = findPatterns(sessions, neutral, learned, input, firstFull);
+  // 4. Patronen: steeds hetzelfde nummer, of steeds nummers van één artiest (per leergroep, met vastgelegde oordelen).
+  const found = evaluatePatterns({
+    sessions,
+    inRun,
+    repeat,
+    learned,
+    known: input.known,
+    knownKeys: input.knownKeys,
+    recentPlays: input.recentPlays,
+    blockedArtists: input.blockedArtists,
+    now,
+  });
 
   // Zelf gewist: skips tot dat moment tellen niet meer. Zelf toegevoegd: komt erbij en verloopt niet.
   const cleared = learned.notNowCleared ?? {};
@@ -263,171 +275,18 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
     .filter(([, d]) => d === 'bevestigd')
     .map(([id]) => id);
 
-  return { resting, notNow, patterns, disliked };
+  return { resting, notNow, patterns: found.patterns, styles: found.styles, verdicts: found.verdicts, disliked };
 }
 
-/** Hoofdartiest: "Morgan Wallen, Post Malone" -> "Morgan Wallen". */
-export function primaryArtist(artist: string): string {
-  return (artist.split(/,\s*/)[0] ?? artist).trim();
-}
-
-/** Sleutel van een artiest om te vergelijken (zelfde als in songKey). */
-export function artistKey(artist: string): string {
-  return norm(primaryArtist(artist));
-}
-
-function dm(ts: number): string {
-  const d = new Date(ts);
-  return `${d.getDate()}-${d.getMonth() + 1}`;
-}
-
-/** Eén vibe-groep waar alles gebeurde (behalve Standaard en zonder vibe): dan geldt het patroon alleen daar. */
-function scopeOf(skips: Play[]): string | null {
-  const groups = new Set(skips.map((p) => vibeGroup(p.vibe)));
-  if (groups.size !== 1) return null;
-  const g = [...groups][0];
-  return g === 'standaard' || g === 'zonder vibe' ? null : g;
-}
-
-type Ev = { p: Play; si: number };
-
-function findPatterns(sessions: Play[][], neutral: Set<Play>, learned: Learned, input: SignalInput, firstFull: Map<string, number>): Pattern[] {
-  const cleared = learned.notNowCleared ?? {};
-  // Alles behalve neutrale skips, op volgorde. Een skip die je bij "geen zin in" zelf wiste telt ook niet.
-  const events: Ev[] = [];
-  sessions.forEach((s, si) => {
-    for (const p of s) {
-      if (p.outcome === 'skip' && (neutral.has(p) || (cleared[notNowKey(p.id, p.vibe ?? 'zonder vibe')] ?? 0) >= p.start)) continue;
-      events.push({ p, si });
-    }
-  });
-
-  /** Telende skips sinds de laatste keer helemaal afgeluisterd (en sinds `since`). */
-  const streakOf = (evs: Ev[], since: number): Ev[] => {
-    let streak: Ev[] = [];
-    for (const ev of evs) {
-      if (ev.p.start <= since) continue;
-      if (ev.p.outcome === 'full') streak = [];
-      else streak.push(ev);
-    }
-    return streak;
-  };
-
-  const out: Pattern[] = [];
-
-  // Per nummer.
-  const bySong = new Map<string, Ev[]>();
-  for (const ev of events) {
-    const list = bySong.get(ev.p.id);
-    if (list) list.push(ev);
-    else bySong.set(ev.p.id, [ev]);
-  }
-  for (const [id, evs] of bySong) {
-    if (learned.decisions[id] === 'bevestigd') continue; // staat al op "nooit meer"
-    const approved = learned.decisions[id] === 'afgewezen' ? learned.asked[id] ?? 0 : 0; // "toch leuk": telt opnieuw vanaf dan
-    const streak = streakOf(evs, approved);
-    if (!streak.length) continue;
-    const skips = streak.map((e) => e.p);
-    const heardFull = (firstFull.get(id) ?? Infinity) < skips[0].start;
-    const isNew = !heardFull && (!input.known.has(id) || skips.some((p) => p.fromPlanNew));
-    const n = skips.length;
-    const level = isNew ? (n >= PATTERN.newGone ? 'weg' : n >= PATTERN.newLess ? 'minder' : null) : n >= PATTERN.knownGone ? 'weg' : n >= PATTERN.knownLess ? 'minder' : null;
-    if (!level) continue;
-    const last = skips[n - 1];
-    out.push({
-      kind: 'song',
-      key: id,
-      name: last.name,
-      artist: last.artist,
-      level,
-      skips: n,
-      songs: 1,
-      isNew,
-      vibe: scopeOf(skips),
-      first: skips[0].start,
-      last: last.start,
-      reason: isNew ? `nieuw, ${n}× geskipt` : `${n}× geskipt sinds ${dm(skips[0].start)}, niet meer afgeluisterd`,
-    });
-  }
-
-  // Per artiest: verschillende nummers steeds geskipt, in meer dan één sessie, en niets van hem afgeluisterd.
-  const byArtist = new Map<string, Ev[]>();
-  for (const ev of events) {
-    const k = artistKey(ev.p.artist);
-    if (!k) continue;
-    const list = byArtist.get(k);
-    if (list) list.push(ev);
-    else byArtist.set(k, [ev]);
-  }
-  for (const [key, evs] of byArtist) {
-    const ok = learned.artistOk?.[key]?.at ?? 0;
-    const streak = streakOf(evs, ok);
-    const songs = new Set(streak.map((e) => e.p.id)).size;
-    const sessionsN = new Set(streak.map((e) => e.si)).size;
-    if (sessionsN < PATTERN.artistSessions) continue;
-    const level = songs >= PATTERN.artistGoneSongs ? 'weg' : songs >= PATTERN.artistLessSongs ? 'minder' : null;
-    if (!level) continue;
-    const skips = streak.map((e) => e.p);
-    const last = skips[skips.length - 1];
-    out.push({
-      kind: 'artist',
-      key,
-      name: primaryArtist(last.artist),
-      artist: primaryArtist(last.artist),
-      level,
-      skips: skips.length,
-      songs,
-      isNew: false,
-      vibe: scopeOf(skips),
-      first: skips[0].start,
-      last: last.start,
-      reason: `${songs} verschillende nummers geskipt sinds ${dm(skips[0].start)}, niets van afgeluisterd`,
-    });
-  }
-
-  return out.sort((a, b) => (a.level === b.level ? b.last - a.last : a.level === 'weg' ? -1 : 1));
-}
-
-/** Geldt dit patroon bij deze vibe? (null = overal) */
-export function patternApplies(p: Pattern, vibeText: string | null | undefined): boolean {
-  return p.vibe === null || vibeGroup(vibeText) === p.vibe;
-}
-
-/** Het sterkste patroon dat bij dit nummer hoort (zelf, of via de hoofdartiest), bij deze vibe. */
-export function patternFor(signals: Signals, track: { id: string; artists: string[] }, vibeText: string | null | undefined): Pattern | null {
-  const a = norm(track.artists[0] ?? '');
-  let best: Pattern | null = null;
-  for (const p of signals.patterns ?? []) {
-    const hit = p.kind === 'song' ? p.key === track.id : !!a && p.key === a;
-    if (!hit || !patternApplies(p, vibeText)) continue;
-    if (!best || (p.level === 'weg' && best.level !== 'weg')) best = p;
-  }
-  return best;
-}
-
-/** Sleutels (titel + artiest) van niet-leuke nummers (door jou, of overal "weg"): vangt ook andere versies af. */
+/** Sleutels (titel + artiest) van nummers die je op "nooit meer" zette: vangt ook andere versies af.
+ * (Patronen herkennen andere uitgaven zelf via countKey; live en remix blijven daar apart.) */
 export function dislikedKeys(signals: Signals, learned: Learned): Set<string> {
   const keys = new Set<string>();
   for (const id of signals.disliked) {
     const m = learned.meta[id];
     if (m) keys.add(songKey(m.name, [m.artist]));
   }
-  for (const p of signals.patterns ?? []) {
-    if (p.kind === 'song' && p.level === 'weg' && p.vibe === null) keys.add(songKey(p.name, [p.artist]));
-  }
   return keys;
-}
-
-/** Artiest "toch leuk": skips van daarvoor tellen niet meer. */
-export function approveArtist(learned: Learned, p: { key: string; name: string }, now: number): Learned {
-  return { ...learned, artistOk: { ...(learned.artistOk ?? {}), [p.key]: { name: p.name, at: now } } };
-}
-
-/** "Toch leuk" bij een artiest weer wissen. */
-export function unapproveArtist(learned: Learned, key: string): Learned {
-  const artistOk = { ...(learned.artistOk ?? {}) };
-  delete artistOk[key];
-  return { ...learned, artistOk };
 }
 
 /** Houdt plays van de laatste 60 dagen (en maximaal 4000). */

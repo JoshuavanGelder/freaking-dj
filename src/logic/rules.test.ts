@@ -68,7 +68,8 @@ test('rust en niet leuk', () => {
 });
 
 function pat(over: Partial<Pattern>): Pattern {
-  return { kind: 'song', key: 'x', name: 'X', artist: 'Y', level: 'weg', skips: 4, songs: 1, isNew: false, vibe: null, first: NOW, last: NOW, reason: 'r', ...over };
+  const key = over.key ?? 'x';
+  return { kind: 'song', key, id: key, name: 'X', artist: 'Y', level: 'weg', phase: 'nu', skips: 4, songs: 1, isNew: false, vibe: null, first: NOW, last: NOW, reason: 'r', ...over };
 }
 
 test('patronen: weg wordt geweigerd (nummer en artiest), alleen bij de vibe waar het speelt', () => {
@@ -79,7 +80,10 @@ test('patronen: weg wordt geweigerd (nummer en artiest), alleen bij de vibe waar
   assert.equal(rejectReason(tr('Iets', ['Ander', 'Kygo'], 'feat'), ctx('coding', { signals: s })), null, 'alleen de hoofdartiest telt');
   assert.equal(rejectReason(tr('Zacht', 'Z', 'soft'), ctx('Legday', { signals: s })), 'waarschijnlijk niet meer leuk');
   assert.equal(rejectReason(tr('Zacht', 'Z', 'soft'), ctx('coding', { signals: s })), null, 'buiten de gym gewoon goed');
-  // Minder = niet geweigerd.
+  // Pauze (te vaak gehoord) = even niet; minder = wel.
+  const z = noSignals();
+  z.patterns.push(pat({ key: 'fav', level: 'pauze' }));
+  assert.equal(rejectReason(tr('Fav', 'F', 'fav'), ctx('coding', { signals: z })), 'even te vaak gehoord');
   const m = noSignals();
   m.patterns.push(pat({ key: 'meh', level: 'minder' }));
   assert.equal(rejectReason(tr('Meh', 'Iemand', 'meh'), ctx('coding', { signals: m })), null);

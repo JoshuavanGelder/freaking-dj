@@ -4,7 +4,8 @@
 import type { Pattern, PlanItem, PoolTrack, Removed, Rules, Signals, Track, VibeInfo } from './types.ts';
 import { artistIn, norm, shareArtist, songKey } from './text.ts';
 import { GYM_MIN_ENERGY, profileOf, sameVibe } from './profiles.ts';
-import { notNowActive, patternFor } from './learning.ts';
+import { notNowActive } from './learning.ts';
+import { patternFor } from './patterns.ts';
 
 export const DEFAULT_RULES: Rules = {
   blockedArtists: ['Loreen'],
@@ -144,6 +145,7 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     // Patroon in je skips: steeds dit nummer, of steeds nummers van deze artiest.
     const pat = patternFor(signals, track, vibe.text);
     if (pat?.level === 'weg') return pat.kind === 'artist' ? `${pat.name} steeds geskipt` : 'waarschijnlijk niet meer leuk';
+    if (pat?.level === 'pauze') return 'even te vaak gehoord';
   }
   return null;
 }

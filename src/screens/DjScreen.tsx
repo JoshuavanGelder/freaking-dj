@@ -12,6 +12,8 @@ import * as gh from '../services/github';
 import { listen, speechAvailable } from '../services/watcher';
 import { totalMinutes } from '../logic/rules';
 import { fixTranscript, speechHints } from '../logic/speech';
+import { approvePattern, latestNotice } from '../logic/patterns';
+import type { Verdict } from '../logic/types';
 
 function greeting(d = new Date()): string {
   const h = d.getHours();
@@ -30,8 +32,21 @@ function ago(ts: number): string {
   return `${Math.round(h / 24)} d geleden`;
 }
 
+/** "Nieuw geleerd": één regel, geen vraag. */
+function noticeText(v: Verdict): string {
+  const where = v.group === 'gym' ? ' in de gym' : v.group === 'worship' ? ' bij worship' : '';
+  if (v.level === 'pauze') return `Nieuw geleerd: ${v.name} krijgt even rust, die hoorde je vaak.`;
+  return `Nieuw geleerd: ik draai ${v.kind === 'artist' ? v.name : `${v.name} (${v.artist})`} voorlopig niet${where}.`;
+}
+
 export function DjScreen() {
-  const { state } = useApp();
+  const { state, update } = useApp();
+  const notice = latestNotice(state.learned, Date.now());
+  const seen = (undo?: Verdict) =>
+    update((s) => {
+      const learned = undo ? approvePattern(s.learned, undo, Date.now()) : s.learned;
+      return { ...s, learned: { ...learned, noticeSeenAt: Date.now() } };
+    });
   const { job, error, clearError, health, requestPlan, cancel, warm } = useJob();
   const nav = useNav();
   const { live } = useLive();
@@ -183,6 +198,21 @@ export function DjScreen() {
             <Chip key={v} label={v} onPress={() => go(v)} />
           ))}
         </View>
+      ) : null}
+
+      {notice ? (
+        <Card style={{ gap: 8 }}>
+          <Row style={{ gap: 8, alignItems: 'flex-start' }}>
+            <Icon name="learned" size={18} color={C.accent} />
+            <T size={14} style={{ flex: 1 }}>
+              {noticeText(notice)}
+            </T>
+          </Row>
+          <Row style={{ gap: 8 }}>
+            <Button label="Oké" small variant="dark" onPress={() => seen()} />
+            <Button label="Ongedaan maken" small variant="ghost" onPress={() => seen(notice)} />
+          </Row>
+        </Card>
       ) : null}
 
       <Section title="Snel starten">

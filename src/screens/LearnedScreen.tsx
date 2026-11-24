@@ -5,13 +5,10 @@ import { C } from '../theme';
 import { Button, Card, Chip, Field, H1, Row, Screen, Section, Sheet, T } from '../ui';
 import {
   NOT_NOW_DAYS,
-  PATTERN,
   REST_DAYS,
   REST_MIN_PLAYS,
   REST_WINDOW_DAYS,
   addNotNow,
-  approveArtist,
-  unapproveArtist,
   clearNotNowGroup,
   moveNotNow,
   notNowGroups,
@@ -21,6 +18,7 @@ import {
 } from '../logic/learning';
 import { vibeGroup, vibeGroupLabel } from '../logic/profiles';
 import type { Pattern } from '../logic/types';
+import { GROUP_WHERE, PATTERN, approvePattern, neverPattern, unapproveArtist, unapproveSong } from '../logic/patterns';
 import { norm } from '../logic/text';
 import { isWatching, lastEventAt } from '../services/watcher';
 
@@ -42,9 +40,12 @@ export function LearnedScreen() {
   const skips = week.filter((p) => p.outcome === 'skip').length;
   const resting = Object.entries(signals.resting).filter(([, until]) => until > now);
   const rejected = Object.entries(L.decisions).filter(([, d]) => d === 'afgewezen');
+  const okSongs = Object.entries(L.songOk ?? {});
   const okArtists = Object.entries(L.artistOk ?? {});
   const gone = signals.patterns.filter((p) => p.level === 'weg');
+  const paused = signals.patterns.filter((p) => p.level === 'pauze');
   const less = signals.patterns.filter((p) => p.level === 'minder');
+  const styles = signals.styles ?? [];
   const last = lastEventAt();
 
   const liftRest = (id: string) =>
@@ -54,19 +55,16 @@ export function LearnedScreen() {
       return { ...s, learned: { ...s.learned, manualRest, unrest: { ...(s.learned.unrest ?? {}), [id]: Date.now() } } };
     });
 
-  /** Toch leuk: skips tot nu tellen niet meer. */
-  const okay = (p: Pattern) => {
-    if (p.kind === 'song') decide(p.key, 'afgewezen');
-    else update((s) => ({ ...s, learned: approveArtist(s.learned, p, Date.now()) }));
-  };
-  /** Nooit meer: nummer op "nooit meer", artiest op de blocklist (in Regels weer weg te halen). */
-  const never = (p: Pattern) => {
-    if (p.kind === 'song') decide(p.key, 'bevestigd');
-    else
-      update((s) =>
-        s.rules.blockedArtists.some((a) => norm(a) === p.key) ? s : { ...s, rules: { ...s.rules, blockedArtists: [...s.rules.blockedArtists, p.name] } },
-      );
-  };
+  /** Toch leuk: skips tot nu tellen niet meer (alle versies, alle vibes). */
+  const okay = (p: Pattern) => update((s) => ({ ...s, learned: approvePattern(s.learned, p, Date.now()) }));
+  /** Nooit meer: nummer vast niet-leuk, artiest op de blocklist (in Regels weer weg te halen). */
+  const never = (p: Pattern) =>
+    update((s) => {
+      const learned = neverPattern(s.learned, p, Date.now());
+      if (p.kind === 'song') return { ...s, learned };
+      const blocked = s.rules.blockedArtists.some((a) => norm(a) === p.key) ? s.rules.blockedArtists : [...s.rules.blockedArtists, p.name];
+      return { ...s, learned, rules: { ...s.rules, blockedArtists: blocked } };
+    });
 
   return (
     <Screen>
@@ -86,16 +84,20 @@ export function LearnedScreen() {
 
       <Section title="Waarschijnlijk niet meer leuk">
         <T size={13} color={C.muted}>
-          De DJ zoekt zelf patronen in je skips; je hoeft niets te beantwoorden. Eén skip zegt niks. Skip je hetzelfde nummer steeds, of steeds nummers van dezelfde artiest, dan hoor je het eerst minder vaak en daarna niet meer. Luister je het later toch helemaal af, dan begint de telling opnieuw.
+          De DJ zoekt zelf patronen in je skips; je hoeft niets te beantwoorden. Eén skip zegt niks. Skip je hetzelfde nummer steeds, of steeds nummers van dezelfde artiest, over meerdere dagen, dan laat hij het {PATTERN.goneWeeks} weken weg. Daarna komt het één keer terug als test. Luister je het zelf helemaal af, dan begint de telling opnieuw.
         </T>
-        {gone.length ? gone.map((p) => <PatternCard key={`${p.kind}${p.key}`} p={p} onOk={() => okay(p)} onNever={() => never(p)} />) : <Empty text="Niets." />}
+        {gone.length ? gone.map((p) => <PatternCard key={`${p.kind}${p.key}${p.vibe}`} p={p} onOk={() => okay(p)} onNever={() => never(p)} />) : <Empty text="Niets." />}
       </Section>
 
       <Section title="Even minder vaak">
         <T size={13} color={C.muted}>
-          Bekend nummer {PATTERN.knownLess}× geskipt (weg bij {PATTERN.knownGone}×). Nieuw nummer {PATTERN.newLess}× geskipt: niet opnieuw voorgesteld (weg bij {PATTERN.newGone}×). Artiest: {PATTERN.artistLessSongs} verschillende nummers geskipt in meer dan één sessie (weg bij {PATTERN.artistGoneSongs}). Een reeks skips op rij telt niet, en hetzelfde nummer telt hooguit één keer per halve dag.
+          Een skip in de eerste 30 seconden telt helemaal, tot de helft half, daarna niet (dan wilde je gewoon iets anders). Bekend nummer {PATTERN.knownLess}× geskipt, nieuw nummer {PATTERN.newLess === 0.5 ? 'één keer' : PATTERN.newLess}, of {PATTERN.artistLess} verschillende nummers van een artiest. Gym en Worship leren apart. Vervalt na {PATTERN.lessExpireDays} dagen zonder nieuwe skip.
         </T>
-        {less.length ? less.map((p) => <PatternCard key={`${p.kind}${p.key}`} p={p} onOk={() => okay(p)} />) : <Empty text="Niets." />}
+        {less.length ? less.map((p) => <PatternCard key={`${p.kind}${p.key}${p.vibe}`} p={p} onOk={() => okay(p)} />) : null}
+        {styles.map((h) => (
+          <Line key={`${h.group}${h.style}`} text={`Stijl: ${h.style} · ${GROUP_WHERE[h.group]} · ${h.artists} artiesten geskipt (alleen een hint aan de DJ)`} />
+        ))}
+        {!less.length && !styles.length ? <Empty text="Niets." /> : null}
       </Section>
 
       {signals.disliked.length ? (
@@ -106,26 +108,31 @@ export function LearnedScreen() {
         </Section>
       ) : null}
 
-      <Section title="Even rust (te vaak gedraaid)">
+      <Section title="Even rust (te vaak gehoord)">
         <T size={13} color={C.muted}>
-          {REST_MIN_PLAYS}× of vaker gehoord in {REST_WINDOW_DAYS} dagen = ongeveer {REST_DAYS / 7} weken niet in je wachtrijen.
+          {REST_MIN_PLAYS}× of vaker gehoord in {REST_WINDOW_DAYS} dagen = ongeveer {REST_DAYS / 7} weken niet in je wachtrijen. Een favoriet die je eerst vaak hoorde en nu steeds skipt, krijgt {PATTERN.pauseDays} dagen pauze in plaats van "niet meer leuk".
         </T>
-        {resting.length ? (
-          resting.map(([id, until]) => <Line key={id} text={`${name(id)} · tot ${date(until)}`} action="Rust opheffen" onPress={() => liftRest(id)} />)
-        ) : (
-          <Empty text="Niets in de rust." />
-        )}
+        {resting.map(([id, until]) => (
+          <Line key={id} text={`${name(id)} · tot ${date(until)}`} action="Rust opheffen" onPress={() => liftRest(id)} />
+        ))}
+        {paused.map((p) => (
+          <Line key={`p${p.key}`} text={`${p.name} – ${p.artist} · tot ${date(p.until ?? now)}`} action="Rust opheffen" onPress={() => okay(p)} />
+        ))}
+        {!resting.length && !paused.length ? <Empty text="Niets in de rust." /> : null}
       </Section>
 
       <NotNowSection />
 
-      {rejected.length || okArtists.length ? (
+      {rejected.length || okSongs.length || okArtists.length ? (
         <Section title="Door jou goedgekeurd">
           <T size={13} color={C.muted}>
             Skips van vóór je goedkeuring tellen niet meer. Skip je het daarna weer steeds, dan merkt de DJ dat opnieuw.
           </T>
           {rejected.map(([id]) => (
             <Line key={id} text={name(id)} action="Wissen" onPress={() => decide(id, null)} />
+          ))}
+          {okSongs.map(([key, a]) => (
+            <Line key={key} text={`${a.name} – ${a.artist}`} action="Wissen" onPress={() => update((s) => ({ ...s, learned: unapproveSong(s.learned, key) }))} />
           ))}
           {okArtists.map(([key, a]) => (
             <Line key={key} text={`Artiest: ${a.name}`} action="Wissen" onPress={() => update((s) => ({ ...s, learned: unapproveArtist(s.learned, key) }))} />
@@ -136,9 +143,10 @@ export function LearnedScreen() {
   );
 }
 
-/** Eén patroon: wat, waarom, en (eventueel) bij welke vibe. */
+/** Eén patroon: wat, waarom, waar het geldt en tot wanneer. */
 function PatternCard({ p, onOk, onNever }: { p: Pattern; onOk: () => void; onNever?: () => void }) {
-  const where = p.vibe ? ` · alleen bij ${vibeGroupLabel(p.vibe)}` : '';
+  const where = p.vibe ? GROUP_WHERE[p.vibe] : 'overal';
+  const until = p.level === 'weg' && p.until ? ` · tot ${date(p.until)}, dan één keer als test` : '';
   return (
     <Card style={{ gap: 8 }}>
       <T weight="semibold" numberOfLines={2}>
@@ -146,8 +154,8 @@ function PatternCard({ p, onOk, onNever }: { p: Pattern; onOk: () => void; onNev
       </T>
       <T size={13} color={C.muted}>
         {p.kind === 'song' ? `${p.artist} · ` : ''}
-        {p.reason}
-        {where}
+        {p.reason} · {where}
+        {until}
       </T>
       <Row style={{ gap: 8 }}>
         <Button label="Toch leuk" small variant="outline" onPress={onOk} />

@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEFAULT_RULES } from './logic/rules';
 import { EMPTY_LEARNED, ingest, prunePlays, tagPlays, type OpenSeg, type RawEvent } from './logic/learning';
+import { sameVerdicts } from './logic/patterns';
 import type { DjResponse } from './logic/pool';
 import type { Learned, Plan, Rules, Signals, Track } from './logic/types';
 import type { LiveState } from './logic/live';
@@ -119,11 +120,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (!events.length) return;
     setState((s) => {
       const r = ingest(s.watchOpen, events);
+      const styleMap = (list: { track: { id: string }; style: string }[]) => Object.fromEntries(list.map((i) => [i.track.id, i.style]));
       const plans = s.plans.map((p) => ({
         vibe: p.vibe,
         createdAt: p.createdAt,
         ids: [...p.items, ...(p.spares ?? [])].map((i) => i.track.id),
         newIds: [...p.items, ...(p.spares ?? [])].filter((i) => i.isNew).map((i) => i.track.id),
+        styles: styleMap([...p.items, ...(p.spares ?? [])]),
       }));
       const L = s.live;
       const live = L
@@ -132,16 +135,19 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             startedAt: L.startedAt,
             ids: [...(L.served ?? []).map((t) => t.id), ...L.played.map((p) => p.track.id), ...L.upcoming.map((i) => i.track.id)],
             newIds: [...L.played.filter((p) => p.isNew).map((p) => p.track.id), ...L.upcoming.filter((i) => i.isNew).map((i) => i.track.id)],
+            styles: styleMap([...L.played, ...L.upcoming]),
           }
         : null;
       const tagged = tagPlays(r.plays, plans, live);
       const meta = { ...s.learned.meta };
       for (const p of tagged) meta[p.id] = { name: p.name, artist: p.artist };
-      return {
-        ...s,
-        watchOpen: r.open,
-        learned: { ...s.learned, meta, plays: prunePlays([...s.learned.plays, ...tagged], Date.now()) },
-      };
+      let learned = { ...s.learned, meta, plays: prunePlays([...s.learned.plays, ...tagged], Date.now()) };
+      // Nieuwe oordelen ("weg", "pauze", mislukte test) vastleggen met datum, zodat ze niet verdwijnen als plays worden opgeschoond.
+      if (tagged.length) {
+        const sig = signalsFor(learned, s.history, Date.now(), s.rules.blockedArtists);
+        if (!sameVerdicts(sig.verdicts, learned.verdicts)) learned = { ...learned, verdicts: sig.verdicts };
+      }
+      return { ...s, watchOpen: r.open, learned };
     });
   }, []);
 
@@ -166,7 +172,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const signals = useMemo(() => signalsFor(state.learned, state.history), [state.learned, state.history]);
+  const signals = useMemo(
+    () => signalsFor(state.learned, state.history, Date.now(), state.rules.blockedArtists),
+    [state.learned, state.history, state.rules.blockedArtists],
+  );
 
   const value = useMemo(
     () => ({ state, loaded, signals, update, addEvents, savePlan, decide }),

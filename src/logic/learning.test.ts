@@ -1,7 +1,9 @@
+process.env.TZ = 'UTC'; // dagen tellen in lokale tijd: vastzetten voor de tests
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EMPTY_LEARNED, approveArtist, computeSignals, dislikedKeys, ingest, patternFor, tagPlays, type RawEvent } from './learning.ts';
-import type { Learned, Play } from './types.ts';
+import { EMPTY_LEARNED, computeSignals, ingest, patternFor, tagPlays, type RawEvent } from './learning.ts';
+import { PATTERN, approvePattern, artistKey, countKey, latestNotice, liveFactor } from './patterns.ts';
+import type { Learned, Play, Signals, Verdict } from './types.ts';
 
 const T0 = Date.parse('2026-09-28T10:00:00Z');
 const NOW = T0 + 3600_000;
@@ -103,32 +105,53 @@ test('nieuw nummer 1x snel geskipt: minder (niet opnieuw voorstellen), niet weg'
 });
 
 const DAY = 86400000;
-/** Elke dag: iets afluisteren, het nummer skippen, iets afluisteren (dus losse skip, geen reeks). */
-function daily(id: string, days: number[], extra: Partial<Play> = {}): Play[] {
+/** Elke dag om 10:00: iets afluisteren, het nummer skippen, iets afluisteren (dus een losse skip, geen reeks). */
+function daily(id: string, days: number[], extra: Partial<Play> = {}, listened = 5000): Play[] {
   return days.flatMap((d) => [
-    play(`f${d}a`, T0 + d * DAY, 'full'),
-    play(id, T0 + d * DAY + 4 * MIN, 'skip', 40_000, extra),
-    play(`f${d}b`, T0 + d * DAY + 5 * MIN, 'full'),
+    play(`f${d}a${id}`, T0 + d * DAY, 'full', 200_000, { vibe: extra.vibe }),
+    play(id, T0 + d * DAY + 4 * MIN, 'skip', listened, extra),
+    play(`f${d}b${id}`, T0 + d * DAY + 5 * MIN, 'full', 200_000, { vibe: extra.vibe }),
   ]);
 }
+const find = (s: Signals, id: string) => s.patterns.find((p) => p.kind === 'song' && p.id === id);
 
-test('bekend nummer steeds geskipt: 2x minder, 4x weg', () => {
+test('bekend nummer steeds snel geskipt: 2x minder, 4x over 3+ dagen weg (buiten de gym)', () => {
   const known = new Set(['meh']);
-  const two = computeSignals(learned(daily('meh', [0, 1])), { known, now: T0 + 2 * DAY });
-  assert.equal(two.patterns.find((p) => p.key === 'meh')?.level, 'minder');
-  const three = computeSignals(learned(daily('meh', [0, 1, 2])), { known, now: T0 + 3 * DAY });
-  assert.equal(three.patterns.find((p) => p.key === 'meh')?.level, 'minder');
+  assert.equal(find(computeSignals(learned(daily('meh', [0, 1])), { known, now: T0 + 2 * DAY }), 'meh')?.level, 'minder');
+  assert.equal(find(computeSignals(learned(daily('meh', [0, 1, 2])), { known, now: T0 + 3 * DAY }), 'meh')?.level, 'minder');
   const four = computeSignals(learned(daily('meh', [0, 1, 2, 3])), { known, now: T0 + 4 * DAY });
-  const p = four.patterns.find((x) => x.key === 'meh');
+  const p = find(four, 'meh');
   assert.equal(p?.level, 'weg');
-  assert.equal(p?.vibe, null);
-  assert.match(p!.reason, /4× geskipt sinds/);
-  assert.ok(dislikedKeys(four, learned([])).has('meh|artiest meh'), 'ook andere versies');
+  assert.equal(p?.vibe, 'standaard', 'alleen buiten de gym geskipt: geldt alleen daar');
+  assert.match(p!.reason, /4× geskipt op 4 dagen/);
+  const v = Object.values(four.verdicts ?? {})[0];
+  assert.equal(v.level, 'weg');
+  assert.equal(v.until - v.since, PATTERN.goneWeeks * 7 * DAY, 'vastgelegd voor 8 weken');
 });
 
-test('nieuw nummer in 2 sessies geskipt: weg', () => {
+test('weg pas als het over 3+ dagen gebeurt', () => {
+  // 4 snelle skips, steeds ruim 12 uur uit elkaar, maar op 2 dagen.
+  const at = [0.5, 13, 24.5, 37].map((h) => Date.UTC(2026, 8, 28, 0, 0) + h * 3600_000);
+  const plays = at.flatMap((t, i) => [play(`a${i}`, t, 'full'), play('meh', t + 4 * MIN, 'skip', 3000), play(`b${i}`, t + 5 * MIN, 'full')]);
+  const s = computeSignals(learned(plays), { known: new Set(['meh']), now: at[3] + DAY });
+  assert.equal(find(s, 'meh')?.level, 'minder');
+});
+
+test('luisterduur: halverwege skippen telt half, na de helft telt niet (en zet de teller ook niet op 0)', () => {
+  const known = new Set(['meh']);
+  // 4 dagen geskipt na 40 s (van 200 s): samen 2 -> minder, niet weg.
+  assert.equal(find(computeSignals(learned(daily('meh', [0, 1, 2, 3], {}, 40_000)), { known, now: T0 + 4 * DAY }), 'meh')?.level, 'minder');
+  // Alleen late skips (na 2 minuten): niets, ook niet bij een nieuw nummer.
+  assert.equal(computeSignals(learned(daily('late', [0, 1, 2, 3], {}, 120_000)), { known: new Set(['late']), now: T0 + 4 * DAY }).patterns.length, 0);
+  assert.equal(computeSignals(learned(daily('nw', [0], {}, 120_000)), { known: new Set(), now: T0 + DAY }).patterns.length, 0);
+  // Een late skip tussendoor zet de teller niet op 0.
+  const mixed = [...daily('meh', [0, 1]), ...daily('meh', [2], {}, 150_000), ...daily('meh', [3, 4])];
+  assert.equal(find(computeSignals(learned(mixed), { known, now: T0 + 5 * DAY }), 'meh')?.level, 'weg');
+});
+
+test('nieuw nummer in 2 sessies snel geskipt: weg', () => {
   const s = computeSignals(learned(daily('nw', [0, 1], { fromPlanNew: true })), { known: new Set(['nw']), now: T0 + 2 * DAY });
-  const p = s.patterns.find((x) => x.key === 'nw');
+  const p = find(s, 'nw');
   assert.equal(p?.level, 'weg');
   assert.equal(p?.isNew, true);
 });
@@ -136,70 +159,202 @@ test('nieuw nummer in 2 sessies geskipt: weg', () => {
 test('helemaal afluisteren zet de teller op 0', () => {
   const plays = [...daily('meh', [0, 1, 2]), play('meh', T0 + 2 * DAY + 20 * MIN, 'full'), ...daily('meh', [3])];
   const s = computeSignals(learned(plays), { known: new Set(['meh']), now: T0 + 4 * DAY });
-  assert.equal(s.patterns.find((x) => x.key === 'meh'), undefined, 'na afluisteren maar 1 skip: alleen geen zin in');
+  assert.equal(find(s, 'meh'), undefined, 'na afluisteren maar 1 skip: alleen geen zin in');
 });
 
 test('hetzelfde nummer telt hooguit één keer per halve dag', () => {
-  // 4 losse skips op één dag (in verschillende sessies): telt als 1.
   const plays = [0, 1, 2, 3].flatMap((h) => [
     play(`a${h}`, T0 + h * 3 * 3600_000, 'full'),
-    play('meh', T0 + h * 3 * 3600_000 + 4 * MIN, 'skip', 40_000),
+    play('meh', T0 + h * 3 * 3600_000 + 4 * MIN, 'skip', 3000),
     play(`b${h}`, T0 + h * 3 * 3600_000 + 5 * MIN, 'full'),
   ]);
   const s = computeSignals(learned(plays), { known: new Set(['meh']), now: T0 + DAY });
-  assert.equal(s.patterns.find((x) => x.key === 'meh'), undefined);
+  assert.equal(find(s, 'meh'), undefined);
 });
 
-test('alleen in de gym steeds geskipt: alleen weg bij Gym', () => {
-  const s = computeSignals(learned(daily('ballad', [0, 1, 2, 3], { vibe: 'Legday' })), { known: new Set(['ballad']), now: T0 + 4 * DAY });
-  const p = s.patterns.find((x) => x.key === 'ballad');
+test('minder vervalt na 30 dagen zonder nieuwe skip', () => {
+  const s = computeSignals(learned(daily('meh', [0, 1])), { known: new Set(['meh']), now: T0 + 33 * DAY });
+  assert.equal(find(s, 'meh'), undefined);
+});
+
+test('lastig geval 1: alleen in de gym geskipt, in Standaard uitgeluisterd -> weg in de gym, niet daarbuiten', () => {
+  const plays = [0, 1, 2, 3].flatMap((d) => [
+    ...daily('ballad', [d], { vibe: 'Legday' }),
+    play('ballad', T0 + d * DAY + 6 * 3600_000, 'full', 200_000, { vibe: 'Standaard' }), // 's middags thuis helemaal geluisterd
+  ]);
+  const s = computeSignals(learned(plays), { known: new Set(['ballad']), now: T0 + 4 * DAY });
+  const p = find(s, 'ballad');
   assert.equal(p?.level, 'weg');
   assert.equal(p?.vibe, 'gym');
-  assert.ok(patternFor(s, { id: 'ballad', artists: ['x'] }, 'Gym'));
-  assert.equal(patternFor(s, { id: 'ballad', artists: ['x'] }, 'Standaard'), null);
-  // Overal geskipt (ook Standaard): geldt overal.
-  const mix = [...daily('b2', [0, 1], { vibe: 'Gym' }), ...daily('b2', [2, 3], { vibe: 'Standaard' })];
-  assert.equal(computeSignals(learned(mix), { known: new Set(['b2']), now: T0 + 4 * DAY }).patterns.find((x) => x.key === 'b2')?.vibe, null);
+  const t = { id: 'ballad', name: 'ballad', artists: ['Artiest ballad'] };
+  assert.equal(patternFor(s, t, 'Gym')?.level, 'weg');
+  assert.equal(patternFor(s, t, 'Standaard'), null);
+  assert.equal(patternFor(s, t, 'coding'), null);
 });
 
-test('toch leuk: skips van daarvoor tellen niet, daarna opnieuw', () => {
+test('lastig geval 2: favoriet die je vaak hoorde en nu steeds skipt -> 30 dagen pauze, niet "niet leuk"', () => {
+  const heard = Array.from({ length: 10 }, (_, d) => play('fav', T0 + d * DAY, 'full'));
+  const plays = [...heard, ...daily('fav', [10, 11, 12, 13])];
+  const s = computeSignals(learned(plays), { known: new Set(['fav']), now: T0 + 14 * DAY });
+  const p = find(s, 'fav');
+  assert.equal(p?.level, 'pauze');
+  assert.equal(p?.vibe, null, 'verzadiging geldt overal');
+  assert.equal(Math.round(((p!.until ?? 0) - p!.last) / DAY), PATTERN.pauseDays);
+});
+
+test('lastig geval 3: alleen late skips -> niets', () => {
+  const s = computeSignals(learned(daily('x', [0, 1, 2, 3, 4], {}, 130_000)), { known: new Set(['x']), now: T0 + 5 * DAY });
+  assert.equal(s.patterns.length, 0);
+});
+
+/** Een reeks: twee skips direct na elkaar, tussen twee volledige nummers. */
+function run(a: string, b: string, t: number, artist: string): Play[] {
+  return [
+    play(`r${t}x`, t, 'full'),
+    play(a, t + 4 * MIN, 'skip', 3000, { artist }),
+    play(b, t + 4 * MIN + 4000, 'skip', 3000),
+    play(`r${t}y`, t + 5 * MIN, 'full'),
+  ];
+}
+
+test('lastig geval 4: artiest die vooral in reeksen wordt weggedrukt -> van minder naar weg', () => {
+  const k = (id: string, d: number) => daily(id, [d], { artist: 'Kygo' });
+  const base = [...k('k1', 0), ...k('k2', 1)];
+  const known = new Set(['k1', 'k2', 'k3', 'k4']);
+  const a = (s: Signals) => s.patterns.find((p) => p.kind === 'artist');
+  assert.equal(a(computeSignals(learned(base), { known, now: T0 + 2 * DAY }))?.level, 'minder');
+  const runs = [...run('k3', 'o1', T0 + 2 * DAY, 'Kygo'), ...run('k4', 'o2', T0 + 3 * DAY, 'Kygo')];
+  const s = computeSignals(learned([...base, ...runs]), { known, now: T0 + 4 * DAY });
+  assert.equal(a(s)?.level, 'weg', 'reeks-skips tellen half zodra de artiest op minder staat');
+  // Zonder eerdere losse skips blijven reeksen neutraal.
+  assert.equal(a(computeSignals(learned(runs), { known, now: T0 + 4 * DAY })), undefined);
+});
+
+test('overal pas als het in 2+ groepen weg is', () => {
+  const gym = daily('song', [0, 2, 4, 6], { vibe: 'Gym' });
+  const std = daily('song', [1, 3, 5, 7], { vibe: 'Standaard' });
+  const s = computeSignals(learned([...gym, ...std].sort((x, y) => x.start - y.start)), { known: new Set(['song']), now: T0 + 8 * DAY });
+  const p = s.patterns.filter((x) => x.kind === 'song' && x.id === 'song');
+  assert.equal(p.length, 1);
+  assert.equal(p[0].level, 'weg');
+  assert.equal(p[0].vibe, null);
+});
+
+test('oordeel blijft na opschonen, komt na 8 weken één keer terug als test, en snel skippen = 16 weken weg', () => {
+  const four = computeSignals(learned(daily('meh', [0, 1, 2, 3])), { known: new Set(['meh']), now: T0 + 4 * DAY });
+  const verdicts = four.verdicts!;
+  const v = Object.values(verdicts)[0];
+  // Plays opgeschoond, oordeel bewaard: nog steeds weg.
+  const kept = computeSignals(learned([], { verdicts }), { known: new Set(), now: T0 + 30 * DAY });
+  assert.equal(kept.patterns[0]?.level, 'weg');
+  // Na 8 weken: test (minder, niet vooraan).
+  const after = v.until + DAY;
+  const test1 = computeSignals(learned([], { verdicts }), { known: new Set(['meh']), now: after });
+  assert.equal(test1.patterns.length, 0, 'zonder plays geen test-patroon meer nodig');
+  const withOld = computeSignals(learned(daily('meh', [0, 1, 2, 3]), { verdicts }), { known: new Set(['meh']), now: after });
+  assert.equal(find(withOld, 'meh')?.phase, 'test');
+  assert.equal(find(withOld, 'meh')?.level, 'minder');
+  // Test mislukt: snel geskipt -> weer weg, nu 16 weken.
+  const failDay = Math.ceil((after - T0) / DAY);
+  const failed = computeSignals(learned([...daily('meh', [0, 1, 2, 3]), ...daily('meh', [failDay])], { verdicts }), { known: new Set(['meh']), now: T0 + failDay * DAY + DAY });
+  const nv = Object.values(failed.verdicts!)[0] as Verdict;
+  assert.equal(find(failed, 'meh')?.level, 'weg');
+  assert.equal(nv.round, 2);
+  assert.equal(nv.until - nv.since, PATTERN.regoneWeeks * 7 * DAY);
+  // Test geslaagd: helemaal afgeluisterd -> oordeel weg, niets meer.
+  const passed = computeSignals(learned([...daily('meh', [0, 1, 2, 3]), play('meh', T0 + failDay * DAY, 'full')], { verdicts }), { known: new Set(['meh']), now: T0 + failDay * DAY + DAY });
+  assert.equal(find(passed, 'meh'), undefined);
+  assert.equal(Object.keys(passed.verdicts!).length, 0);
+});
+
+test('toch leuk: skips van daarvoor tellen niet, oordeel weg, daarna opnieuw', () => {
   const plays = daily('meh', [0, 1, 2, 3]);
-  const L = learned(plays, { decisions: { meh: 'afgewezen' }, asked: { meh: T0 + 3 * DAY + 10 * MIN } });
-  assert.equal(computeSignals(L, { known: new Set(['meh']), now: T0 + 4 * DAY }).patterns.length, 0);
-  const later = learned([...plays, ...daily('meh', [4, 5])], { decisions: { meh: 'afgewezen' }, asked: { meh: T0 + 3 * DAY + 10 * MIN } });
-  assert.equal(computeSignals(later, { known: new Set(['meh']), now: T0 + 6 * DAY }).patterns.find((x) => x.key === 'meh')?.level, 'minder');
+  const s = computeSignals(learned(plays), { known: new Set(['meh']), now: T0 + 4 * DAY });
+  const p = find(s, 'meh')!;
+  const ok = approvePattern(learned(plays, { verdicts: s.verdicts }), p, T0 + 4 * DAY);
+  assert.equal(computeSignals(ok, { known: new Set(['meh']), now: T0 + 4 * DAY + MIN }).patterns.length, 0);
+  const later = { ...ok, plays: [...plays, ...daily('meh', [5, 6])] };
+  assert.equal(find(computeSignals(later, { known: new Set(['meh']), now: T0 + 7 * DAY }), 'meh')?.level, 'minder');
+  // Oud antwoord per track-id werkt ook nog.
+  const legacy = learned(plays, { decisions: { meh: 'afgewezen' }, asked: { meh: T0 + 3 * DAY + 10 * MIN } });
+  assert.equal(computeSignals(legacy, { known: new Set(['meh']), now: T0 + 4 * DAY }).patterns.length, 0);
   // Nooit meer: geen patroon, wel in disliked.
   const never = computeSignals(learned(plays, { decisions: { meh: 'bevestigd' } }), { known: new Set(['meh']), now: T0 + 4 * DAY });
   assert.equal(never.patterns.length, 0);
   assert.deepEqual(never.disliked, ['meh']);
 });
 
-test('artiest: steeds verschillende nummers geskipt -> eerst minder, dan weg', () => {
+test('artiest: steeds verschillende nummers geskipt -> eerst minder, dan (over 3 dagen) weg', () => {
   const k = (id: string, d: number) => daily(id, [d], { artist: 'Kygo' });
-  const two = computeSignals(learned([...k('k1', 0), ...k('k2', 1)]), { known: new Set(['k1', 'k2', 'k3']), now: T0 + 2 * DAY });
-  const a2 = two.patterns.find((p) => p.kind === 'artist');
+  const known = new Set(['k1', 'k2', 'k3']);
+  const a2 = computeSignals(learned([...k('k1', 0), ...k('k2', 1)]), { known, now: T0 + 2 * DAY }).patterns.find((p) => p.kind === 'artist');
   assert.equal(a2?.level, 'minder');
   assert.equal(a2?.name, 'Kygo');
-  const three = computeSignals(learned([...k('k1', 0), ...k('k2', 1), ...k('k3', 2)]), { known: new Set(['k1', 'k2', 'k3']), now: T0 + 3 * DAY });
+  const three = computeSignals(learned([...k('k1', 0), ...k('k2', 1), ...k('k3', 2)]), { known, now: T0 + 3 * DAY });
   const a3 = three.patterns.find((p) => p.kind === 'artist');
   assert.equal(a3?.level, 'weg');
   assert.equal(a3?.songs, 3);
   assert.match(a3!.reason, /3 verschillende nummers/);
-  assert.ok(patternFor(three, { id: 'k9', artists: ['Kygo', 'Ellie Goulding'] }, 'coding'), 'ook een ander nummer van Kygo');
+  assert.ok(patternFor(three, { id: 'k9', name: 'Nieuw', artists: ['Kygo', 'Ellie Goulding'] }, 'coding'), 'ook een ander nummer van Kygo');
+  assert.equal(patternFor(three, { id: 'e1', name: 'Love Me Like You Do', artists: ['Ellie Goulding', 'Kygo'] }, 'coding'), null, 'als gast telt Kygo niet');
   // In één sessie telt niet als patroon.
-  const one = [play('a', T0, 'full'), play('k1', T0 + MIN, 'skip', 40_000, { artist: 'Kygo' }), play('b', T0 + 2 * MIN, 'full'),
-    play('k2', T0 + 6 * MIN, 'skip', 40_000, { artist: 'Kygo' }), play('c', T0 + 7 * MIN, 'full'),
-    play('k3', T0 + 11 * MIN, 'skip', 40_000, { artist: 'Kygo' }), play('d', T0 + 12 * MIN, 'full')];
-  assert.equal(computeSignals(learned(one), { known: new Set(['k1', 'k2', 'k3']), now: NOW }).patterns.filter((p) => p.kind === 'artist').length, 0);
+  const one = [play('a', T0, 'full'), play('k1', T0 + MIN, 'skip', 3000, { artist: 'Kygo' }), play('b', T0 + 2 * MIN, 'full'),
+    play('k2', T0 + 6 * MIN, 'skip', 3000, { artist: 'Kygo' }), play('c', T0 + 7 * MIN, 'full'),
+    play('k3', T0 + 11 * MIN, 'skip', 3000, { artist: 'Kygo' }), play('d', T0 + 12 * MIN, 'full')];
+  assert.equal(computeSignals(learned(one), { known, now: NOW }).patterns.filter((p) => p.kind === 'artist').length, 0);
 });
 
 test('artiest: iets van hem afluisteren zet de teller op 0, toch leuk ook', () => {
   const k = (id: string, d: number) => daily(id, [d], { artist: 'Kygo' });
+  const known = new Set(['k1', 'k2', 'k3']);
   const plays = [...k('k1', 0), ...k('k2', 1), play('k0', T0 + DAY + 30 * MIN, 'full', 200_000, { artist: 'Kygo' }), ...k('k3', 2)];
-  assert.equal(computeSignals(learned(plays), { known: new Set(['k1', 'k2', 'k3']), now: T0 + 3 * DAY }).patterns.filter((p) => p.kind === 'artist').length, 0);
+  assert.equal(computeSignals(learned(plays), { known, now: T0 + 3 * DAY }).patterns.filter((p) => p.kind === 'artist').length, 0);
   const all = [...k('k1', 0), ...k('k2', 1), ...k('k3', 2)];
-  const ok = approveArtist(learned(all), { key: 'kygo', name: 'Kygo' }, T0 + 2 * DAY + 10 * MIN);
-  assert.equal(computeSignals(ok, { known: new Set(['k1', 'k2', 'k3']), now: T0 + 3 * DAY }).patterns.filter((p) => p.kind === 'artist').length, 0);
+  const ok = approvePattern(learned(all), { kind: 'artist', key: 'kygo', name: 'Kygo', artist: 'Kygo' }, T0 + 2 * DAY + 10 * MIN);
+  assert.equal(computeSignals(ok, { known, now: T0 + 3 * DAY }).patterns.filter((p) => p.kind === 'artist').length, 0);
+  // Op de blocklist: geen patroon meer nodig.
+  assert.equal(computeSignals(learned(all), { known, now: T0 + 3 * DAY, blockedArtists: ['Kygo'] }).patterns.filter((p) => p.kind === 'artist').length, 0);
+});
+
+test('versies: Remastered en Radio Edit tellen samen, live en remix apart; gast-artiest telt niet', () => {
+  assert.equal(countKey('Firestone - 2014 Remaster', 'Kygo'), countKey('Firestone', 'Kygo'));
+  assert.equal(countKey('Firestone (Radio Edit)', 'Kygo, Conrad Sewell'), countKey('Firestone', 'Kygo'));
+  assert.equal(countKey('Firestone (feat. Conrad Sewell)', 'Kygo'), countKey('Firestone', 'Kygo'));
+  assert.notEqual(countKey('Firestone - Live', 'Kygo'), countKey('Firestone', 'Kygo'));
+  assert.notEqual(countKey('Firestone (Remix)', 'Kygo'), countKey('Firestone', 'Kygo'));
+  assert.notEqual(countKey('Firestone (Live at Ziggo Dome 2019)', 'Kygo'), countKey('Firestone', 'Kygo'));
+  assert.equal(artistKey('Kygo, Ellie Goulding'), 'kygo');
+  // Twee uitgaven van hetzelfde nummer: samen 4 snelle skips -> weg.
+  const plays = [...daily('v1', [0, 1], { name: 'Song', artist: 'X' }), ...daily('v2', [2, 3], { name: 'Song - Remastered 2011', artist: 'X' })];
+  const s = computeSignals(learned(plays), { known: new Set(['v1', 'v2']), now: T0 + 4 * DAY });
+  assert.equal(s.patterns.find((p) => p.kind === 'song')?.level, 'weg');
+});
+
+test('stijl-hint: 3 artiesten van één stijl vaak geskipt (en weinig afgeluisterd)', () => {
+  const sk = (id: string, d: number, artist: string) => daily(id, [d], { artist, style: 'Country', vibe: 'Gym' });
+  const plays = [...sk('c1', 0, 'A'), ...sk('c2', 1, 'B'), ...sk('c3', 2, 'C')].map((p) => (p.outcome === 'full' ? { ...p, style: 'Pop' } : p));
+  const s = computeSignals(learned(plays), { known: new Set(['c1', 'c2', 'c3']), now: T0 + 3 * DAY });
+  assert.deepEqual(s.styles?.map((h) => [h.group, h.style]), [['gym', 'Country']]);
+  // Veel Country helemaal afgeluisterd: geen hint.
+  const liked = Array.from({ length: 6 }, (_, i) => play(`cf${i}`, T0 + 3 * DAY + i * 5 * MIN, 'full', 200_000, { style: 'Country', vibe: 'Gym' }));
+  assert.equal(computeSignals(learned([...plays, ...liked]), { known: new Set(['c1', 'c2', 'c3']), now: T0 + 3 * DAY + DAY }).styles?.length, 0);
+});
+
+test('Live DJ: skip je daar duidelijk vaker, dan tellen die skips iets minder', () => {
+  const mk = (n: number, skipEvery: number, live: boolean) =>
+    Array.from({ length: n }, (_, i) => play(`${live ? 'l' : 'q'}${i}`, T0 + i * 5 * MIN + (live ? 0 : 3 * MIN), i % skipEvery === 0 ? 'skip' : 'full', undefined, { vibe: 'Standaard', live }));
+  assert.equal(liveFactor([...mk(50, 2, true), ...mk(50, 5, false)], T0 + DAY), PATTERN.liveFactor);
+  assert.equal(liveFactor([...mk(50, 5, true), ...mk(50, 5, false)], T0 + DAY), 1);
+  assert.equal(liveFactor([...mk(10, 2, true), ...mk(50, 5, false)], T0 + DAY), 1, 'te weinig Live DJ-plays om iets te zeggen');
+});
+
+test('melding "Nieuw geleerd": nieuwste oordeel, hooguit één per dag', () => {
+  const v = (since: number, name: string): Verdict => ({ kind: 'song', key: name, group: 'standaard', level: 'weg', name, artist: 'X', since, until: since + 56 * DAY, round: 1, reason: 'r' });
+  const verdicts = { a: v(NOW - DAY, 'A'), b: v(NOW - 2 * 3600_000, 'B') };
+  assert.equal(latestNotice(learned([], { verdicts }), NOW)?.name, 'B');
+  assert.equal(latestNotice(learned([], { verdicts, noticeSeenAt: NOW - 3600_000 }), NOW), null, 'net weggetikt');
+  assert.equal(latestNotice(learned([], { verdicts, noticeSeenAt: NOW - 3600_000 }), NOW + DAY), null, 'al gezien');
+  assert.equal(latestNotice(learned([], { verdicts: { a: v(NOW - 5 * DAY, 'A') } }), NOW), null, 'te oud');
 });
 
 test('geen zin in: bekende favoriet los geskipt, per vibe', () => {

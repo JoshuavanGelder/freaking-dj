@@ -96,17 +96,33 @@ Native module `modules/spotify-watcher` (Kotlin): voorgronddienst (specialUse) d
 en als JSON-regels wegschrijft; ook spraakherkenning via `RecognizerIntent` (nl-NL).
 Signalen, sterk → zwak: te vaak gedraaid (≥5× in 4 d → 14 d rust),
 geen zin in (bekende los geskipt, per vibe), **patronen** (`findPatterns`, `Signals.patterns`).
-**Patronen (sinds 24-11, vervangt "vermoedelijk niet leuk" + de vraagkaart; de app vraagt niets meer):** Joshua vond het vragen storend
-en een snelle skip mag niets meteen "niet leuk" maken. Telende skip = losse skip (niet in een reeks, niet binnen 12 u na een eerdere play
-van hetzelfde nummer, niet zelf gewist bij "geen zin in"), dus hooguit één per nummer per halve dag. Teller = telende skips sinds het
-laatst helemaal afgeluisterd (en sinds "Toch leuk": `decisions[id]='afgewezen'` met tijd in `asked[id]`; artiest: `learned.artistOk`).
-Drempels in `PATTERN`: bekend nummer 2 → `minder`, 4 → `weg`; nieuw nummer 1 → `minder`, 2 → `weg`; artiest (hoofdartiest, `artistKey`)
-2 verschillende nummers in 2+ sessies → `minder`, 3 → `weg`. Alle skips in één vibe-groep (niet Standaard/zonder vibe) → patroon geldt
-alleen daar (`vibe`). Effect: `weg` → `rejectReason` ("waarschijnlijk niet meer leuk" / "<artiest> steeds geskipt"), overal-weg nummers
-ook in `dislikedKeys`; `minder` → `enforce` zet ze niet in de eerste `FRESH_START` plekken (`delayRepeats`) en hooguit `LESS_ARTIST_MAX`
-(2) per minder-artiest. Claude krijgt `lessOften`, `avoidArtists`, `lessArtists` (en `disliked` incl. weg-nummers), pool-marker
-`|skipped lately`; `dj/lib.mjs` rendert ook nog `suspectedDislike` van oudere app-versies. Plays worden na 60 d gesnoeid, dus `weg`
-verloopt ~2 maanden na de laatste skip. Geleerd-scherm: "Toch leuk" en "Nooit meer" (nummer → `bevestigd`, artiest → blocklist).
+**Patronen (`src/logic/patterns.ts`, sinds 24-11; vervangt "vermoedelijk niet leuk" + de vraagkaart; de app vraagt niets meer).**
+Joshua vond vragen storend; een snelle skip mag niets meteen "niet leuk" maken. Ontwerp getoetst met onderzoek (Spotify/Deezer/Pandora,
+Lamere 2014, Montecchio 2020, Kapoor 2015, Mozilla 2022, NN/g; zie projectdoc). Drempels staan in `PATTERN`.
+- **Telskip** = losse skip: niet binnen 12 u na een eerdere play van hetzelfde nummer (`repeat`), niet zelf gewist bij "geen zin in".
+  Gewicht: < 30 s = 1, tot de helft = 0,5, na de helft = 0 (telt niet én reset niet); > 30 dagen oud × 0,5; Live DJ × 0,75 als je daar
+  de laatste 14 d ≥ 10 procentpunt vaker skipt (`liveFactor`, `Play.live`). Reeks (2+ op rij, `inRun`) = neutraal, behalve als het nummer
+  of de artiest in ronde 1 al op minder staat: dan 0,5.
+- **Per leergroep** (`learnGroup`: gym, worship, standaard = al het andere). Teller per groep = telskips sinds laatst helemaal afgeluisterd
+  in díe groep (en sinds "Toch leuk": `learned.songOk[countKey]`, `learned.artistOk[key]`, of oud `decisions[id]='afgewezen'`+`asked[id]`).
+  Overal (`vibe: null`) pas als 2+ groepen "weg" zijn; pauze geldt altijd overal.
+- **Nummer** (`countKey`: Remastered/Radio Edit/feat./jaartal samen, live/remix apart): bekend 2 (2+ sessies) → `minder`, 4 over 3+ dagen →
+  `weg`, of `pauze` (30 d) als het 3+ keer helemaal gehoord werd in de 30 d vóór de eerste skip (verzadiging). Nieuw: één skip in de eerste
+  helft → `minder` (niet opnieuw voorstellen), 1,5 in 2 sessies → `weg`. **Artiest** (`artistKey` = hoofdartiest, gasten tellen niet):
+  2 verschillende nummers in 2+ sessies → `minder`, 3 over 3+ dagen → `weg`. Patroon vervalt zonder telskip in 30 d.
+- **Oordelen vastleggen** (`learned.verdicts`, sleutel `song:<countKey>@<groep>`): weg = 8 weken (ronde 1), daarna 30 d als **test**
+  (`phase: 'test'`, level minder, Claude krijgt `retest`: één ervan na plek 8). Snel geskipt (< 30 s) tijdens de test → weer weg, 16 weken
+  (ronde 2+). Zelf helemaal afgeluisterd → oordeel weg. `store.addEvents` slaat gewijzigde oordelen op (`sameVerdicts`); `evaluatePatterns`
+  is puur, dus scherm en opslag zien hetzelfde. Opschonen van plays (60 d/4000) laat oordelen staan.
+- **Effect**: `weg` → `rejectReason` ("waarschijnlijk niet meer leuk" / "<artiest> steeds geskipt"); `pauze` → "even te vaak gehoord";
+  `minder` → `enforce` niet in de eerste `FRESH_START` en hooguit `LESS_ARTIST_MAX` (2) per minder-artiest. Claude: `lessOften`, `disliked`
+  (+ weg), `avoidArtists`, `lessArtists`, `retest`, `lessStyles`; pool-markers `|skipped lately` en `|retest`. `dj/lib.mjs` rendert ook nog
+  `suspectedDislike` van oudere app-versies.
+- **Stijl-hint** (`Signals.styles`, `Play.style` via `tagPlays`): 3+ artiesten van één stijl geskipt in 2+ sessies (30 d), ≥ helft geskipt →
+  alleen een zachte hint aan Claude per groep, nooit afgedwongen.
+- **Melding** (`latestNotice`, startscherm op de plek van de oude vraagkaart): één regel "Nieuw geleerd: …" bij nieuw weg/pauze, met
+  "Oké" en "Ongedaan maken" (= Toch leuk), hooguit één per 20 u (`learned.noticeSeenAt`). Geleerd-scherm: Toch leuk / Nooit meer
+  (nummer → `bevestigd`, artiest → blocklist; blocklist-artiesten krijgen geen patroon meer via `blockedArtists`).
 Skips tellen niet als ze in een reeks van 2+ skips op rij zitten (je zoekt iets). Losse skips tellen ook in Live DJ
 gewoon mee (patronen, "geen zin in" per vibe, en `pickNext` past zich aan). "Waar je naartoe skipte" (jumpTargets)
 bestaat niet meer: je koos dat nummer niet, dus het is geen wens (ook niet in `pickNext`).

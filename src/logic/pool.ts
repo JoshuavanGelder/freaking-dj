@@ -3,7 +3,8 @@ import type { Learned, Plan, PlanItem, PoolTrack, Rules, Signals, Track, VibeInf
 import { norm, normTitle, songKey } from './text.ts';
 import { FRESH_START, rejectReason, type EnforceContext } from './rules.ts';
 import { PROFILE_NOTES, newEveryFor, sameVibe, type VibeStat } from './profiles.ts';
-import { notNowActive, patternApplies, patternFor } from './learning.ts';
+import { notNowActive } from './learning.ts';
+import { learnGroup, patternApplies, patternFor } from './patterns.ts';
 
 export type HistoryInput = {
   topShort: Track[]; // laatste ~4 weken
@@ -92,6 +93,10 @@ export type DjRequest = {
     avoidArtists: string[];
     /** Artiesten die je de laatste tijd vaak skipt: hooguit 1–2 nummers. */
     lessArtists: string[];
+    /** Was ~2 maanden weg: één ervan mag als test terugkomen (niet vooraan). */
+    retest: string[];
+    /** Stijlen die je bij deze vibe vaak skipt: iets minder van (alleen een hint). */
+    lessStyles: string[];
   };
   avoid: string[]; // speelt nu / staat al in de wachtrij
   previous: { ref: string; title: string; artist: string; style: string; isNew: boolean }[];
@@ -109,7 +114,7 @@ function provenExtra(stats: Map<string, VibeStat> | undefined, refs: ClaudeRef[]
   const inPool = new Set(refs.map((r) => r.track.id));
   const skippedLately = (id: string) => {
     const m = learned.meta[id];
-    return !!m && !!patternFor(signals, { id, artists: [m.artist.split(/,\s*/)[0] ?? m.artist] }, vibeText);
+    return !!m && !!patternFor(signals, { id, name: m.name, artists: [m.artist.split(/,\s*/)[0] ?? m.artist] }, vibeText);
   };
   return [...stats.entries()]
     .filter(([id, st]) => st.full > st.skips && !inPool.has(id) && learned.meta[id] && learned.decisions[id] !== 'bevestigd' && !skippedLately(id))
@@ -191,14 +196,16 @@ export function buildRequest(args: {
     provenExtra: provenExtra(args.stats, refs, learned, signals, vibe.text),
     learned: {
       notInThisVibe,
-      lessOften: patternsHere.filter((p) => p.kind === 'song' && p.level === 'minder').map((p) => `${songLabel(p)} (${p.reason})`),
+      lessOften: patternsHere.filter((p) => p.kind === 'song' && p.level === 'minder' && p.phase === 'nu').map((p) => `${songLabel(p)} (${p.reason})`),
       disliked: [
         ...signals.disliked.map(name).filter((x): x is string => !!x),
         ...patternsHere.filter((p) => p.kind === 'song' && p.level === 'weg').map(songLabel),
       ],
       resting,
       avoidArtists: patternsHere.filter((p) => p.kind === 'artist' && p.level === 'weg').map((p) => p.name),
-      lessArtists: patternsHere.filter((p) => p.kind === 'artist' && p.level === 'minder').map((p) => p.name),
+      lessArtists: patternsHere.filter((p) => p.kind === 'artist' && p.level === 'minder' && p.phase === 'nu').map((p) => p.name),
+      retest: patternsHere.filter((p) => p.phase === 'test').map((p) => (p.kind === 'artist' ? `any track by ${p.name}` : songLabel(p))),
+      lessStyles: (signals.styles ?? []).filter((h) => h.group === learnGroup(vibe.text)).map((h) => h.style),
     },
     avoid: args.avoid.map(trackLabel),
     previous,
@@ -209,7 +216,8 @@ export function buildRequest(args: {
         const st = args.stats?.get(t.id);
         const here = st && st.full > st.skips ? `|here ${st.full}x` : '';
         const today = args.heardRecently?.has(t.id) ? '|heard today' : '';
-        const skipped = patternFor(signals, t, vibe.text) ? '|skipped lately' : '';
+        const pat = patternFor(signals, t, vibe.text);
+        const skipped = pat ? (pat.phase === 'test' ? '|retest' : '|skipped lately') : '';
         return `${r.ref}|${clean(t.name)}|${clean(t.artists.join(', '))}|${t.tier}${t.plays ? `|${t.plays}x recent` : ''}${here}${today}${skipped}`;
       })
       .join('\n'),

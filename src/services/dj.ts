@@ -3,7 +3,7 @@
 import * as sp from './spotify';
 import * as gh from './github';
 import { buildPool, buildRequest, bestMatch, parseAnswer, poolForClaude, type ClaudeItem, type ClaudeRef, type DjResponse } from '../logic/pool';
-import { REPEAT_WINDOW_MS, computeSignals, dislikedKeys } from '../logic/learning';
+import { REPEAT_WINDOW_MS, computeSignals, countKey, dislikedKeys } from '../logic/learning';
 import { enforce, isFavorite, parseVibe, type EnforceContext } from '../logic/rules';
 import { adjustKind, describeChange, mergeAdjusted, type AdjustKind } from '../logic/adjust';
 import { songKey } from '../logic/text';
@@ -30,10 +30,12 @@ export async function fetchHistory(): Promise<History> {
   };
 }
 
-export function signalsFor(learned: Learned, history: History | null, now = Date.now()): Signals {
+export function signalsFor(learned: Learned, history: History | null, now = Date.now(), blockedArtists: string[] = []): Signals {
   return computeSignals(learned, {
     known: new Set((history?.pool ?? []).map((t) => t.id)),
+    knownKeys: new Set((history?.pool ?? []).map((t) => countKey(t.name, t.artists[0] ?? ''))),
     recentPlays: history?.recent ?? [],
+    blockedArtists,
     now,
   });
 }
@@ -142,7 +144,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     worship: base.worship || !!extra?.worship,
     eurovision: base.eurovision || !!extra?.eurovision,
   };
-  const signals = signalsFor(learned, history, now);
+  const signals = signalsFor(learned, history, now, rules.blockedArtists);
 
   onStatus('Wat er nu speelt bekijken');
   const avoid: Track[] = [];

@@ -5,7 +5,7 @@ import { idsToAdd, leadingOld, pickDevice, hasOldQueue, type Device } from './qu
 import { responseHealth, summarizeStatus } from './status.ts';
 import { DEFAULT_RULES, parseVibe } from './rules.ts';
 import { EMPTY_LEARNED } from './learning.ts';
-import type { Track } from './types.ts';
+import type { Pattern, Signals, Track } from './types.ts';
 
 const t = (id: string, name: string, artist: string): Track => ({ id, name, artists: [artist], durationMs: 180_000 });
 const NOW = Date.parse('2026-09-29T12:00:00Z');
@@ -110,4 +110,38 @@ test('parseAnswer: haalt losse tags uit titels', () => {
   const a = parseAnswer({ title: '<parameter name="title">Coding Focus Mix', note: ' ok ', items: [{ ref: 't1', style: '<b>Pop</b>' }] });
   assert.equal(a?.title, 'Coding Focus Mix');
   assert.equal(a?.items[0].style, 'Pop');
+});
+
+test('buildRequest: patronen naar Claude, per vibe-groep (minder, weg, test, stijl)', () => {
+  const P = (over: Partial<Pattern>): Pattern => ({ kind: 'song', key: 'k', id: 'k', name: 'N', artist: 'A', level: 'minder', phase: 'nu', skips: 2, songs: 1, isNew: false, vibe: null, first: NOW, last: NOW, reason: '2× geskipt', ...over });
+  const signals: Signals = {
+    resting: {},
+    notNow: {},
+    disliked: [],
+    patterns: [
+      P({ key: 'hope|nf', id: 'nf', name: 'Hope', artist: 'NF' }),
+      P({ key: 'x', id: 'x', name: 'Oud', artist: 'B', phase: 'test' }),
+      P({ key: 'w', id: 'w', name: 'Weg', artist: 'C', level: 'weg' }),
+      P({ kind: 'artist', key: 'kygo', id: 'kygo', name: 'Kygo', artist: 'Kygo', level: 'weg', vibe: 'gym' }),
+      P({ kind: 'artist', key: 'avicii', id: 'avicii', name: 'Avicii', artist: 'Avicii', vibe: 'standaard' }),
+    ],
+    styles: [{ group: 'gym', style: 'Country', artists: 3, skips: 4, fulls: 1 }],
+  };
+  const pool = buildPool({ topShort: [t('nf', 'Hope', 'NF'), t('x', 'Oud', 'B'), t('ky', 'Firestone', 'Kygo')], topMedium: [], topLong: [], recent: [], saved: [] });
+  const gym = parseVibe('Legday', DEFAULT_RULES);
+  const refs = poolForClaude(pool, { rules: DEFAULT_RULES, vibe: gym, signals, now: NOW });
+  assert.ok(!refs.some((r) => r.track.id === 'ky'), 'Kygo weg in de gym');
+  const req = buildRequest({ id: 'p', vibe: gym, refs, rules: DEFAULT_RULES, signals, learned: EMPTY_LEARNED, avoid: [], now: new Date(NOW), model: 'sonnet' });
+  assert.deepEqual(req.learned.lessOften, ['Hope – NF (2× geskipt)']);
+  assert.deepEqual(req.learned.retest, ['Oud – B']);
+  assert.deepEqual(req.learned.disliked, ['Weg – C']);
+  assert.deepEqual(req.learned.avoidArtists, ['Kygo']);
+  assert.deepEqual(req.learned.lessArtists, [], 'Avicii alleen buiten de gym');
+  assert.deepEqual(req.learned.lessStyles, ['Country']);
+  assert.match(req.pool, /Hope\|NF\|nu\|skipped lately/);
+  assert.match(req.pool, /Oud\|B\|nu\|retest/);
+  const std = buildRequest({ id: 'q', vibe: parseVibe('Standaard', DEFAULT_RULES), refs, rules: DEFAULT_RULES, signals, learned: EMPTY_LEARNED, avoid: [], now: new Date(NOW), model: 'sonnet' });
+  assert.deepEqual(std.learned.lessArtists, ['Avicii']);
+  assert.deepEqual(std.learned.avoidArtists, []);
+  assert.deepEqual(std.learned.lessStyles, []);
 });
