@@ -1,0 +1,178 @@
+{
+ "id": "mwuqncph-8k6c9",
+ "finishedAt": "2026-11-24T13:37:58.870Z",
+ "durationMs": 11092,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Pop en country, minder Messy",
+  "note": "Je hoorde Alex Warren en Shaboozey helemaal uit, dus je krijgt meer pop en country en minder rustige nieuwe pop zoals Messy.",
+  "items": [
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Lies Lies Lies",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Ordinary",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t18",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Beautiful Things",
+    "artist": "Benson Boone",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Carry You Home",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "",
+    "title": "ONLY THING LEFT",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.0699262,
+ "model": "sonnet"
+}
