@@ -22,6 +22,7 @@ export function renderRequest(r) {
   if (Number.isFinite(r.freshStart)) lines.push(`- freshStart: no "heard today" track in the first ${r.freshStart} positions`);
   lines.push(`- profile: ${r.profile || 'overig'}`);
   lines.push(`- artistStart: ${r.artistStart ?? 'none'}`);
+  if (r.moreArtists?.length) lines.push(`- moreArtists (he asked for these himself): ${r.moreArtists.join(', ')}`);
   lines.push(`- worshipAllowed: ${r.worshipAllowed ? 'true' : 'false'}`);
   lines.push(`- eurovision: ${r.eurovision ? 'true' : 'false'}`);
   lines.push(`- Eurovision favourite (always in a Eurovision queue): ${r.eurovisionFavorite}`);

@@ -12,6 +12,7 @@ import { dislikedKeys } from './logic/learning';
 import { songKey } from './logic/text';
 import { parseVibe, rejectReason } from './logic/rules';
 import { adjustKind, type AdjustKind } from './logic/adjust';
+import { knownArtists, updateWishes } from './logic/wishes';
 import type { Plan, PlanItem, Track } from './logic/types';
 
 type LiveCtx = {
@@ -96,7 +97,8 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
         prev.upcoming.length === next.upcoming.length &&
         prev.played.length === next.played.length &&
         prev.current?.id === next.current?.id &&
-        prev.lastReplanAt === next.lastReplanAt;
+        prev.lastReplanAt === next.lastReplanAt &&
+        prev.moreArtists === next.moreArtists;
       if (!same) update((s) => ({ ...s, live: next }));
     },
     [update],
@@ -120,6 +122,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
       signals: signalsRef.current,
       now: Date.now(),
       dislikedKeys: dislikedKeys(signalsRef.current, s.learned),
+      moreArtists: L?.moreArtists,
     };
     return !rejectReason(t, ctx);
   }, []);
@@ -187,6 +190,7 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
           adjustKind: kind,
           extraAvoid: [...heard, ...[...(L.served ?? [])].reverse(), ...[...L.played].reverse().map((p) => p.track), ...inUse(L)],
           excludeUsed: true,
+          moreArtists: L.moreArtists ?? [],
         });
         savePlan({ ...out.plan, title: `Live: ${out.plan.title}` });
         update((x) => ({ ...x, lastResponse: out.response }));
@@ -380,13 +384,21 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
 
   const steer = useCallback(
     (text: string) => {
-      const L = liveRef.current;
+      let L = liveRef.current;
       if (!L || !text.trim()) return;
       const kind = adjustKind(text).kind;
+      // "Meer Alex Warren" onthouden voor de rest van de sessie (alleen uit wat jij typte, niet uit de sessie-samenvatting).
+      const s = stateRef.current;
+      const known = knownArtists(s.history?.pool ?? [], s.learned.meta, [...L.played.map((p) => p.track), ...L.upcoming.map((it) => it.track)]);
+      const wishes = updateWishes(L.moreArtists ?? [], text, known);
+      if (wishes.join('|') !== (L.moreArtists ?? []).join('|')) {
+        L = { ...L, moreArtists: wishes };
+        commit(L);
+      }
       // Bij toevoegen/weghalen geen sessie-feedback meesturen: dan blijft het bij precies wat je vroeg.
       replan(kind === 'breed' ? `${text.trim()}. ${feedbackForClaude(L)}` : text.trim(), true, kind);
     },
-    [replan],
+    [replan, commit],
   );
 
   /** Reload-knop: staat wat wij klaarzetten nog in de Spotify-wachtrij? Zo niet (bv. je maakte de wachtrij leeg), dan opnieuw toevoegen. */

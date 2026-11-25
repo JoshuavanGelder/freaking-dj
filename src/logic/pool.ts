@@ -73,6 +73,8 @@ export type DjRequest = {
   profile: 'standaard' | 'gym' | 'worship' | 'overig';
   profileNotes: string[];
   artistStart: string | null;
+  /** Zelf gevraagd: "meer Alex Warren". Gaat voor het profiel; ongeveer elk tweede nummer. */
+  moreArtists: string[];
   worshipAllowed: boolean;
   eurovision: boolean;
   eurovisionFavorite: string;
@@ -146,6 +148,8 @@ export function buildRequest(args: {
   stats?: Map<string, VibeStat>;
   /** In de laatste 12 uur al gehoord: in de pool gemarkeerd, mag erin maar niet bovenaan. */
   heardRecently?: Set<string>;
+  /** Zelf gevraagd: "meer Alex Warren". */
+  moreArtists?: string[];
 }): DjRequest {
   const { vibe, rules, signals, learned, refs } = args;
   const name = (id: string) => {
@@ -186,6 +190,7 @@ export function buildRequest(args: {
     profile,
     profileNotes: PROFILE_NOTES[profile],
     artistStart: vibe.artistStart,
+    moreArtists: args.moreArtists ?? [],
     worshipAllowed: vibe.worship,
     eurovision: vibe.eurovision,
     eurovisionFavorite: `${rules.eurovisionFavorite.title} – ${rules.eurovisionFavorite.artist}`,

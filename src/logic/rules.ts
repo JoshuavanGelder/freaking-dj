@@ -6,6 +6,7 @@ import { artistIn, norm, shareArtist, songKey } from './text.ts';
 import { GYM_MIN_ENERGY, profileOf, sameVibe } from './profiles.ts';
 import { notNowActive } from './learning.ts';
 import { patternFor } from './patterns.ts';
+import { isWanted } from './wishes.ts';
 
 export const DEFAULT_RULES: Rules = {
   blockedArtists: ['Loreen'],
@@ -94,6 +95,8 @@ export type EnforceContext = {
   proven?: Set<string>;
   /** In de laatste 12 uur al gehoord (ook geskipt): mag erin, maar niet vooraan. */
   heardRecently?: Set<string>;
+  /** Zelf gevraagd: "meer Alex Warren". Gaat voor het profiel (ook de gym-ondergrens) en voor artiest-patronen. */
+  moreArtists?: string[];
 };
 
 /** Zoveel nummers bovenaan een voorstel zijn altijd vers (niet vandaag al gehoord), als dat kan. */
@@ -124,7 +127,7 @@ export function delayRepeats(items: PlanItem[], heard: Set<string>, protect = 0,
 /** Gym: is dit nummer hard genoeg? Bewezen gym-nummers mogen altijd. */
 export function gymOk(it: PlanItem, ctx: EnforceContext): boolean {
   if (ctx.vibe.profile !== 'gym') return true;
-  return it.energy >= GYM_MIN_ENERGY || !!ctx.proven?.has(it.track.id);
+  return it.energy >= GYM_MIN_ENERGY || !!ctx.proven?.has(it.track.id) || isWanted(it.track, ctx.moreArtists);
 }
 
 
@@ -145,11 +148,17 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     if (hit.some((s) => s.gym)) return 'in de gym geskipt';
     if (hit.length) return 'geen zin in bij deze vibe';
     // Patroon in je skips: steeds dit nummer, of steeds nummers van deze artiest.
-    const pat = patternFor(signals, track, vibe.text);
+    const pat = patternHere(track, ctx);
     if (pat?.level === 'weg') return pat.kind === 'artist' ? `${pat.name} steeds geskipt` : 'waarschijnlijk niet meer leuk';
     if (pat?.level === 'pauze') return 'even te vaak gehoord';
   }
   return null;
+}
+
+/** Patroon voor dit nummer bij deze vibe. Zelf om de artiest gevraagd ("meer X"): dan telt alleen een patroon op dit nummer zelf. */
+function patternHere(track: Track, ctx: EnforceContext): Pattern | null {
+  const signals = isWanted(track, ctx.moreArtists) ? { ...ctx.signals, patterns: (ctx.signals.patterns ?? []).filter((p) => p.kind === 'song') } : ctx.signals;
+  return patternFor(signals, track, ctx.vibe.text);
 }
 
 /** Hooguit zoveel nummers van een artiest die je de laatste tijd vaak skipt. */
@@ -158,7 +167,7 @@ export const LESS_ARTIST_MAX = 2;
 /** Patroon "minder" bij deze vibe: zelf vaak geskipt, of van een artiest die je vaak skipt. */
 export function lessOften(track: Track, ctx: EnforceContext): Pattern | null {
   if (isFavorite(track, ctx.rules)) return null;
-  const pat = patternFor(ctx.signals, track, ctx.vibe.text);
+  const pat = patternHere(track, ctx);
   return pat?.level === 'minder' ? pat : null;
 }
 

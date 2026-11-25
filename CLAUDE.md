@@ -38,6 +38,14 @@ actief apparaat gebruiken, nooit zelf overzetten; niets actief → pc `joshua-mo
 (`mergeAdjusted`): de rest blijft gegarandeerd staan in dezelfde volgorde; bij toevoegen gaat `count` omhoog.
 Plan krijgt `parentId`/`change`/`addedIds` → knop "Vorige versie" en toegevoegde nummers gemarkeerd.
 In Live DJ komen toegevoegde nummers vooraan in `upcoming`.
+**"Meer <artiest>"** (`src/logic/wishes.ts`): `wishArtists` haalt bekende artiesten (`knownArtists`: pool, meta, sessie) uit je eigen tekst
+("meer Alex Warren", "alex warren", "minder AC/DC", "geen nummers meer van NF"); "meer pop/pop rock" is geen artiest en blijft voor Claude.
+Claude krijgt `moreArtists` (gaat voor het profiel, ook gym), en de app dwingt het zelf af: `gymOk` en artiest-patronen gelden niet voor
+gevraagde artiesten (nummer-patronen wel), en na `enforce` zet `boostWanted` op elke 2e plek (vanaf plek 1, bij twee artiesten om en om)
+een nummer van die artiest; te weinig → `sp.searchTracks('artist:"X"')` (`artistTracks`: geen sped-up/akoestisch/live). Niet bij
+toevoegen/weghalen. In Live DJ onthoudt `LiveState.moreArtists` de wens (`updateWishes` in `steer`, alleen uit wat je typte, niet uit de
+sessie-samenvatting) en gaat die mee in elk bijsturen, ook automatisch; nieuwe "meer Y" vervangt, "minder/geen/genoeg X" haalt weg.
+Aanleiding 25-11: "meer alex warren" in de gym gaf 1 Alex Warren-nummer op 15 (Claude: "je hoorde al veel Alex Warren"; gym-regels).
 
 ## Live DJ (`src/logic/live.ts`, `src/live.tsx`, native `LiveQueuer.kt`)
 Zet steeds maar één nummer vooruit in de Spotify-wachtrij en kiest het volgende pas als ons nummer begint.

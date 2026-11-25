@@ -4,7 +4,8 @@ import * as sp from './spotify';
 import * as gh from './github';
 import { buildPool, buildRequest, bestMatch, parseAnswer, poolForClaude, type ClaudeItem, type ClaudeRef, type DjResponse } from '../logic/pool';
 import { computeSignals, countKey, dislikedKeys, heardRecentlyFor } from '../logic/learning';
-import { enforce, isFavorite, parseVibe, type EnforceContext } from '../logic/rules';
+import { enforce, isFavorite, parseVibe, rejectReason, type EnforceContext } from '../logic/rules';
+import { artistTracks, boostWanted, isWanted, knownArtists, wishArtists } from '../logic/wishes';
 import { adjustKind, describeChange, mergeAdjusted, type AdjustKind } from '../logic/adjust';
 import { songKey } from '../logic/text';
 import { provenIds, vibeStats } from '../logic/profiles';
@@ -72,6 +73,8 @@ export type DjInput = {
   extraAvoid?: Track[];
   /** Live DJ: alles in `avoid` (Spotify-wachtrij + extraAvoid) ook echt weigeren, niet alleen als tip aan Claude geven. */
   excludeUsed?: boolean;
+  /** Live DJ: "meer Alex Warren" uit deze sessie (al uit je eigen tekst gehaald). Anders leest de app het uit vibe + bijsturing. */
+  moreArtists?: string[];
 };
 
 export type DjOutput = { plan: Plan; response: DjResponse; favorite: Track | null };
@@ -145,6 +148,11 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     eurovision: base.eurovision || !!extra?.eurovision,
   };
   const signals = signalsFor(learned, history, now, rules.blockedArtists);
+  // Zelf gevraagd: "meer Alex Warren" (in de vibe, de bijsturing of eerder in deze Live DJ-sessie).
+  const known = knownArtists(history.pool, learned.meta);
+  const more = [...(input.moreArtists ?? wishArtists(input.adjust ?? '', known).more), ...wishArtists(input.vibeText, known).more].filter(
+    (a, i, all) => all.findIndex((b) => b.toLowerCase() === a.toLowerCase()) === i,
+  );
 
   onStatus('Wat er nu speelt bekijken');
   const avoid: Track[] = [];
@@ -164,7 +172,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   // Bij Gym alleen wat je in de gym hoorde. Niet bij bijsturen: dan blijft de bestaande lijst gewoon staan.
   const heardRecently = input.adjust ? new Set<string>() : heardRecentlyFor(vibe.text, learned.plays, history.recent, now);
   const used = input.excludeUsed ? { ids: new Set(avoid.map((t) => t.id)), keys: new Set(avoid.map((t) => songKey(t.name, t.artists))) } : null;
-  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), proven, heardRecently, ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
+  const ctx: EnforceContext = { rules, vibe, signals, now, dislikedKeys: dislikedKeys(signals, learned), proven, heardRecently, moreArtists: more, ...(used ? { alreadyQueued: used.ids, alreadyKeys: used.keys } : {}) };
   const refs: ClaudeRef[] = poolForClaude(history.pool, ctx);
   const id = newId();
   const request = buildRequest({
@@ -182,6 +190,7 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
     model: input.model,
     stats,
     heardRecently,
+    moreArtists: more,
   });
 
   onStatus('Verzoek naar GitHub sturen');
@@ -269,6 +278,28 @@ export async function makePlan(input: DjInput): Promise<DjOutput> {
   }
 
   const checked = enforce(merged, spares, { ...ctx, favorite });
+
+  // "Meer Alex Warren": de app zorgt zelf dat het er echt in zit (ongeveer elk tweede nummer). Levert Claude te weinig,
+  // dan zoekt de app nummers van die artiest op Spotify. Niet bij toevoegen/weghalen: dan blijft de rest zoals hij was.
+  if (more.length && (!adj || adj.kind === 'breed')) {
+    const have = [...checked.items, ...checked.spares].filter((it) => isWanted(it.track, more)).length;
+    let extraItems: PlanItem[] = [];
+    if (have < Math.ceil(checked.items.length / 2)) {
+      onStatus(`Meer ${more.join(' en ')} zoeken`);
+      const found = (await Promise.all(more.map((a) => sp.searchTracks(`artist:"${a}"`).catch(() => [] as Track[])))).flat();
+      const poolKeys = new Set(history.pool.map((t) => songKey(t.name, t.artists)));
+      const style = [...checked.items, ...checked.spares].find((it) => isWanted(it.track, more))?.style ?? 'Op verzoek';
+      extraItems = artistTracks(found, more)
+        .filter((t) => !rejectReason(t, { ...ctx, favorite }))
+        .map((t) => {
+          const k = songKey(t.name, t.artists);
+          return { track: t, style, isNew: !poolKeys.has(k) && !knownKeys.has(k), energy: 4 };
+        });
+    }
+    const boosted = boostWanted(checked.items, checked.spares, extraItems, more);
+    checked.items = boosted.items;
+    checked.spares = boosted.spares;
+  }
   const plan: Plan = {
     id,
     vibe: vibe.text,

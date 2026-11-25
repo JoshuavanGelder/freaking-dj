@@ -71,6 +71,8 @@ test('renderRequest bevat vibe, regels en pool', () => {
   assert.match(renderRequest({ mode: 'nieuw', learned: { suspectedDislike: ['Oud – X'] }, pool: '' }), /Oud – X/);
   assert.match(t, /t1\|Ordinary/);
   assert.match(t, /3–4 known/);
+  assert.doesNotMatch(t, /moreArtists/, 'zonder wens geen regel');
+  assert.match(renderRequest({ mode: 'bijsturen', moreArtists: ['Alex Warren'], learned: {}, pool: '' }), /moreArtists \(he asked for these himself\): Alex Warren/);
 });
 
 test('pendingIds: alleen recente verzoeken zonder antwoord, oudste eerst', async () => {

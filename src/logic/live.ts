@@ -19,6 +19,8 @@ export type LiveState = {
   startedAt: number;
   /** Alles wat we in deze sessie ooit klaargezet hebben, ook als het zo snel geskipt werd dat de app het nooit zag spelen. */
   served?: Track[];
+  /** Zelf gevraagd in deze sessie: "meer Alex Warren". Geldt ook bij automatisch bijsturen, tot je iets anders vraagt. */
+  moreArtists?: string[];
 };
 
 const SERVED_MAX = 300;
