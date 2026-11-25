@@ -243,7 +243,7 @@ function NotNowSection() {
                     {name(line.id)}
                   </T>
                   <T size={12} color={C.dim}>
-                    {line.manual ? 'zelf toegevoegd' : `geskipt op ${date(line.at)}`}
+                    {line.manual ? 'zelf toegevoegd' : line.note ? `${line.note}, laatst op ${date(line.at)}` : `geskipt op ${date(line.at)}`}
                   </T>
                 </View>
                 <Button label="Vibe" small variant="dark" onPress={() => setEditing({ mode: 'move', line })} />

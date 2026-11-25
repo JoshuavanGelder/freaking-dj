@@ -85,7 +85,15 @@ en **Worship**; ~5% is iets anders (`overig`, werkt zoals altijd). `profileOf` h
   nummers die bij deze vibe vaker helemaal gehoord dan geskipt zijn staan vooraan in de pool met `|here Nx`; bewezen nummers die
   niet in de pool staan gaan als `provenExtra` mee (en tellen niet als "nieuw").
 - Gym: minder nieuw (`newEveryFor`: 1 per 6), en `enforce` haalt alles onder energie 4 weg ("te rustig voor de gym"),
-  behalve bewezen gym-nummers; aangevuld uit de reserves.
+  behalve bewezen gym-nummers; aangevuld uit de reserves. **Energie komt van Claude** en die gaf in de gym bijna alles een 4–5
+  (25-11: Paralyzed/Hate Myself van NF = 5), dus de gym-notes geven nu ijkpunten per nummer (niet per artiest; bij twijfel 3) en
+  zeggen dat bijsturen na skips nooit naar rustiger/poppier mag.
+- **Geen gym-nummer** (`computeSignals` stap 3b, `NotNowEntry.gym`): in de gym telt ook een skip in een reeks (daar zoek je een banger).
+  Vroeg geskipt (`earlySkip`: voor de helft) vaker dan helemaal gehoord in de gym → "geen zin in" bij Gym met `gym: true`, blijft
+  tot 60 d (`GYM_SKIP_DAYS`), uit de pool voor Claude en `rejectReason` "in de gym geskipt". Herhaling (12 u) en late skips tellen niet.
+  Staat in Geleerd onder Gym met uitleg ("2× in de gym geskipt"); wissen werkt zoals bij "geen zin in". Geldt niet buiten de gym.
+- **Heard today bij Gym** (`heardRecentlyFor`): alleen wat je in de gym hoorde. Anders schoven je beste gym-nummers (overdag in
+  Standaard gehoord) naar achter plek 8 en begon de gym met zwakkere nummers.
 - **Standaard = alle muziek die Joshua leuk vindt behalve worship** (niet alleen "on repeat"): hele pool, alle genres; `vibeStats`
   telt bij Standaard plays uit elke vibe behalve worship.
 - Live DJ-plays (ook reserves) krijgen de Live-vibe via `tagPlays(…, live)`, zodat de gym-sessies echt meetellen.

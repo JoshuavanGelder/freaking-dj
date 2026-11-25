@@ -213,3 +213,14 @@ test('pickReplacement: uit de geschiedenis als er geen reserve is', () => {
   const r = pickReplacement(items, [], 1, pool, ctx());
   assert.equal(r?.item.track.name, 'Faded');
 });
+
+test('in de gym geskipt: weg uit de gym (ook uit de pool voor Claude), elders gewoon', () => {
+  const s = noSignals();
+  s.notNow.par = [{ vibe: 'Gym', hour: 20, at: NOW - 20 * 86400000, gym: true, note: 'in de gym geskipt' }];
+  const par = tr('Paralyzed', 'NF', 'par');
+  assert.equal(rejectReason(par, ctx('Legday', { signals: s })), 'in de gym geskipt');
+  assert.equal(rejectReason(par, ctx('Standaard', { signals: s })), null);
+  const { items, removed } = enforce([{ track: par, style: 'Hiphop', isNew: false, energy: 5 }, it('Till I Collapse', 'Eminem', 'Hiphop', { energy: 5 })], [], ctx('Gym', { signals: s }));
+  assert.deepEqual(items.map((x) => x.track.name), ['Till I Collapse']);
+  assert.equal(removed[0]?.reason, 'in de gym geskipt');
+});

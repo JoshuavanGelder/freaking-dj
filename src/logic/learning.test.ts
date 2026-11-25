@@ -1,7 +1,7 @@
 process.env.TZ = 'UTC'; // dagen tellen in lokale tijd: vastzetten voor de tests
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EMPTY_LEARNED, computeSignals, ingest, patternFor, tagPlays, type RawEvent } from './learning.ts';
+import { EMPTY_LEARNED, computeSignals, heardRecentlyFor, ingest, notNowActive, notNowGroups, patternFor, removeNotNow, tagPlays, type RawEvent } from './learning.ts';
 import { PATTERN, approvePattern, artistKey, countKey, latestNotice, liveFactor } from './patterns.ts';
 import type { Learned, Play, Signals, Verdict } from './types.ts';
 
@@ -391,4 +391,89 @@ test('tagPlays koppelt aan de juiste wachtrij', () => {
   ]);
   assert.equal(tagged[0].vibe, 'coding');
   assert.equal(tagged[0].fromPlanNew, true);
+});
+
+// ---------- geen gym-nummer ----------
+// Situatie van 25-11: in de gym druk je alles weg wat geen banger is, vaak een paar op rij. Die skips zeggen hier juist wat
+// geen gym-nummer is (Paralyzed van NF kwam steeds terug omdat een reeks skips neutraal was).
+
+test('gym: een reeks skips telt wel, nummers komen niet meer in de gym; bij Standaard blijft een reeks neutraal', () => {
+  const g = { vibe: 'Gym' };
+  const plays = [
+    play('slim', T0, 'full', 200_000, g),
+    play('paralyzed', T0 + 4 * MIN, 'skip', 2000, g),
+    play('hate', T0 + 4 * MIN + 3000, 'skip', 1000, g),
+    play('kick', T0 + 4 * MIN + 5000, 'full', 200_000, g),
+    play('a', T0 + 8 * MIN, 'skip', 2000, { vibe: 'Standaard' }),
+    play('b', T0 + 8 * MIN + 3000, 'skip', 1000, { vibe: 'Standaard' }),
+    play('c', T0 + 8 * MIN + 5000, 'full', 200_000, { vibe: 'Standaard' }),
+  ];
+  const s = computeSignals(learned(plays), { known: new Set(['paralyzed', 'hate', 'a', 'b']), now: NOW });
+  assert.equal(s.notNow.paralyzed?.[0].gym, true);
+  assert.equal(s.notNow.paralyzed?.[0].note, 'in de gym geskipt');
+  assert.equal(s.notNow.hate?.[0].gym, true);
+  assert.equal(s.notNow.a, undefined, 'Standaard: reeks blijft neutraal');
+  assert.equal(s.patterns.length, 0, 'geen "niet leuk": alleen niet voor de gym');
+});
+
+test('gym: ook een nieuw nummer dat je in de gym wegdrukt komt daar niet meer', () => {
+  const plays = [play('p1', T0, 'full', 200_000, { vibe: 'Legday' }), play('thunder', T0 + 4 * MIN, 'skip', 1000, { vibe: 'Legday', fromPlanNew: true })];
+  const s = computeSignals(learned(plays), { known: new Set(), now: NOW });
+  assert.equal(s.notNow.thunder?.[0].gym, true, 'Legday hoort bij Gym');
+});
+
+test('gym: bewezen nummer valt pas af als je het vaker skipt dan afluistert', () => {
+  const g = { vibe: 'Gym' };
+  const day = (d: number) => T0 - d * 86400000;
+  const once = [play('ly', day(10), 'full', 200_000, g), play('x', day(1), 'full', 200_000, g), play('ly', day(1) + 4 * MIN, 'skip', 12_000, g)];
+  assert.ok(!computeSignals(learned(once), { known: new Set(['ly']), now: NOW }).notNow.ly?.some((e) => e.gym), '1 tegen 1: blijft');
+  const twice = [...once, play('y', day(0) - 3 * 86400000, 'full', 200_000, g), play('ly', T0, 'skip', 3000, g)];
+  const s = computeSignals(learned(twice), { known: new Set(['ly']), now: NOW });
+  const e = s.notNow.ly?.find((x) => x.gym);
+  assert.ok(e, '2 skips tegen 1 keer afgeluisterd');
+  assert.equal(e!.note, '2× in de gym geskipt');
+});
+
+test('gym: late skip en herhaling tellen niet', () => {
+  const g = { vibe: 'Gym' };
+  const plays = [
+    play('p1', T0, 'full', 200_000, g),
+    play('burn', T0 + 4 * MIN, 'skip', 160_000, g), // na 160 van de 200 s: telt niet
+    play('p2', T0 + 8 * MIN, 'full', 200_000, g),
+    play('ly', T0 + 12 * MIN, 'full', 200_000, { vibe: 'Standaard' }), // vanmiddag al gehoord
+    play('ly', T0 + 30 * MIN, 'skip', 3000, g),
+  ];
+  const s = computeSignals(learned(plays), { known: new Set(['burn', 'ly']), now: NOW });
+  assert.ok(!s.notNow.burn?.some((e) => e.gym));
+  assert.ok(!s.notNow.ly?.some((e) => e.gym), 'net al gehoord: zegt niets');
+});
+
+test('gym: blijft tot 60 dagen staan, zelf wissen werkt, en het staat in Geleerd met uitleg', () => {
+  const g = { vibe: 'Gym' };
+  const plays = [play('p1', T0, 'full', 200_000, g), play('par', T0 + 4 * MIN, 'skip', 2000, g), play('hm', T0 + 4 * MIN + 3000, 'skip', 2000, g)];
+  const s = computeSignals(learned(plays), { known: new Set(), now: NOW });
+  const e = s.notNow.par![0];
+  assert.ok(notNowActive(e, NOW + 30 * 86400000), 'na een maand nog steeds');
+  assert.ok(!notNowActive(e, NOW + 61 * 86400000));
+  const groups = notNowGroups(s, NOW);
+  const gym = groups.find((x) => x.group === 'gym');
+  assert.equal(gym?.lines.length, 2);
+  assert.equal(gym?.lines[0].note, 'in de gym geskipt');
+  const wiped = removeNotNow(learned(plays), 'par', 'Gym', NOW);
+  const s2 = computeSignals(wiped, { known: new Set(), now: NOW });
+  assert.equal(s2.notNow.par, undefined, 'zelf gewist');
+  const later = NOW + 2 * 86400000;
+  const again = computeSignals({ ...wiped, plays: [...plays, play('par', later, 'skip', 2000, g), play('p3', later + MIN, 'full', 200_000, g)] }, { known: new Set(), now: later + 2 * MIN });
+  assert.equal(again.notNow.par?.[0].gym, true, 'opnieuw geskipt na wissen: weer weg uit de gym');
+});
+
+test('heard today: bij Gym alleen wat je in de gym hoorde, bij Standaard alles', () => {
+  const plays = [
+    play('bang', NOW - 4 * 3600_000, 'full', 200_000, { vibe: 'Standaard' }),
+    play('gymtrack', NOW - 3600_000, 'full', 200_000, { vibe: 'Gym' }),
+    play('old', NOW - 13 * 3600_000, 'full', 200_000, { vibe: 'Gym' }),
+  ];
+  const recent = [{ id: 'pc', at: NOW - 3600_000 }];
+  assert.deepEqual([...heardRecentlyFor('Gym', plays, recent, NOW)].sort(), ['gymtrack']);
+  assert.deepEqual([...heardRecentlyFor('Standaard', plays, recent, NOW)].sort(), ['bang', 'gymtrack', 'pc']);
 });

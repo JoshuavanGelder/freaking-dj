@@ -54,11 +54,13 @@ export const PROFILE_NOTES: Record<VibeProfile, string[]> = {
   ],
   gym: [
     'Profile GYM: Joshua lifts hard to this and is VERY picky. It must NOT feel like his everyday mix with a few loud songs added.',
-    'Only real workout bangers: high tempo (roughly 120+ BPM or a heavy half-time beat), a big hook or drop, aggressive, driving or anthemic. Think hard rap/hip-hop (NF, Eminem-style), rock and metal riffs, EDM/hardstyle/bass drops, and huge power anthems.',
-    'Never in a gym queue: ballads, slow or mid-tempo songs, acoustic, chill, sad, soft pop, country ballads, worship. Also not his favourites if they are not workout songs (being a favourite is NOT enough here).',
-    'Every track energy 4 or 5; at most the first 1–2 tracks may be a 4 as warm-up. Do not make an energy wave here: keep it high the whole session. The app removes anything below energy 4 unless it is marked `here`, so rate energy honestly.',
-    'Tracks marked `here` were fully played in earlier gym sessions: those are proven gym tracks, use them first and most. Tracks listed under "Skipped in this vibe" are not gym tracks for him.',
-    'New tracks only when you are sure they hit hard and match the proven gym tracks (same artists or sound). Fewer new tracks than usual.',
+    'Only real workout bangers: high tempo (roughly 120+ BPM or a heavy half-time beat), a big hook or drop, aggressive, driving or anthemic. Think hard, hype rap (Till I Collapse, Remember the Name), rock and metal riffs, EDM/hardstyle/bass drops, and huge power anthems.',
+    'Judge every SONG, not the artist. NF, Eminem, Imagine Dragons, Fall Out Boy, Twenty One Pilots and the like also have slow, moody, emotional or introspective songs; those are NOT gym tracks (for example NF\'s introspective songs like Paralyzed, Hate Myself, The Search or Change).',
+    'Never in a gym queue: ballads, slow or mid-tempo songs, acoustic, chill, sad or emotional songs, introspective rap, soft or radio pop (Levitating, Blinding Lights), moody pop-rock (Heathens, Demons), country ballads, worship. Also not his favourites if they are not workout songs (being a favourite is NOT enough here).',
+    'Energy here means "how hard can he lift to this", per song: 5 = peak workout song (Till I Collapse, Kickstart My Heart, Sandstorm); 4 = driving and hard, still a workout song; 3 = a good song but mid-tempo, moody, emotional or radio pop. Every track must be a 4 or 5. When in doubt it is a 3: leave it out. Keep it high the whole session (no energy wave).',
+    'Tracks marked `here` were fully played in earlier gym sessions: those are proven gym tracks, use them first and most, the ones with the highest `here` count first. Tracks under `notInThisVibe` he skipped in the gym: not gym tracks for him, never suggest them (also not as new tracks).',
+    'When adjusting (bijsturen) during a session: when he skips a lot, the songs were not hard enough. Go to proven `here` tracks and the hardest songs like them. Never answer skips with calmer, poppier or more emotional songs, and do not switch to softer songs of an artist just because another song by that artist worked.',
+    'New tracks only when you are sure they hit hard and match the proven gym tracks (same sound and energy). Fewer new tracks than usual.',
   ],
   worship: [
     'Profile WORSHIP: Joshua\'s worship / Christian music. Worship artists are allowed and expected here.',

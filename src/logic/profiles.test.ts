@@ -127,7 +127,7 @@ test('herhaling: skip van een nummer dat je die dag al hoorde telt niet als "gee
   assert.equal(s.notNow.fav, undefined);
   // Zonder eerdere keer die dag telt dezelfde skip wel.
   const s2 = computeSignals({ ...EMPTY_LEARNED, plays: plays.slice(1) }, { known: new Set(['fav', 'a', 'b']), now: NOW });
-  assert.equal(s2.notNow.fav?.length, 1);
+  assert.equal(s2.notNow.fav?.filter((e) => !e.gym).length, 1);
   // Ook als Spotify (bv. je pc) het eerder die dag speelde.
   const s3 = computeSignals({ ...EMPTY_LEARNED, plays: plays.slice(1) }, { known: new Set(['fav', 'a', 'b']), now: NOW, recentPlays: [{ id: 'fav', at: NOW - 3 * H }] });
   assert.equal(s3.notNow.fav, undefined);

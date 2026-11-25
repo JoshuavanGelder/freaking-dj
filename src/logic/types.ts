@@ -150,8 +150,11 @@ export type Pattern = {
 /** Zachte hint aan Claude: in deze leergroep skip je deze stijl de laatste tijd vaak. De app dwingt niets af. */
 export type StyleHint = { group: LearnGroup; style: string; artists: number; skips: number; fulls: number };
 
-/** Eén "geen zin in": bij welke vibe, wanneer, en of je hem zelf toevoegde (dan verloopt hij niet). */
-export type NotNowEntry = { vibe: string; hour: number; at: number; manual?: boolean };
+/**
+ * Eén "geen zin in": bij welke vibe, wanneer, en of je hem zelf toevoegde (dan verloopt hij niet).
+ * `gym` = in de gym vaker vroeg geskipt dan afgeluisterd: geen gym-nummer voor jou (blijft tot 60 dagen staan).
+ */
+export type NotNowEntry = { vibe: string; hour: number; at: number; manual?: boolean; gym?: boolean; note?: string };
 
 export type Signals = {
   /** Te vaak gedraaid: trackId -> rust tot. */

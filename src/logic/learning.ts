@@ -6,7 +6,7 @@
 // Een reeks skips (2+ op rij) is neutraal: je zoekt dan iets. Losse skips tellen ook in Live DJ gewoon mee.
 // Waar je naartoe skipte wordt niet gebruikt: je koos dat nummer niet, het kwam gewoon als volgende.
 import type { Learned, NotNowEntry, Play, Signals } from './types.ts';
-import { vibeGroup } from './profiles.ts';
+import { profileOf, vibeGroup } from './profiles.ts';
 import { songKey } from './text.ts';
 import { evaluatePatterns } from './patterns.ts';
 export { PATTERN, approvePattern, artistKey, countKey, learnGroup, neverPattern, patternApplies, patternFor, primaryArtist, unapproveArtist, unapproveSong } from './patterns.ts';
@@ -133,10 +133,28 @@ export const REST_MIN_PLAYS = 5; // zo vaak helemaal gehoord = te vaak
 export const REST_DAYS = 14; // ongeveer 2 weken rust
 export const REPEAT_WINDOW_MS = 12 * 3600 * 1000; // net al gehoord: een skip dan is "had ik net al", geen oordeel
 export const NOT_NOW_DAYS = 7; // zo lang telt een "geen zin in" uit skips
+export const GYM_SKIP_DAYS = 60; // "geen gym-nummer" blijft staan zolang de skips meegaan (plays: 60 dagen)
 
 /** Telt deze "geen zin in" nog? Zelf toegevoegd blijft staan; uit skips verloopt na een week. */
 export function notNowActive(e: NotNowEntry, now: number): boolean {
-  return !!e.manual || now - e.at < NOT_NOW_DAYS * 86400000;
+  return !!e.manual || now - e.at < (e.gym ? GYM_SKIP_DAYS : NOT_NOW_DAYS) * 86400000;
+}
+
+/** Vroeg geskipt: voor de helft van het nummer (of binnen 90 s als de lengte onbekend is). */
+export function earlySkip(p: Play): boolean {
+  return p.outcome === 'skip' && p.listenedMs < (p.lengthMs > 0 ? p.lengthMs / 2 : 90_000);
+}
+
+/**
+ * Wat in de laatste 12 uur al langskwam (voor "niet in de eerste 8"). Bij Gym alleen wat je in de gym hoorde:
+ * je beste gym-nummers die je overdag in Standaard hoorde, moeten in de gym gewoon vooraan kunnen.
+ */
+export function heardRecentlyFor(vibeText: string, plays: Play[], recent: { id: string; at: number }[], now: number): Set<string> {
+  const gym = profileOf(vibeText) === 'gym';
+  return new Set([
+    ...plays.filter((p) => now - p.start < REPEAT_WINDOW_MS && (!gym || profileOf(p.vibe) === 'gym')).map((p) => p.id),
+    ...(gym ? [] : recent.filter((r) => now - r.at < REPEAT_WINDOW_MS).map((r) => r.id)),
+  ]);
 }
 
 /** Sleutel voor wissen per nummer en vibe(groep). */
@@ -246,6 +264,33 @@ export function computeSignals(learned: Learned, input: SignalInput): Signals {
     }
   }
 
+  // 3b. Geen gym-nummer: in de gym vaker vroeg geskipt dan helemaal afgeluisterd. In de gym zoek je een banger,
+  // dus hier telt ook een skip in een reeks: alles wat je dan wegdrukt was geen gym-nummer. Herhalingen (in de 12 uur
+  // ervoor al gehoord) en late skips tellen niet. Afluisteren in de gym weegt ertegenop; zelf gewist = skips tot dan tellen niet.
+  const clearedAt = learned.notNowCleared ?? {};
+  const gymCount = new Map<string, { full: number; skips: number; last?: Play }>();
+  for (const p of plays) {
+    if (profileOf(p.vibe) !== 'gym') continue;
+    const g = gymCount.get(p.id) ?? { full: 0, skips: 0 };
+    if (p.outcome === 'full') g.full++;
+    else if (earlySkip(p) && !repeat.has(p) && !((clearedAt[notNowKey(p.id, p.vibe ?? 'gym')] ?? 0) >= p.start)) {
+      g.skips++;
+      g.last = p;
+    }
+    gymCount.set(p.id, g);
+  }
+  for (const [id, g] of gymCount) {
+    if (!g.last || g.skips <= g.full) continue;
+    const p = g.last;
+    (notNow[id] ??= []).push({
+      vibe: p.vibe ?? 'Gym',
+      hour: new Date(p.start).getHours(),
+      at: p.start,
+      gym: true,
+      note: g.skips === 1 ? 'in de gym geskipt' : `${g.skips}× in de gym geskipt`,
+    });
+  }
+
   // 4. Patronen: steeds hetzelfde nummer, of steeds nummers van één artiest (per leergroep, met vastgelegde oordelen).
   const found = evaluatePatterns({
     sessions,
@@ -299,7 +344,7 @@ export const EMPTY_LEARNED: Learned = { plays: [], decisions: {}, asked: {}, met
 
 // ---------- "geen zin in" zelf beheren ----------
 
-export type NotNowLine = { id: string; vibe: string; at: number; manual: boolean };
+export type NotNowLine = { id: string; vibe: string; at: number; manual: boolean; note?: string };
 export type NotNowGroup = { group: string; vibe: string; lines: NotNowLine[] };
 
 /** Actieve "geen zin in" per vibe(groep), nieuwste eerst. `vibe` = een vibe-tekst uit die groep (om mee te bewerken). */
@@ -307,13 +352,14 @@ export function notNowGroups(signals: Signals, now: number): NotNowGroup[] {
   const groups = new Map<string, NotNowGroup>();
   for (const [id, list] of Object.entries(signals.notNow)) {
     const seen = new Set<string>();
-    for (const e of [...list].sort((a, b) => b.at - a.at)) {
+    // Nieuwste eerst; "geen gym-nummer" gaat voor een losse "geen zin in" in dezelfde groep (die zegt meer).
+    for (const e of [...list].sort((a, b) => Number(!!b.gym) - Number(!!a.gym) || b.at - a.at)) {
       if (!notNowActive(e, now)) continue;
       const g = vibeGroup(e.vibe);
       if (seen.has(g)) continue; // één regel per nummer per groep
       seen.add(g);
       if (!groups.has(g)) groups.set(g, { group: g, vibe: e.vibe, lines: [] });
-      groups.get(g)!.lines.push({ id, vibe: e.vibe, at: e.at, manual: !!e.manual });
+      groups.get(g)!.lines.push({ id, vibe: e.vibe, at: e.at, manual: !!e.manual, ...(e.note ? { note: e.note } : {}) });
     }
   }
   const out = [...groups.values()];

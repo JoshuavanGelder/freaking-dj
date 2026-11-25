@@ -141,7 +141,9 @@ export function rejectReason(track: Track, ctx: EnforceContext): string | null {
     const rest = signals.resting[track.id];
     if (rest && rest > now) return 'rust (te vaak gedraaid)';
     const skips = signals.notNow[track.id] ?? [];
-    if (skips.some((s) => sameVibe(s.vibe, vibe.text) && notNowActive(s, now))) return 'geen zin in bij deze vibe';
+    const hit = skips.filter((s) => sameVibe(s.vibe, vibe.text) && notNowActive(s, now));
+    if (hit.some((s) => s.gym)) return 'in de gym geskipt';
+    if (hit.length) return 'geen zin in bij deze vibe';
     // Patroon in je skips: steeds dit nummer, of steeds nummers van deze artiest.
     const pat = patternFor(signals, track, vibe.text);
     if (pat?.level === 'weg') return pat.kind === 'artist' ? `${pat.name} steeds geskipt` : 'waarschijnlijk niet meer leuk';
