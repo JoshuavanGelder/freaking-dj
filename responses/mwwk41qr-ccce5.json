@@ -1,0 +1,178 @@
+{
+ "id": "mwwk41qr-ccce5",
+ "finishedAt": "2026-11-25T20:09:30.182Z",
+ "durationMs": 11625,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym: meer power",
+  "note": "Je bewezen gymnummers eerst, aangevuld met stevige pop-rock, hiphop en dance zonder herhaling van wat al gespeeld of geskipt is.",
+  "items": [
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t44",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t36",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t13",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t46",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t40",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t27",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Venom",
+    "artist": "Eminem",
+    "style": "Hiphop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t176",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t114",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t175",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t122",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t80",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   }
+  ]
+ },
+ "costUsd": 0.0598961,
+ "model": "sonnet"
+}
