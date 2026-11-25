@@ -1,0 +1,178 @@
+{
+ "id": "mwwk8bfd-4f8t5",
+ "finishedAt": "2026-11-25T20:12:35.165Z",
+ "durationMs": 9979,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Gym: meer pop-rock",
+  "note": "Je kreeg meer pop-rock en dance-pop in de stijl van wat je uitluisterde, zonder herhalingen en met minder NF en klassiek rock.",
+  "items": [
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t33",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t37",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t24",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t173",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t197",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "",
+    "title": "Venom - Music From The Motion Picture",
+    "artist": "Eminem",
+    "style": "Hiphop",
+    "new": true,
+    "energy": 5
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t111",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t77",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Hiphop",
+    "new": false,
+    "energy": 5
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t119",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t129",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Dance-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t172",
+    "title": "",
+    "artist": "",
+    "style": "Pop-rock",
+    "new": false,
+    "energy": 4
+   }
+  ]
+ },
+ "costUsd": 0.061044100000000004,
+ "model": "sonnet"
+}
