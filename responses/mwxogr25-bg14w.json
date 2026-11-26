@@ -1,0 +1,178 @@
+{
+ "id": "mwxogr25-bg14w",
+ "finishedAt": "2026-11-26T14:59:01.232Z",
+ "durationMs": 6280,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t128",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t5",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Stronger (What Doesn't Kill You)",
+    "artist": "Kelly Clarkson",
+    "style": "Pop",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t92",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t62",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t156",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t87",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Wolves",
+    "artist": "Selena Gomez",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t100",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t157",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t34",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t97",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t112",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t90",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t186",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t124",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t64",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "title": "Live-sessie vervolg",
+  "note": "Meer NF, Eminem, Fall Out Boy en Eurovisie; minder Dance-radiohits en Avicii-achtige nummers die je skipte."
+ },
+ "costUsd": 0.06654199999999999,
+ "model": "sonnet"
+}
