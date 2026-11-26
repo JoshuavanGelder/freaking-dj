@@ -1,0 +1,178 @@
+{
+ "id": "mwxjruam-cvjdv",
+ "finishedAt": "2026-11-26T12:47:31.949Z",
+ "durationMs": 10050,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "items": [
+   {
+    "ref": "t9",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t14",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t41",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t6",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "ONLY THING LEFT",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t7",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Eternity",
+    "artist": "Alex Warren",
+    "style": "Pop",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t16",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t2",
+    "title": "",
+    "artist": "",
+    "style": "Dance",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t3",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t12",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "Sweet but Psycho",
+    "artist": "Ava Max",
+    "style": "Dance",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t4",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t43",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 5
+   },
+   {
+    "ref": "t15",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t38",
+    "title": "",
+    "artist": "",
+    "style": "Rock",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t19",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t8",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t10",
+    "title": "",
+    "artist": "",
+    "style": "Hip-hop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t1",
+    "title": "",
+    "artist": "",
+    "style": "Frans/Eurovisie",
+    "new": false,
+    "energy": 4
+   }
+  ],
+  "title": "Veel meer Alex Warren",
+  "note": "Je kreeg elke tweede plek Alex Warren, zolang er nog nummers van hem over waren, aangevuld met NF, Morgan Wallen en Imagine Dragons."
+ },
+ "costUsd": 0.0612509,
+ "model": "sonnet"
+}
