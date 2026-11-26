@@ -1,0 +1,178 @@
+{
+ "id": "mwxfxwrf-hwi85",
+ "finishedAt": "2026-11-26T11:00:36.963Z",
+ "durationMs": 13639,
+ "status": "ok",
+ "message": "Klaar",
+ "resetAt": null,
+ "answer": {
+  "title": "Alex Warren, meer country",
+  "note": "Je luisterde country en Alex Warren uit, dus ik ging meer die kant op en liet de pop-rock en EDM weg.",
+  "items": [
+   {
+    "ref": "t49",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t22",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t35",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Fast Car",
+    "artist": "Luke Combs",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t45",
+    "title": "",
+    "artist": "",
+    "style": "Folk-pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t29",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t200",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t50",
+    "title": "",
+    "artist": "",
+    "style": "Country",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Something in the Orange",
+    "artist": "Zach Bryan",
+    "style": "Country",
+    "new": true,
+    "energy": 2
+   },
+   {
+    "ref": "t168",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t106",
+    "title": "",
+    "artist": "",
+    "style": "Folk-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "",
+    "title": "I'm the Problem",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 3
+   },
+   {
+    "ref": "t137",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "t159",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t170",
+    "title": "",
+    "artist": "",
+    "style": "Folk-pop",
+    "new": false,
+    "energy": 3
+   }
+  ],
+  "spares": [
+   {
+    "ref": "t188",
+    "title": "",
+    "artist": "",
+    "style": "Folk-pop",
+    "new": false,
+    "energy": 2
+   },
+   {
+    "ref": "t206",
+    "title": "",
+    "artist": "",
+    "style": "Folk-pop",
+    "new": false,
+    "energy": 4
+   },
+   {
+    "ref": "t105",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   },
+   {
+    "ref": "",
+    "title": "Cowgirls",
+    "artist": "Morgan Wallen",
+    "style": "Country",
+    "new": true,
+    "energy": 4
+   },
+   {
+    "ref": "t172",
+    "title": "",
+    "artist": "",
+    "style": "Pop",
+    "new": false,
+    "energy": 3
+   }
+  ]
+ },
+ "costUsd": 0.0744,
+ "model": "sonnet"
+}
